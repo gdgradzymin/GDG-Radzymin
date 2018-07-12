@@ -5,34 +5,51 @@
 // **Be sure that you only ever include this mixin once!**
 @include mat-core();
 // Define the default theme (same as the example above).
-$primary-color-dark:   #1976D2;
-$primary-color:        #2196F3;
-$primary-color-light:  #BBDEFB;
-$primary-color-text:   #FFFFFF;
-$accent-color:         #FFEB3B;
-$primary-text-color:   #212121;
+$primary-color-dark : #1976D2;
+$primary-color : #2196F3;
+$primary-color-light : #BBDEFB;
+$primary-color-text : #FFFFFF;
+$accent-color : #FFEB3B;
+$primary-text-color : #212121;
 $secondary-text-color: #757575;
-$divider-color:        #BDBDBD;
-
-
-
-$money-app-primary: mat-palette($mat-blue);
-$money-app-accent : mat-palette($mat-yellow, A200, A100, A400);
-$money-app-warn: mat-palette($mat-red);
-
-$money-app-theme : mat-light-theme($money-app-primary, $money-app-accent, $money-app-warn);
-$foreground: map-get($money-app-theme, foreground);
-$background: map-get($money-app-theme, background);
-// @include angular-material-theme($money-app-theme);
+$divider-color : #BDBDBD;
+$gdg-red: #dd4d40;
+$gdg-blue: #518ff5;
+$gdg-green: #149f5b;
+$gdg-yellow: #ffc20a;
+$gdg-app-primary: mat-palette($mat-blue);
+$gdg-app-accent: mat-palette($mat-yellow, A200, A100, A400);
+$gdg-app-warn: mat-palette($mat-red);
+$gdg-app-theme: mat-light-theme($gdg-app-primary, $gdg-app-accent, $gdg-app-warn);
+$foreground: map-get($gdg-app-theme, foreground);
+$background: map-get($gdg-app-theme, background);
+// @include angular-material-theme($gdg-app-theme);
 mat-ink-bar.mat-ink-bar {
-  background-color: mat-color($money-app-accent) !important;
+    background-color: $primary-color-text !important;
 }
 
-.mat-tab-label-active{
-  background-color: mat-color($money-app-primary, 400) !important;
-  opacity: 1 !important;
-  }
-
- .mat-tab-link:not(.mat-tab-label-active):focus {
-  background: none !important;
+.mat-tab-link {
+  color: $primary-color-text;
 }
+
+.mat-tab-label {
+  color: $primary-color-text;
+}
+
+.mat-tab-label-active {
+    background-color: mat-color($gdg-app-primary, 400) !important;
+    opacity: 1 !important;
+    color: $primary-color-text;
+}
+
+.mat-tab-link:not(.mat-tab-label-active):focus {
+    background: none !important;
+    color: $primary-color-text;
+}
+
+.mat-tab-nav-bar {
+  border-bottom: none;
+}
+
+
+

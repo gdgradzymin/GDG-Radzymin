@@ -1,0 +1,52 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+
+.sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+.app-header {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+
+}
+
+.sidenav-header {
+  padding-top: 30px;
+  padding-bottom: 25px;
+  padding-left: 15px;
+  padding-right: 50px;
+  background-color:  mat-color($mat-grey, 100);
+}
+
+.icon-home {
+  color:  $gdg-blue;
+}
+
+.icon-events {
+  color:  $gdg-red;
+}
+
+.icon-team {
+  color:  $gdg-green;
+}
+
+.app-header-hidden {
+  position: fixed;
+  top: -60px;
+  left: 0;
+  right: 0;
+}
+
+
+.app-sidenav {
+  width: 250px;
+}

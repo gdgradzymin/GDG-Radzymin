@@ -2,8 +2,8 @@
 @include mat-core();
 @import './themes/my-theme';
 
-.money-theme {
-  @include angular-material-theme($money-app-theme);
+.gdg-theme {
+  @include angular-material-theme($gdg-app-theme);
 }
 
 

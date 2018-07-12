@@ -1,0 +1,19 @@
+// Import all the tools needed to customize the theme and extract parts of it
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+
+
+.my-nav-tab {
+  background-color: mat-color($gdg-app-primary);
+}
+
+mat-icon {
+    color: mat-color($gdg-app-primary, lighter);
+}
+
+.mat-tab-link {
+  min-width: 70px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
