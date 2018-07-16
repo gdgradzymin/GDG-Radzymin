@@ -1,3 +1,6 @@
+## 0.3.0
+* Integration with Contentful
+
 ## 0.2.0
 * Menu and responsive layout
 

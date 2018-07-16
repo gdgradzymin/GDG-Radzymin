@@ -1,4 +1,22 @@
 <br><br><br><br>
-<p>
-  events works!
-</p>
+EVENTS
+
+<div *ngFor="let event of events$ | async ">
+  <h1>
+    Event: {{event.title}}
+  </h1>
+  <div [innerHTML]="event.description | mdToHtml">
+  </div>
+
+    <time>
+      Event time: {{ event.eventDate | date: 'fullDate'}}
+    </time>
+    <div>
+      Event location: {{ event.location?.lon}}, {{event.location?.lat}}
+    </div>
+    <address>
+      Event address: {{ event.eventAddress }}
+    </address>
+    <a href="{{event.meetupLink}}" >{{event.meetupLink}}</a>
+</div>
+

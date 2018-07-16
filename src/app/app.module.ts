@@ -18,6 +18,7 @@ import { TabsComponent } from './main/containers/tabs/tabs.component';
 import { HomeComponent } from './home/containers/home/home.component';
 import { EventsModule } from './events/events.module';
 import { TeamModule } from './team/team.module';
+import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
