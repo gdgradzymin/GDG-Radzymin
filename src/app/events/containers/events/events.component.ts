@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { ContentfulService } from '../../../services/contentful.service';
 import { flatMap, switchMap, map } from 'rxjs/operators';
 
@@ -8,9 +8,10 @@ import { flatMap, switchMap, map } from 'rxjs/operators';
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
   events$: Observable<any>;
-  eventsSub: Event[] = [];
+  events: Event[] = [];
+  eventsSub: Subscription;
 
   constructor(private contentful: ContentfulService) {}
 
@@ -19,10 +20,15 @@ export class EventsComponent implements OnInit {
     this.contentful.logEvents();
     // this.events$ = this.contentful.getContent('2IKTXNxxdCO4gwOGsAkooC');
     this.events$ = this.contentful.getEvents(2);
-    this.events$
-      .subscribe((events: any) => {
-        this.eventsSub = events;
-        console.log('events from sub: ', this.eventsSub);
-      });
+    this.eventsSub = this.events$.subscribe((events: any) => {
+      this.events = events;
+      console.log('events from sub: ', this.events);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.eventsSub) {
+      this.eventsSub.unsubscribe();
+    }
   }
 }

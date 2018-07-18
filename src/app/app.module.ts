@@ -19,6 +19,22 @@ import { HomeComponent } from './home/containers/home/home.component';
 import { EventsModule } from './events/events.module';
 import { TeamModule } from './team/team.module';
 import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
+import * as Hammer from 'hammerjs';
+import {
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG
+} from '@angular/platform-browser';
+import { MAT_DATE_LOCALE } from '@angular/material';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  buildHammer(element: HTMLElement) {
+    const mc = new Hammer(element, {
+      touchAction: 'pan-y'
+    });
+
+    return mc;
+  }
+}
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -26,10 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent
-  ],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -42,7 +55,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     TeamModule,
     MaterialModule,
     BrowserAnimationsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    }),
     LayoutModule,
     TranslateModule.forRoot({
       loader: {
@@ -52,7 +67,13 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

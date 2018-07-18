@@ -1,0 +1,27 @@
+<div style="padding: 20px 10px">
+  <mat-card style="max-width: 270px;height: 340px;">
+    <mat-card-header fxLayout="column" fxLayoutAlign="center center" style="height: 15%;" [ngClass]="getCardColorCss(lp)">
+      {{teamMember?.name}}
+
+    </mat-card-header>
+    <div fxLayout="column" fxLayoutAlign="center center" class="card-profile-photo" style="height: 50%;">
+      <img src="{{teamMember?.profilePhoto}}" style="border-radius: 50%;max-width: 60%;max-height: auto;">
+    </div>
+
+    <mat-card-content fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="5px" style="height: 20%;">
+      <div *ngFor="let tag of teamMember?.tags" class="my-chip" [ngClass]="getChipColorCss(tag)">{{tag}}</div>
+
+    </mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="card-footer" style="height: 15%;">
+      <a *ngIf="teamMember?.linkedinUrl" mat-icon-button target="_blank" href="{{teamMember?.linkedinUrl}}">
+        <fa-icon [icon]="faLinkedin" style="font-size: 1.5rem;"></fa-icon>
+      </a>
+      <a *ngIf="teamMember?.twitterUrl" mat-icon-button target="_blank" href="{{teamMember?.twitterUrl}}">
+        <fa-icon [icon]="faTwitterSquare" style="font-size: 1.5rem;"></fa-icon>
+      </a>
+      <a *ngIf="teamMember?.githubUrl" mat-icon-button target="_blank" href="{{teamMember?.githubUrl}}">
+        <fa-icon [icon]="faGithubSquare" style="font-size: 1.5rem;"></fa-icon>
+      </a>
+    </div>
+  </mat-card>
+</div>

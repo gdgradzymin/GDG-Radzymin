@@ -1,5 +1,9 @@
-<br><br><br><br>
-EVENTS
+<app-page-header >
+    <section name="header-content" style="height: 100%;" fxLayout="column" fxLayoutAlign="end start">
+        <span  style="font-size: 2.4rem;"> {{'events' | translate}}</span>
+     </section>
+</app-page-header>
+
 
 <div *ngFor="let event of events$ | async ">
   <h1>

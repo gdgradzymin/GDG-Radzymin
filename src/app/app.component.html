@@ -30,13 +30,14 @@
         <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" style="height: 1.2rem;display: inline-block;">
 
         <span fxFlex="1 1 auto"></span>
-        <app-tabs *ngIf="!(isHandsetPortrait$ | async)" [routerState]="getState()"></app-tabs>
-        <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" *ngIf="isHandsetPortrait$ | async">
+        <app-tabs fxShow fxHide.xs  [routerState]="getState()"></app-tabs>
+        <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs>
           <mat-icon>menu</mat-icon>
         </button>
+        <img src="../assets/gfx/radzymin_herb_wew_S.png" style="max-width: 75%; max-height: 75%;display: inline-block;margin-left: 10px;" >
 
       </mat-toolbar>
-      <div  [@routerTransition]="getState()">
+      <div  [@routerTransition]="getState()" (swipeleft)="swipeLeft()"  (swiperight)="swipedRight()">
         <router-outlet #o="outlet"></router-outlet>
       </div>
 

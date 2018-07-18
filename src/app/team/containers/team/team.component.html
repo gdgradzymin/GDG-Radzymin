@@ -1,24 +1,11 @@
-<br><br><br><br>
-<p>
-  TEAM
-</p>
-<div *ngFor="let teamMember of team$ | async ">
-  <h2>
-    {{teamMember.name}}
-  </h2>
-  <img src="{{teamMember.profilePhoto}}" style="max-width: 200px; height: auto;">
-  <div *ngIf="teamMember.linkedinUrl">
-    <a href="{{teamMember.linkedinUrl}}" target="_blank">LinkedIn</a>
-  </div>
-  <div *ngIf="teamMember.twitterUrl">
-    <a href="{{teamMember.twitterUrl}}" target="_blank">Twitter</a>
-  </div>
-  <div *ngIf="teamMember.githubUrl">
-    <a href="{{teamMember.githubUrl}}" target="_blank">GitHub</a>
-  </div>
+<app-page-header>
+  <section name="header-content" style="height: 100%;" fxLayout="column" fxLayoutAlign="end start">
+     <span  style="font-size: 2.4rem;"> {{'team' | translate}}</span>
+  </section>
 
-  <div>
-    Tags: {{teamMember.tags}}
+</app-page-header>
+<section name="team" fxLayout="row wrap" fxLayoutAlign="center center" style="width: 100%;">
+  <div *ngFor="let teamMember of team$ | async; let i=index ">
+    <app-team-member [teamMember]="teamMember" lp="{{i+1}}"></app-team-member>
   </div>
-</div>
-
+</section>

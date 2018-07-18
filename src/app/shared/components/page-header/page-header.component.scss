@@ -1,0 +1,14 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+
+
+.page-header {
+  background-color: mat-color($gdg-app-primary);
+  color: $primary-color-text;
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 30px;
+}
+
+

@@ -1,3 +1,9 @@
+## 0.4.0
+* Team page with TeamMember component
+* Hammerjs integration
+* Pages' header
+
+
 ## 0.3.0
 * Integration with Contentful
 
