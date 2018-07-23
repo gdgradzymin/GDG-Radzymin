@@ -27,6 +27,7 @@
     "@angular/service-worker": "^6.0.3",
     "@fortawesome/angular-fontawesome": "^0.1.1",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
+    "@fortawesome/fontawesome-free-regular": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.1",
     "@fortawesome/free-solid-svg-icons": "^5.1.1",
     "@ngx-translate/core": "^10.0.2",

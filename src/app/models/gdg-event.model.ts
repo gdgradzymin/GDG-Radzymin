@@ -1,6 +1,8 @@
 export interface GdgEventModel {
   title: string;
   description: string;
+  shortDescription: string;
+  isOrganizerGdgRadzymin: boolean;
   eventDate?: string;
   location?: GdgLocationModel;
   eventAddress?: string;
@@ -21,6 +23,8 @@ export class GdgEvent implements GdgEventModel {
   constructor(
     public title: string,
     public description: string,
+    public shortDescription: string,
+    public isOrganizerGdgRadzymin: boolean,
     public eventDate: string,
     locationLon: number,
     locationLat: number,
@@ -28,5 +32,14 @@ export class GdgEvent implements GdgEventModel {
     public meetupLink: string
   ) {
     this.location = new GdgLocation(locationLat, locationLon);
+  }
+
+  isPastEvent(): boolean {
+    const today = new Date();
+    if (this.eventDate && this.eventDate < today.toJSON()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -1,6 +1,12 @@
 {
+  "blog": "Blog",
   "events": "Wydrzenia",
+  "gotomeetuppage": "Przejdź do strony Meetup",
   "home": "Home",
+  "more": "Więcej",
+  "onlygdgradzyminevents": "Tylko wydarzenia GDG Radzymin",
+  "showpastevents": "Pokaż historyczne wydarzenia",
+  "sortbytheoldest": "Sortuj od najstarszych",
   "team": "Zespół",
   "title": "GDG Radzymin"
 }

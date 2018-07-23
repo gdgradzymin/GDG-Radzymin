@@ -1,26 +1,17 @@
-<app-page-header >
-    <section name="header-content" style="height: 100%;" fxLayout="column" fxLayoutAlign="end start">
-        <span  style="font-size: 2.4rem;"> {{'events' | translate}}</span>
-     </section>
+<app-page-header>
+  <section name="header-content" class="header-content" fxLayout="column" fxLayoutAlign="end start">
+    <span> {{'events' | translate}}</span>
+  </section>
 </app-page-header>
+<section name="filters" class="filters" fxLayout.xs="column" fxLayout="row" fxLayoutAlign.xs="center start" fxLayoutAlign="center center"
+  fxLayoutGap="30px" fxLayoutGap.xs="10px">
+  <mat-slide-toggle [(ngModel)]="gdgRadzyminOnly" (change)="loadEvents()">{{'onlygdgradzyminevents' | translate}}</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="showPastEvents" (change)="loadEvents()">{{'showpastevents' | translate}}</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="sortAsc" (change)="loadEvents()">{{'sortbytheoldest' | translate}}</mat-slide-toggle>
+</section>
 
+<section name="events" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" style="width: 100%;padding-left: 5px;padding-right: 5px;">
 
-<div *ngFor="let event of events$ | async ">
-  <h1>
-    Event: {{event.title}}
-  </h1>
-  <div [innerHTML]="event.description | mdToHtml">
-  </div>
+  <app-event-card *ngFor="let event of events$ | async; let i=index " [event]="event"></app-event-card>
 
-    <time>
-      Event time: {{ event.eventDate | date: 'fullDate'}}
-    </time>
-    <div>
-      Event location: {{ event.location?.lon}}, {{event.location?.lat}}
-    </div>
-    <address>
-      Event address: {{ event.eventAddress }}
-    </address>
-    <a href="{{event.meetupLink}}" >{{event.meetupLink}}</a>
-</div>
-
+</section>

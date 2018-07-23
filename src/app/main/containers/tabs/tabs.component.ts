@@ -62,6 +62,12 @@ export class TabsComponent implements OnInit, OnDestroy {
         link: './team',
         label: 'team',
         index: 2
+      },
+      {
+        icon: 'supervised_user_circle',
+        link: './blog',
+        label: 'blog',
+        index: 3
       }
     ];
    }

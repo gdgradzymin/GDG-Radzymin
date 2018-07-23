@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +25,11 @@ import {
   HAMMER_GESTURE_CONFIG
 } from '@angular/platform-browser';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { registerLocaleData } from '@angular/common';
+import localePl from '@angular/common/locales/pl';
+import { SettingsService } from './services/settings.service';
+
+registerLocaleData(localePl);
 
 export class MyHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
@@ -68,7 +73,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
+    {
+      provide: MAT_DATE_LOCALE,
+      deps: [SettingsService],
+      useFactory: settingsService => settingsService.getLanguage()
+    },
+    {
+      provide: LOCALE_ID,
+      deps: [SettingsService],
+      useFactory: settingsService => settingsService.getLanguage()
+    },
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

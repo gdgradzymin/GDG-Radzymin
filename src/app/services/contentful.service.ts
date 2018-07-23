@@ -56,26 +56,46 @@ export class ContentfulService {
       .then(entry => console.log('contactInfo: ', entry.items));
   }
 
-
   getContent(contentId: string) {
     const promise = this.clinet.getEntry(contentId);
     return from(promise).pipe(map(entry => entry.fields));
   }
 
-  getEvents(howMany: number): Observable<GdgEvent[]> {
+  getEvents(
+    howMany: number,
+    showPast: boolean,
+    gdgRadzyminOnly: boolean,
+    sortAsc: boolean
+  ): Observable<GdgEvent[]> {
+    const query = {
+      content_type: GdgContentTypes.EVENT,
+      limit: howMany
+    };
+    if (!showPast) {
+      const today = new Date();
+      Object.assign(query, { 'fields.hiddenEventDate[gt]': today.toJSON() });
+    }
+
+    if (gdgRadzyminOnly) {
+      Object.assign(query, { 'fields.isOrganizerGdgRadzymin': true });
+    }
+
+    const orderBy = sortAsc
+      ? 'fields.hiddenEventDate'
+      : '-fields.hiddenEventDate';
+    Object.assign(query, { order: orderBy });
+
     const promise: Promise<
       EntryCollection<GdgEvent[]>
-    > = this.clinet.getEntries({
-      content_type: GdgContentTypes.EVENT,
-      order: '-sys.createdAt',
-      limit: howMany
-    });
+    > = this.clinet.getEntries(query);
     return from(promise).pipe(
       map((entries: EntryCollection<GdgEvent>) => {
         return entries.items.map(item => {
           return new GdgEvent(
             item.fields.title,
             item.fields.description,
+            item.fields.shortDescription,
+            item.fields.isOrganizerGdgRadzymin,
             item.fields.eventDate,
             item.fields.location ? item.fields.location.lon : undefined,
             item.fields.location ? item.fields.location.lat : undefined,
@@ -116,7 +136,9 @@ export class ContentfulService {
           return new GdgTeamMember(
             item.fields.name,
             item.fields.tags,
-            item.fields.profilePhoto ? item.fields.profilePhoto.fields.file.url : undefined,
+            item.fields.profilePhoto
+              ? item.fields.profilePhoto.fields.file.url
+              : undefined,
             item.fields.linkedinUrl,
             item.fields.twitterUrl,
             item.fields.githubUrl
