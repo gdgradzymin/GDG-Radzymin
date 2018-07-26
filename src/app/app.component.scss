@@ -39,6 +39,10 @@
   color:  $gdg-green;
 }
 
+.icon-blog {
+  color:  $gdg-yellow;
+}
+
 .app-header-hidden {
   position: fixed;
   top: -60px;
@@ -49,4 +53,14 @@
 
 .app-sidenav {
   width: 250px;
+}
+
+.mat-nav-list a.active {
+  background: mat-color($background, 'selected-button');
+}
+
+.mat-nav-list .mat-list-item {
+  &:hover, &.mat-list-item-focus {
+    background: mat-color($background, 'hover');
+  }
 }

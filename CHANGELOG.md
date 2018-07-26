@@ -1,3 +1,8 @@
+## 0.6.0
+* Spinner while loading for events and team
+* Side menu links with style when active
+* Blog first draft
+
 ## 0.5.0
 * Responsive events' cards
 

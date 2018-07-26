@@ -43,37 +43,40 @@ export class TabsComponent implements OnInit, OnDestroy {
 
   @Input() routerState: string;
 
-  constructor( private router: Router) {
+  constructor(private router: Router) {
     this.routeLinks = [
       {
         icon: 'home',
-        link: './',
+        link: './home',
         label: 'home',
+        iconClass: 'icon-home',
         index: 0
       },
       {
         icon: 'event',
         link: './events',
         label: 'events',
+        iconClass: 'icon-events',
         index: 1
       },
       {
         icon: 'supervised_user_circle',
         link: './team',
         label: 'team',
+        iconClass: 'icon-team',
         index: 2
       },
       {
-        icon: 'supervised_user_circle',
+        icon: 'chrome_reader_mode',
         link: './blog',
         label: 'blog',
+        iconClass: 'icon-blog',
         index: 3
       }
     ];
-   }
+  }
 
   ngOnInit() {
-
     this.activeLinkIndex = 0;
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -87,30 +90,17 @@ export class TabsComponent implements OnInit, OnDestroy {
   }
 
   private activeLinkIndexResolver(url: string) {
-    // console.log('activateLinkIndexResolver: ', url);
-    // let onElement: any;
     if (url.endsWith('home')) {
       this.activeLinkIndex = 0;
-      // if(this.renderer.selectRootElement('a#tab-link-0')){
-      //   onElement = this.renderer.selectRootElement('a#tab-link-0');
-      // }
     } else if (url.endsWith('events')) {
       this.activeLinkIndex = 1;
-      // if(this.renderer.selectRootElement('a#tab-link-1')){
-      //   onElement = this.renderer.selectRootElement('a#tab-link-1');
-      // }
     } else if (url.endsWith('team')) {
       this.activeLinkIndex = 2;
-      // if(this.renderer.selectRootElement('a#tab-link-2')){
-      //   onElement = this.renderer.selectRootElement('a#tab-link-2');
-      // }
+    } else if (url.endsWith('blog')) {
+      this.activeLinkIndex = 3;
     } else {
       this.activeLinkIndex = 0;
     }
-
-    // if(onElement){
-    //   setTimeout(() => onElement.focus(), 0);
-    // }
   }
 
   ngOnDestroy() {
@@ -118,5 +108,4 @@ export class TabsComponent implements OnInit, OnDestroy {
       this.routerSubscription.unsubscribe();
     }
   }
-
 }

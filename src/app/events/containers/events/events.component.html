@@ -4,14 +4,22 @@
   </section>
 </app-page-header>
 <section name="filters" class="filters" fxLayout.xs="column" fxLayout="row" fxLayoutAlign.xs="center start" fxLayoutAlign="center center"
-  fxLayoutGap="30px" fxLayoutGap.xs="10px">
+  fxLayoutGap="30px" fxLayoutGap.xs="10px" fxLayout.sm="row wrap">
   <mat-slide-toggle [(ngModel)]="gdgRadzyminOnly" (change)="loadEvents()">{{'onlygdgradzyminevents' | translate}}</mat-slide-toggle>
   <mat-slide-toggle [(ngModel)]="showPastEvents" (change)="loadEvents()">{{'showpastevents' | translate}}</mat-slide-toggle>
   <mat-slide-toggle [(ngModel)]="sortAsc" (change)="loadEvents()">{{'sortbytheoldest' | translate}}</mat-slide-toggle>
 </section>
 
-<section name="events" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="20px" style="width: 100%;padding-left: 5px;padding-right: 5px;">
+<section name="events" style="width: 100%;padding-left: 5px;padding-right: 5px;"
+fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+  <div *ngIf="events$ | async as events; else loading"  fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+    <app-event-card *ngFor="let event of events; let i=index " [event]="event"></app-event-card>
+  </div>
 
-  <app-event-card *ngFor="let event of events$ | async; let i=index " [event]="event"></app-event-card>
+  <ng-template #loading>
+    <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
+  </ng-template>
+
+
 
 </section>

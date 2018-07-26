@@ -28,6 +28,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { SettingsService } from './services/settings.service';
+import { BlogModule } from './blog/blog.module';
 
 registerLocaleData(localePl);
 
@@ -59,6 +60,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EventsModule,
     TeamModule,
     MaterialModule,
+    BlogModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production

@@ -3,27 +3,18 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav class="app-sidenav">
       <div class="sidenav-header">
-          <img src="../assets/gfx/gdg_radzymin_S.png" style="max-width: 100%;max-height: 100%;height: auto;">
+        <img src="../assets/gfx/gdg_radzymin_S.png" style="max-width: 100%;max-height: 100%;height: auto;">
       </div>
 
       <mat-nav-list style="margin-top: 10px; width: 100%;">
 
-        <a mat-list-item [routerLink]="['/']" id="sideMenuLinkHome" (click)="sidenav.close()">
-          <mat-icon mat-list-icon class="icon-home">home</mat-icon>
-          <span mat-line>{{'home'| translate}}</span>
+        <a mat-list-item [id]="'sideMenuLink'+routeLink.label" *ngFor="let routeLink of routeLinks; let i = index;" [routerLink]="routeLink.link"
+          routerLinkActive="active" (click)="sidenav.close()">
+          <mat-icon mat-list-icon [ngClass]="routeLink.iconClass" >{{routeLink.icon}}</mat-icon>
+          <span mat-line>{{routeLink.label | translate}}</span>
         </a>
-        <a mat-list-item [routerLink]="['/events']" id="sideMenuLinkEvents" (click)="sidenav.close()">
-          <mat-icon mat-list-icon class="icon-events">event</mat-icon>
-          <span mat-line>{{'events' | translate}}</span>
-        </a>
-        <a mat-list-item [routerLink]="['/team']" id="sideMenuLinkTeam" (click)="sidenav.close()">
-          <mat-icon mat-list-icon class="icon-team">supervised_user_circle</mat-icon>
-          <span mat-line>{{'team' | translate}}</span>
-        </a>
-        <a mat-list-item [routerLink]="['/blog']" id="sideMenuLinkBlog" (click)="sidenav.close()">
-          <mat-icon mat-list-icon class="icon-team">supervised_user_circle</mat-icon>
-          <span mat-line>{{'blog' | translate}}</span>
-        </a>
+
+
       </mat-nav-list>
 
     </mat-sidenav>
@@ -34,14 +25,14 @@
         <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" style="height: 1.2rem;display: inline-block;">
 
         <span fxFlex="1 1 auto"></span>
-        <app-tabs fxShow fxHide.xs  [routerState]="getState()"></app-tabs>
+        <app-tabs fxShow fxHide.xs [routerState]="getState()"></app-tabs>
         <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs>
           <mat-icon>menu</mat-icon>
         </button>
-        <img src="../assets/gfx/radzymin_herb_wew_S.png" style="max-width: 75%; max-height: 75%;display: inline-block;margin-left: 10px;" >
+        <img src="../assets/gfx/radzymin_herb_wew_S.png" style="max-width: 75%; max-height: 75%;display: inline-block;margin-left: 10px;">
 
       </mat-toolbar>
-      <div  [@routerTransition]="getState()" (swipeleft)="swipeLeft()"  (swiperight)="swipedRight()">
+      <div [@routerTransition]="getState()" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
         <router-outlet #o="outlet"></router-outlet>
       </div>
 

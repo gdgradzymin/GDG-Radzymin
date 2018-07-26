@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EventsComponent } from '../events/containers/events/events.component';
 import { TeamComponent } from '../team/containers/team/team.component';
 import { HomeComponent } from '../home/containers/home/home.component';
+import { BlogComponent } from '../blog/containers/blog/blog.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'team',
     component: TeamComponent
+  },
+  {
+    path: 'blog',
+    component: BlogComponent
   },
   { path: '**',  redirectTo: '/' },
 ];

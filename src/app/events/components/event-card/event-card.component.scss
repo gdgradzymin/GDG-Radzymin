@@ -43,6 +43,7 @@ mat-card-content {
 }
 
 .event-card {
+    font-size: 1.0rem;
     width: 700px;
     border-radius: 5px;
     background-color: mat-get($foreground);
@@ -63,6 +64,7 @@ mat-card-content {
 
 @media only screen and (max-width: 959px) {
     .event-card {
+        font-size: 0.8rem;
         width: 300px;
         border-radius: 5px;
         background-color: mat-get($foreground);
@@ -84,6 +86,7 @@ mat-card-content {
 
 @media only screen and (min-width: 500px) and (max-width: 959px) {
     .event-card {
+        font-size: 0.9rem;
         width: 450px;
     }
 }
