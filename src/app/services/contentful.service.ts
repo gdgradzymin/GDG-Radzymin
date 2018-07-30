@@ -37,7 +37,7 @@ export class ContentfulService {
       .getEntries({
         content_type: GdgContentTypes.EVENT,
         order: 'sys.createdAt',
-        locale: this.settings.getLanguage()
+        locale: this.settings.getLocale()
       })
       .then(entry => console.log('events: ', entry.items));
   }
@@ -46,7 +46,7 @@ export class ContentfulService {
     this.clinet
       .getEntries({
         content_type: GdgContentTypes.TEAM_MEMBER,
-        locale: this.settings.getLanguage(),
+        locale: this.settings.getLocale(),
         order: 'sys.createdAt'
       })
       .then(entry => console.log('teamMembers: ', entry.items));
@@ -56,7 +56,7 @@ export class ContentfulService {
     this.clinet
       .getEntries({
         content_type: GdgContentTypes.BLOG,
-        locale: this.settings.getLanguage(),
+        locale: this.settings.getLocale(),
         order: 'sys.createdAt'
       })
       .then(entry => console.log('blogPosts: ', entry.items));
@@ -66,7 +66,7 @@ export class ContentfulService {
     this.clinet
       .getEntries({
         content_type: GdgContentTypes.CONTACT_INFO,
-        locale: this.settings.getLanguage(),
+        locale: this.settings.getLocale(),
         order: 'sys.createdAt'
       })
       .then(entry => console.log('contactInfo: ', entry.items));
@@ -85,7 +85,7 @@ export class ContentfulService {
   ): Observable<GdgEvent[]> {
     const query = {
       content_type: GdgContentTypes.EVENT,
-      locale: this.settings.getLanguage(),
+      locale: this.settings.getLocale(),
       limit: howMany
     };
     if (!showPast) {
@@ -127,7 +127,7 @@ export class ContentfulService {
   getBlogPosts(howMany: number, sortAsc: boolean): Observable<GdgBlog[]> {
     const query = {
       content_type: GdgContentTypes.BLOG,
-      locale: this.settings.getLanguage(),
+      locale: this.settings.getLocale(),
       limit: howMany
     };
     const orderBy = sortAsc ? 'fields.postDate' : '-fields.postDate';
@@ -154,7 +154,7 @@ export class ContentfulService {
     const promise: Promise<EntryCollection<GdgBlog[]>> = this.clinet.getEntries(
       {
         content_type: GdgContentTypes.BLOG,
-        locale: this.settings.getLanguage(),
+        locale: this.settings.getLocale(),
         order: '-sys.createdAt',
         limit: howMany
       }
@@ -171,7 +171,7 @@ export class ContentfulService {
       EntryCollection<GdgEvent[]>
     > = this.clinet.getEntries({
       content_type: GdgContentTypes.EVENT,
-      locale: this.settings.getLanguage(),
+      locale: this.settings.getLocale(),
       order: '-sys.createdAt',
       limit: howMany
     });
@@ -187,7 +187,7 @@ export class ContentfulService {
       EntryCollection<GdgTeamMember[]>
     > = this.clinet.getEntries({
       content_type: GdgContentTypes.TEAM_MEMBER,
-      locale: this.settings.getLanguage(),
+      locale: this.settings.getLocale(),
       order: 'sys.createdAt',
       limit: howMany
     });
@@ -214,7 +214,7 @@ export class ContentfulService {
       EntryCollection<GdgTeamMember[]>
     > = this.clinet.getEntries({
       content_type: GdgContentTypes.TEAM_MEMBER,
-      locale: this.settings.getLanguage(),
+      locale: this.settings.getLocale(),
       order: 'sys.createdAt',
       limit: howMany
     });

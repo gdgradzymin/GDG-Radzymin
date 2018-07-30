@@ -5,6 +5,7 @@ export interface GdgContactInfoModel {
   phone?: string;
   meetupUrl?: string;
   facebookUrl?: string;
+  twitterUrl: string;
   youtubeUrl?: string;
   active: boolean;
 }
@@ -18,6 +19,7 @@ export class GdgContactInfo implements GdgContactInfoModel {
     public siteUrl: string,
     public meetupUrl: string,
     public facebookUrl: string,
+    public twitterUrl: string,
     public youtubeUrl: string
   ) {}
 }

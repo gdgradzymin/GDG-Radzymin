@@ -10,7 +10,7 @@
 
         <a mat-list-item [id]="'sideMenuLink'+routeLink.label" *ngFor="let routeLink of routeLinks; let i = index;" [routerLink]="routeLink.link"
           routerLinkActive="active" (click)="sidenav.close()">
-          <mat-icon mat-list-icon [ngClass]="routeLink.iconClass" >{{routeLink.icon}}</mat-icon>
+          <mat-icon mat-list-icon [ngClass]="routeLink.iconClass">{{routeLink.icon}}</mat-icon>
           <span mat-line>{{routeLink.label | translate}}</span>
         </a>
 
@@ -20,20 +20,48 @@
     </mat-sidenav>
 
     <mat-sidenav-content cdkScrollable #sidenavContent>
-      <mat-toolbar color="primary" layout="row" id="mainToolbar" class="app-header">
+      <div fxLayout="column" style="height: 100%;">
 
-        <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" style="height: 1.2rem;display: inline-block;">
+        <section name="toolbar" fxFlex>
+          <mat-toolbar color="primary" layout="row" id="mainToolbar" class="app-header">
 
-        <span fxFlex="1 1 auto"></span>
-        <app-tabs fxShow fxHide.xs [routerState]="getState()"></app-tabs>
-        <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs>
-          <mat-icon>menu</mat-icon>
-        </button>
-        <img src="../assets/gfx/radzymin_herb_wew_S.png" style="max-width: 75%; max-height: 75%;display: inline-block;margin-left: 10px;">
+            <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
+            <img src="../assets/gfx/radzymin_herb_wew_S.png" class="herb">
 
-      </mat-toolbar>
-      <div [@routerTransition]="getState()" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
-        <router-outlet #o="outlet"></router-outlet>
+            <span fxFlex="1 1 auto"></span>
+            <app-tabs fxShow fxHide.xs [routerState]="getState()"></app-tabs>
+            <mat-form-field class="lang">
+                <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange()">
+                  <mat-option *ngFor="let l of langs" [value]="l.code">
+                    {{l.code.toUpperCase()}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+            <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs>
+              <mat-icon>menu</mat-icon>
+            </button>
+
+
+          </mat-toolbar>
+
+
+
+
+          <div [@routerTransition]="getState()" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
+            <router-outlet #o="outlet"></router-outlet>
+
+          </div>
+        </section>
+
+
+
+
+        <section name="footer" fxFlex="1" class="footer">
+          <app-footer></app-footer>
+        </section>
+
       </div>
 
 

@@ -25,7 +25,7 @@ import {
   MatCheckboxModule,
   MatSlideToggleModule
 } from '@angular/material';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule, OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 @NgModule({
@@ -86,4 +86,8 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
   ],
   declarations: []
 })
-export class MaterialModule { }
+export class MaterialModule {
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('gdg-theme');
+  }
+}

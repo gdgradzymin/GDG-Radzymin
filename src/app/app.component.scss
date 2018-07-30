@@ -1,66 +1,104 @@
 @import '~@angular/material/theming';
 @import 'src/themes/my-theme.scss';
-
 .sidenav-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-
 .app-header {
-  position: fixed;
-  top: 0px;
-  left: 0;
-  right: 0;
-  z-index: 50;
-
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 50;
 }
 
 .sidenav-header {
-  padding-top: 30px;
-  padding-bottom: 25px;
-  padding-left: 15px;
-  padding-right: 50px;
-  background-color:  mat-color($mat-grey, 100);
+    padding-top: 30px;
+    padding-bottom: 25px;
+    padding-left: 15px;
+    padding-right: 50px;
+    background-color: mat-color($mat-grey, 100);
 }
 
 .icon-home {
-  color:  $gdg-blue;
+    color: $gdg-blue;
 }
 
 .icon-events {
-  color:  $gdg-red;
+    color: $gdg-red;
 }
 
 .icon-team {
-  color:  $gdg-green;
+    color: $gdg-green;
 }
 
 .icon-blog {
-  color:  $gdg-yellow;
+    color: $gdg-yellow;
 }
 
 .app-header-hidden {
-  position: fixed;
-  top: -60px;
-  left: 0;
-  right: 0;
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
 }
 
-
 .app-sidenav {
-  width: 250px;
+    width: 250px;
 }
 
 .mat-nav-list a.active {
-  background: mat-color($background, 'selected-button');
+    background: mat-color($background, 'selected-button');
 }
 
 .mat-nav-list .mat-list-item {
-  &:hover, &.mat-list-item-focus {
-    background: mat-color($background, 'hover');
-  }
+    &:hover,
+    &.mat-list-item-focus {
+        background: mat-color($background, 'hover');
+    }
+}
+
+.footer {
+    background-color: $primary-color;
+}
+
+.lang {
+    font-size: 0.75em;
+    width: 50px;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.logo {
+    height: 1.3rem;
+    display: inline-block;
+}
+
+.herb {
+    max-width: 70%;
+    max-height: 70%;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+@media only screen and (max-width: 399px) {
+    .lang {
+        font-size: 0.65em;
+        width: 40px;
+        margin-right: 10px;
+        margin-left: 5px;
+    }
+    .logo {
+        height: 1.1rem;
+    }
+    .herb {
+        max-width: 60%;
+        max-height: 60%;
+        display: inline-block;
+        margin-left: 10px;
+    }
 }

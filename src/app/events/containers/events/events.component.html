@@ -10,16 +10,17 @@
   <mat-slide-toggle [(ngModel)]="sortAsc" (change)="loadEvents()">{{'sortbytheoldest' | translate}}</mat-slide-toggle>
 </section>
 
-<section name="events" style="width: 100%;padding-left: 5px;padding-right: 5px;"
+<section name="events" style="width: 100%;padding-bottom: 20px; padding-left: 5px;padding-right: 5px;"
 fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
   <div *ngIf="events$ | async as events; else loading"  fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
     <app-event-card *ngFor="let event of events; let i=index " [event]="event"></app-event-card>
   </div>
 
   <ng-template #loading>
-    <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
+        <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
   </ng-template>
 
 
 
 </section>
+

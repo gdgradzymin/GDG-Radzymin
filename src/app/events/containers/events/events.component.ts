@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ContentfulService } from '../../../services/contentful.service';
 import { flatMap, switchMap, map, filter } from 'rxjs/operators';
 import { GdgEvent } from '../../../models/gdg-event.model';
+import { SettingsService, Lang } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-events',
@@ -16,28 +17,43 @@ export class EventsComponent implements OnInit, OnDestroy {
   gdgRadzyminOnly = false;
   showPastEvents = true;
   sortAsc = false;
+  langSubscription: Subscription;
 
-  constructor(private contentful: ContentfulService) {}
+  constructor(
+    private contentful: ContentfulService,
+    private settings: SettingsService
+  ) {
+    this.langSubscription = this.settings
+      .getCurrentLang()
+      .subscribe((lang: Lang) => {
+        // it's time to change reload content
+        this.loadEvents();
+      });
+  }
 
   ngOnInit() {
-    this.contentful.logContent('2IKTXNxxdCO4gwOGsAkooC');
-    this.contentful.logEvents();
-    // this.events$ = this.contentful.getContent('2IKTXNxxdCO4gwOGsAkooC');
     this.loadEvents();
     this.eventsSub = this.events$.subscribe((events: any) => {
       this.events = events;
-     // console.log('events from sub: ', this.events);
+      // console.log('events from sub: ', this.events);
     });
   }
 
   loadEvents() {
-    this.events$ = this.contentful.getEvents(100, this.showPastEvents, this.gdgRadzyminOnly, this.sortAsc);
+    this.events$ = this.contentful.getEvents(
+      100,
+      this.showPastEvents,
+      this.gdgRadzyminOnly,
+      this.sortAsc
+    );
   }
-
 
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();
+    }
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
     }
   }
 }

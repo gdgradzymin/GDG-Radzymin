@@ -5,6 +5,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FooterComponent } from './components/footer/footer.component';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   imports: [
@@ -12,7 +14,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     TranslateModule,
     FlexLayoutModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MaterialModule
   ],
   exports: [
     CommonModule,
@@ -20,8 +23,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FlexLayoutModule,
     FormsModule,
     PageHeaderComponent,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FooterComponent
   ],
-  declarations: [ PageHeaderComponent ]
+  declarations: [ PageHeaderComponent, FooterComponent ]
 })
 export class SharedModule { }

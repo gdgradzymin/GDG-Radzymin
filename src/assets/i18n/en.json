@@ -1,10 +1,12 @@
 {
   "blog": "Blog",
+  "english": "English",
   "events": "Events",
   "gotomeetuppage": "Go to Meetup page",
   "home": "Home",
   "more": "More",
   "onlygdgradzyminevents": "Only GDG Radzymin events",
+  "polish": "Polski",
   "showpastevents": "Show past events",
   "sortbytheoldest": "Sort by the oldest",
   "team": "Team",

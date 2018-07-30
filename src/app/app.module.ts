@@ -78,12 +78,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: MAT_DATE_LOCALE,
       deps: [SettingsService],
-      useFactory: settingsService => settingsService.getLanguage()
+      useFactory: settingsService => settingsService.getLocale()
     },
     {
       provide: LOCALE_ID,
       deps: [SettingsService],
-      useFactory: settingsService => settingsService.getLanguage()
+      useFactory: settingsService => settingsService.getLocale()
     },
     {
       provide: HAMMER_GESTURE_CONFIG,

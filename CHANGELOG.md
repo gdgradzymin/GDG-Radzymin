@@ -1,3 +1,6 @@
+## 0.7.0
+* Language change
+
 ## 0.6.0
 * Spinner while loading for events and team
 * Side menu links with style when active

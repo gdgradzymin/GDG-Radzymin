@@ -19,7 +19,15 @@ const routes: Routes = [
     component: EventsComponent
   },
   {
+    path: 'wydarzenia',
+    component: EventsComponent
+  },
+  {
     path: 'team',
+    component: TeamComponent
+  },
+  {
+    path: 'zespol',
     component: TeamComponent
   },
   {

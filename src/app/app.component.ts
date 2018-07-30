@@ -4,7 +4,7 @@ import { Router, RouterState, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { routerTransitionTrigger } from './main/animations/route-animations';
-import { SettingsService } from './services/settings.service';
+import { SettingsService, Lang } from './services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -16,46 +16,60 @@ export class AppComponent implements OnInit, OnDestroy {
   isHandsetPortrait$: Observable<boolean>;
   routerState: RouterState;
   routerSubscription: Subscription;
+  langSubscription: Subscription;
   url: string;
   routeLinks: any[];
   activeLinkIndex = -1;
+  langs: Lang[] = [];
+  selectedLang: string;
 
-  constructor(private translate: TranslateService, private router: Router, private settings: SettingsService) {
-
+  constructor(
+    private translate: TranslateService,
+    private router: Router,
+    private settings: SettingsService
+  ) {
+    this.langs = this.settings.getLanguages();
     this.routeLinks = [
       {
         icon: 'home',
         link: './home',
         label: 'home',
         index: 0,
-        iconClass: {'icon-home': true}
+        iconClass: { 'icon-home': true }
       },
       {
         icon: 'event',
         link: './events',
         label: 'events',
         index: 1,
-        iconClass: {'icon-events': true}
+        iconClass: { 'icon-events': true }
       },
       {
         icon: 'supervised_user_circle',
         link: './team',
         label: 'team',
         index: 2,
-        iconClass: {'icon-team': true}
+        iconClass: { 'icon-team': true }
       },
       {
         icon: 'chrome_reader_mode',
         link: './blog',
         label: 'blog',
         index: 3,
-        iconClass: {'icon-blog': true}
+        iconClass: { 'icon-blog': true }
       }
     ];
-    // this language will be used as a fallback when a translation isn't found in the current language
-    this.translate.setDefaultLang(this.settings.getLanguage());
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    this.translate.use(this.settings.getLanguage());
+
+    this.langSubscription = this.settings
+      .getCurrentLang()
+      .subscribe((lang: Lang) => {
+
+        // this language will be used as a fallback when a translation isn't found in the current language
+        this.translate.setDefaultLang(lang.code);
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
+        this.translate.use(lang.code);
+        this.selectedLang = lang.code;
+      });
 
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -95,12 +109,12 @@ export class AppComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/home');
       } else {
         // from home
-        this.router.navigateByUrl('/events');
+        this.router.navigateByUrl('/blog');
       }
     } else {
       // swipe right
       if (this.router.routerState.snapshot.url.endsWith('home')) {
-        this.router.navigateByUrl('/team');
+        this.router.navigateByUrl('/blog');
       } else if (this.router.routerState.snapshot.url.endsWith('events')) {
         this.router.navigateByUrl('/home');
       } else if (this.router.routerState.snapshot.url.endsWith('team')) {
@@ -108,9 +122,14 @@ export class AppComponent implements OnInit, OnDestroy {
       } else if (this.router.routerState.snapshot.url.endsWith('blog')) {
         this.router.navigateByUrl('/team');
       } else {
-        this.router.navigateByUrl('/team');
+        this.router.navigateByUrl('/blog');
       }
     }
+  }
+
+  onLangChange() {
+    console.log('on lang change: ', this.selectedLang);
+    this.settings.setCurrentLang(this.selectedLang);
   }
 
   private activeLinkIndexResolver(url: string) {
@@ -130,6 +149,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
+    }
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
     }
   }
 }
