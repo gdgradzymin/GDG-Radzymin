@@ -1,0 +1,25 @@
+<div style="padding: 20px 10px">
+  <mat-card class="blog-card">
+    <mat-card-header>
+      <img  src="{{blog.author.profilePhoto}}" mat-card-avatar class="blog-card-image" alt="{{blog.author.name}}">
+      <mat-card-title>{{blog.title}}</mat-card-title>
+      <mat-card-subtitle>{{blog.author.name}}</mat-card-subtitle>
+      <div fxFlex="1 1 auto"></div>
+      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="3px">
+        <fa-icon [icon]="faCalendarAlt" class="icon-calendar"></fa-icon>
+        <div class="blog-post-date">
+          {{blog.postDate | date:'shortDate'}}
+        </div>
+      </div>
+    </mat-card-header>
+    <img mat-card-image src="{{blog.postPhotoSmall}}" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p class="card-content">
+        {{blog.contentShort}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+      <button mat-button mat-stroked-button color="primary" class="read-button">{{'read' | translate}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

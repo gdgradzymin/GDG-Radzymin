@@ -2,8 +2,8 @@
 <div id="myapp" class="gdg-theme">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav class="app-sidenav">
-      <div class="sidenav-header">
-        <img src="../assets/gfx/gdg_radzymin_S.png" style="max-width: 100%;max-height: 100%;height: auto;">
+      <div class="sidenav-header" >
+          <img src="../assets/gfx/gdg_radzymin_S.png" style="max-width: 100%;max-height: 100%;height: auto;">
       </div>
 
       <mat-nav-list style="margin-top: 10px; width: 100%;">
@@ -22,21 +22,24 @@
     <mat-sidenav-content cdkScrollable #sidenavContent>
       <div fxLayout="column" style="height: 100%;">
 
-        <section name="toolbar" fxFlex>
+        <section name="content" >
           <mat-toolbar color="primary" layout="row" id="mainToolbar" class="app-header">
 
-            <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
+              <a [routerLink]="'/'" mat-link class="logo">
+                <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
+</a>
+
             <img src="../assets/gfx/radzymin_herb_wew_S.png" class="herb">
 
             <span fxFlex="1 1 auto"></span>
             <app-tabs fxShow fxHide.xs [routerState]="getState()"></app-tabs>
             <mat-form-field class="lang">
-                <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange()">
-                  <mat-option *ngFor="let l of langs" [value]="l.code">
-                    {{l.code.toUpperCase()}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange()">
+                <mat-option *ngFor="let l of langs" [value]="l.code">
+                  {{l.code.toUpperCase()}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
 
             <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs>
@@ -46,20 +49,18 @@
 
           </mat-toolbar>
 
-
-
-
           <div [@routerTransition]="getState()" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
             <router-outlet #o="outlet"></router-outlet>
 
           </div>
+
         </section>
+        <span fxFlex="1 1 auto"></span>
 
 
 
-
-        <section name="footer" fxFlex="1" class="footer">
-          <app-footer></app-footer>
+        <section name="footer" class="footer">
+          <app-footer [contactInfo]="contactInfo$ | async"></app-footer>
         </section>
 
       </div>

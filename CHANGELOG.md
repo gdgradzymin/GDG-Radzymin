@@ -1,3 +1,6 @@
+## 0.8.0
+* BlogCardComponent
+
 ## 0.7.0
 * Language change
 

@@ -1,8 +1,18 @@
-<app-page-header >
-    <section name="header-content" class="header-content"  fxLayout="column" fxLayoutAlign="end start">
-        <span > {{'blog' | translate}}</span>
-     </section>
+<app-page-header>
+  <section name="header-content" class="header-content" fxLayout="column" fxLayoutAlign="end start">
+    <span> {{'blog' | translate}}</span>
+  </section>
 </app-page-header>
-<p>
-  blog works!
-</p>
+
+<section name="blogPosts" style="width: 100%;padding-bottom: 20px; padding-left: 5px;padding-right: 5px;"
+fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+
+<div *ngIf="blogPosts$ | async as blogPosts; else loading"  fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+  <app-blog-card [blog]="blog" *ngFor="let blog of blogPosts"></app-blog-card>
+</div>
+
+<ng-template #loading>
+  <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
+</ng-template>
+
+</section>

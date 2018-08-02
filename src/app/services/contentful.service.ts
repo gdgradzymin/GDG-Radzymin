@@ -8,6 +8,7 @@ import { GdgEvent } from '../models/gdg-event.model';
 import { GdgTeamMember } from '../models/gdg-team-member.model';
 import { SettingsService } from './settings.service';
 import { GdgBlog } from '../models/gdg-blog.model';
+import { GdgContactInfo } from '../models/gdg-contact-info.model';
 
 export enum GdgContentTypes {
   EVENT = 'event',
@@ -141,8 +142,23 @@ export class ContentfulService {
         return entries.items.map(item => {
           return new GdgBlog(
             item.fields.title,
+            item.fields.link,
             item.fields.postDate,
+            item.fields.postPhoto.fields.file.url,
+            item.fields.postPhotoSmall.fields.file.url,
             item.fields.content,
+            item.fields.contentShort,
+            new GdgTeamMember(
+              item.fields.author.fields.name,
+              item.fields.author.fields.tags,
+              item.fields.author.fields.profilePhoto
+                ? item.fields.author.fields.profilePhoto.fields.file.url
+                : undefined,
+              item.fields.author.fields.linkedinUrl,
+              item.fields.author.fields.twitterUrl,
+              item.fields.author.fields.githubUrl
+            ),
+            item.fields.keywords,
             item.fields.photos ? item.fields.photos : undefined
           );
         });
@@ -162,6 +178,47 @@ export class ContentfulService {
     return from(promise).pipe(
       map((entries: EntryCollection<GdgBlog>) => {
         return entries.items;
+      })
+    );
+  }
+
+  getContactInfo(): Observable<GdgContactInfo> {
+    const query = {
+      content_type: GdgContentTypes.CONTACT_INFO,
+      locale: this.settings.getLocale(),
+      order: '-sys.createdAt',
+      'fields.active': true,
+      limit: 1
+    };
+
+    const promise: Promise<
+      EntryCollection<GdgContactInfo[]>
+    > = this.clinet.getEntries(query);
+    return from(promise).pipe(
+      map((entries: EntryCollection<any>) => {
+        if (entries && entries.items && entries.items[0]) {
+          return new GdgContactInfo(
+            entries.items[0].fields.name,
+            entries.items[0].fields.email,
+            entries.items[0].fields.active,
+            entries.items[0].fields.phone,
+            entries.items[0].fields.siteUrl,
+            entries.items[0].fields.meetupUrl
+              ? entries.items[0].fields.meetupUrl
+              : undefined,
+            entries.items[0].fields.facebookUrl
+              ? entries.items[0].fields.facebookUrl
+              : undefined,
+            entries.items[0].fields.twitterUrl
+              ? entries.items[0].fields.twitterUrl
+              : undefined,
+            entries.items[0].fields.youtubeUrl
+              ? entries.items[0].fields.youtubeUrl
+              : undefined
+          );
+        } else {
+          return null;
+        }
       })
     );
   }

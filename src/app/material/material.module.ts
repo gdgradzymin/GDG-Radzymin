@@ -23,7 +23,8 @@ import {
   MatProgressBarModule,
   MatBadgeModule,
   MatCheckboxModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatTooltipModule
 } from '@angular/material';
 import { OverlayModule, OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
@@ -55,7 +56,8 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
     MatProgressBarModule,
     MatBadgeModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTooltipModule
   ],
   exports: [
     MatInputModule,
@@ -82,7 +84,8 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
     MatProgressBarModule,
     MatBadgeModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTooltipModule
   ],
   declarations: []
 })

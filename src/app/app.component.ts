@@ -5,6 +5,8 @@ import { Observable, Subscription } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { routerTransitionTrigger } from './main/animations/route-animations';
 import { SettingsService, Lang } from './services/settings.service';
+import { GdgContactInfo } from './models/gdg-contact-info.model';
+import { ContentfulService } from './services/contentful.service';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +24,13 @@ export class AppComponent implements OnInit, OnDestroy {
   activeLinkIndex = -1;
   langs: Lang[] = [];
   selectedLang: string;
+  contactInfo$: Observable<GdgContactInfo>;
 
   constructor(
     private translate: TranslateService,
     private router: Router,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private contentful: ContentfulService
   ) {
     this.langs = this.settings.getLanguages();
     this.routeLinks = [
@@ -63,7 +67,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.langSubscription = this.settings
       .getCurrentLang()
       .subscribe((lang: Lang) => {
-
         // this language will be used as a fallback when a translation isn't found in the current language
         this.translate.setDefaultLang(lang.code);
         // the lang to use, if the lang isn't available, it will use the current loader to get them
@@ -77,9 +80,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this.url = event.url;
         //  console.log('router url: ', this.url);
       });
+
+    this.contactInfo$ = this.contentful.getContactInfo();
   }
 
   ngOnInit() {}
+
+  onRadzyminLogoClick() {
+    console.log('radzymin clicked!');
+    this.router.navigateByUrl('/home');
+  }
 
   getState(): string {
     if (this.url && this.url !== '/') {
