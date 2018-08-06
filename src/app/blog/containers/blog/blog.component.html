@@ -5,10 +5,12 @@
 </app-page-header>
 
 <section name="blogPosts" style="width: 100%;padding-bottom: 20px; padding-left: 5px;padding-right: 5px;"
-fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+fxLayout="column" fxLayoutAlign="center center">
 
-<div *ngIf="blogPosts$ | async as blogPosts; else loading"  fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
-  <app-blog-card [blog]="blog" *ngFor="let blog of blogPosts"></app-blog-card>
+<div *ngIf="blogPosts$ | async as blogPosts; else loading"
+fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px"
+fxLayout.gt-md="row wrap" fxLayoutAlign.gt-md="space-around center" fxLayoutGap.gt-md="30px">
+  <app-blog-card [blogPost]="blog" [locale]="lang?.locale" *ngFor="let blog of blogPosts"></app-blog-card>
 </div>
 
 <ng-template #loading>

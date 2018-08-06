@@ -13,5 +13,13 @@ export class HomeComponent implements OnInit {
     this.contentful.getContactInfo().subscribe(data => {
       console.log('Data from contact info: ', data);
     });
+
+    this.contentful.getBlogPostsFull(100).subscribe(posts => {
+      console.log('blog posts: ', posts);
+    });
+
+    this.contentful.getBlogPostLinksFull(100).subscribe(blogLinks => {
+      console.log('blog links: ', blogLinks);
+    });
   }
 }

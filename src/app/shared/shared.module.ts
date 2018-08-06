@@ -7,6 +7,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './components/footer/footer.component';
 import { MaterialModule } from '../material/material.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MaterialModule } from '../material/material.module';
     FlexLayoutModule,
     FormsModule,
     FontAwesomeModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { MaterialModule } from '../material/material.module';
     FormsModule,
     PageHeaderComponent,
     FontAwesomeModule,
-    FooterComponent
+    FooterComponent,
+    RouterModule
   ],
   declarations: [ PageHeaderComponent, FooterComponent ]
 })

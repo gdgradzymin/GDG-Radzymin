@@ -1,0 +1,17 @@
+<div *ngIf="author" fxLayout.xs="column" fxLayout="row" fxLayoutAlign.xs="center center" fxLayoutAlign="space-between center"
+  >
+  <div fxLayout="column" fxLayoutAlign="center center" class="author-photo" >
+    <img src="{{author?.profilePhoto}}" style="border-radius: 50%;max-height: 60px;">
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="center center" >
+    <div class="author-name"   >
+      {{author?.name}}
+    </div>
+    <span fxFlex="1 1 auto"></span>
+    <div >
+      linki
+    </div>
+  </div>
+
+</div>

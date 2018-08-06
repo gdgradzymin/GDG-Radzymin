@@ -1,0 +1,30 @@
+<section name="blogPosts" style="width: 100%;padding-bottom: 20px; padding-left: 5px;padding-right: 5px;"
+fxLayout="column" fxLayoutAlign="center center">
+
+<div class="blog-post" fxLayout="column" fxLayoutAlign="center center"
+*ngIf="blogPost$ | async as post; else loading">
+  <img src="{{post?.postPhoto}}" class="blog-post-header-photo" >
+
+
+  <section name="blog-post-title" class="blog-post-title">
+    {{post?.title}}
+  </section>
+
+  <section name="blog-post-content" class="blog-post-content">
+    {{post?.content}}
+  </section>
+
+  <section name="author">
+    <app-author-card [author]="post?.author"></app-author-card>
+  </section>
+
+
+
+</div>
+
+<ng-template #loading >
+  <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4" ></mat-spinner>
+</ng-template>
+
+
+</section>

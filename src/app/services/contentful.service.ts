@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { createClient, Entry, EntryCollection } from 'contentful';
 import { environment } from '../../environments/environment.prod';
-import { from, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { from, Observable, of, empty, throwError } from 'rxjs';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import * as marked from 'marked';
 import { GdgEvent } from '../models/gdg-event.model';
 import { GdgTeamMember } from '../models/gdg-team-member.model';
 import { SettingsService } from './settings.service';
-import { GdgBlog } from '../models/gdg-blog.model';
+import { GdgBlogPost } from '../models/gdg-blog-post.model';
 import { GdgContactInfo } from '../models/gdg-contact-info.model';
+import { GdgBlogPostLink } from '../models/gdg-blog-post-link.model';
 
 export enum GdgContentTypes {
   EVENT = 'event',
   TEAM_MEMBER = 'teamMember',
   CONTACT_INFO = 'contactInfo',
-  BLOG = 'blog'
+  BLOG_POST = 'blogPost',
+  BLOG_POST_LINK = 'blogPostLink'
 }
 
 @Injectable({
@@ -56,7 +58,7 @@ export class ContentfulService {
   logBlogPosts(): void {
     this.clinet
       .getEntries({
-        content_type: GdgContentTypes.BLOG,
+        content_type: GdgContentTypes.BLOG_POST,
         locale: this.settings.getLocale(),
         order: 'sys.createdAt'
       })
@@ -125,24 +127,28 @@ export class ContentfulService {
     );
   }
 
-  getBlogPosts(howMany: number, sortAsc: boolean): Observable<GdgBlog[]> {
+  getBlogPosts(howMany: number, sortAsc: boolean): Observable<GdgBlogPost[]> {
     const query = {
-      content_type: GdgContentTypes.BLOG,
+      content_type: GdgContentTypes.BLOG_POST,
       locale: this.settings.getLocale(),
-      limit: howMany
+      limit: howMany,
+      include: 1
     };
     const orderBy = sortAsc ? 'fields.postDate' : '-fields.postDate';
     Object.assign(query, { order: orderBy });
 
-    const promise: Promise<EntryCollection<GdgBlog[]>> = this.clinet.getEntries(
-      query
-    );
+    const promise: Promise<
+      EntryCollection<GdgBlogPost[]>
+    > = this.clinet.getEntries(query).catch(error => {
+      console.log('błąd pobrania danych');
+      return null;
+    });
     return from(promise).pipe(
       map((entries: EntryCollection<any>) => {
         return entries.items.map(item => {
-          return new GdgBlog(
+          return new GdgBlogPost(
+            item.sys.id,
             item.fields.title,
-            item.fields.link,
             item.fields.postDate,
             item.fields.postPhoto.fields.file.url,
             item.fields.postPhotoSmall.fields.file.url,
@@ -159,25 +165,157 @@ export class ContentfulService {
               item.fields.author.fields.githubUrl
             ),
             item.fields.keywords,
+            item.fields.links ? item.fields.links : undefined,
             item.fields.photos ? item.fields.photos : undefined
+          );
+        });
+      }),
+      catchError((error: any, caught: Observable<GdgBlogPost[]>) => {
+        return empty();
+      })
+    );
+  }
+
+  getBlogPostsFull(howMany: number): Observable<GdgBlogPost[]> {
+    const promise: Promise<
+      EntryCollection<GdgBlogPost[]>
+    > = this.clinet.getEntries({
+      content_type: GdgContentTypes.BLOG_POST,
+      locale: this.settings.getLocale(),
+      order: '-sys.createdAt',
+      limit: howMany,
+      include: 1
+    });
+    return from(promise).pipe(
+      map((entries: EntryCollection<GdgBlogPost>) => {
+        return entries.items;
+      })
+    );
+  }
+
+  getBlogPostLink(link: string): Observable<GdgBlogPostLink> {
+    const query = {
+      content_type: GdgContentTypes.BLOG_POST_LINK,
+      'fields.link': link,
+      order: '-sys.createdAt',
+      include: 1,
+      limit: 1
+    };
+
+    const promise: Promise<
+      EntryCollection<GdgBlogPostLink[]>
+    > = this.clinet.getEntries(query);
+    return from(promise).pipe(
+      map((entries: EntryCollection<any>) => {
+        if (entries && entries.items && entries.items[0]) {
+          // console.log('getBlogPostLink().entry: ', entries.items[0]);
+          return new GdgBlogPostLink(
+            entries.items[0].fields.link,
+            entries.items[0].fields.locale,
+            entries.items[0].fields.blogPost.sys.id
+          );
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  getBlogPostLinksByBlogPostId(blogPostId: string): Observable<GdgBlogPostLink[]> {
+    const query = {
+      content_type: GdgContentTypes.BLOG_POST_LINK,
+      'fields.blogPost.sys.id': blogPostId,
+      order: '-sys.createdAt',
+      include: 1
+    };
+
+    const promise: Promise<
+      EntryCollection<GdgBlogPostLink[]>
+    > = this.clinet.getEntries(query);
+    return from(promise).pipe(
+      map((entries: EntryCollection<any>) => {
+        return entries.items.map(item => {
+          return new GdgBlogPostLink(
+            item.fields.link,
+            item.fields.locale,
+            item.fields.blogPost.sys.id
           );
         });
       })
     );
   }
 
-  getBlogPostsFull(howMany: number): Observable<GdgBlog[]> {
-    const promise: Promise<EntryCollection<GdgBlog[]>> = this.clinet.getEntries(
-      {
-        content_type: GdgContentTypes.BLOG,
-        locale: this.settings.getLocale(),
-        order: '-sys.createdAt',
-        limit: howMany
-      }
-    );
+  getBlogPostLinksFull(howMany: number): Observable<GdgBlogPostLink[]> {
+    const promise: Promise<
+      EntryCollection<GdgBlogPostLink[]>
+    > = this.clinet.getEntries({
+      content_type: GdgContentTypes.BLOG_POST_LINK,
+      include: 0,
+      // locale: this.settings.getLocale(),
+      // order: '-sys.createdAt',
+      limit: howMany
+    });
     return from(promise).pipe(
-      map((entries: EntryCollection<GdgBlog>) => {
+      map((entries: EntryCollection<GdgBlogPostLink>) => {
         return entries.items;
+      })
+    );
+  }
+
+  getBlogPost(id: string, locale: string): Observable<GdgBlogPost> {
+    const query = {
+      content_type: GdgContentTypes.BLOG_POST,
+      locale: locale,
+      'sys.id': id,
+      include: 1,
+      limit: 1
+    };
+
+    const promise: Promise<
+      EntryCollection<GdgBlogPost>
+    > = this.clinet.getEntries(query);
+
+    return from(promise).pipe(
+      map((entries: EntryCollection<any>) => {
+        if (entries && entries.items && entries.items[0]) {
+          // console.log('getBlogPost.entry: ', entries.items[0]);
+          return new GdgBlogPost(
+            entries.items[0].sys.id,
+            entries.items[0].fields.title,
+            entries.items[0].fields.postDate,
+            entries.items[0].fields.postPhoto.fields.file.url,
+            entries.items[0].fields.postPhotoSmall.fields.file.url,
+            entries.items[0].fields.content,
+            entries.items[0].fields.contentShort,
+            new GdgTeamMember(
+              entries.items[0].fields.author.fields.name,
+              entries.items[0].fields.author.fields.tags,
+              entries.items[0].fields.author.fields.profilePhoto
+                ? entries.items[0].fields.author.fields.profilePhoto.fields.file
+                    .url
+                : undefined,
+              entries.items[0].fields.author.fields.linkedinUrl,
+              entries.items[0].fields.author.fields.twitterUrl,
+              entries.items[0].fields.author.fields.githubUrl
+            ),
+            entries.items[0].fields.keywords,
+            entries.items[0].fields.links ? entries.items[0].fields.links : undefined,
+            entries.items[0].fields.photos ? entries.items[0].fields.photos : undefined,
+          );
+        }
+      })
+    );
+  }
+
+  getBlogPostFull(id: string): Observable<any> {
+    const promise: Promise<Entry<GdgBlogPost>> = this.clinet.getEntry(id, {
+      content_type: GdgContentTypes.BLOG_POST,
+      locale: this.settings.getLocale(),
+      include: 1
+    });
+    return from(promise).pipe(
+      map((item: Entry<GdgBlogPost>) => {
+        return item;
       })
     );
   }

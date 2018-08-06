@@ -1,5 +1,8 @@
+## 0.9.0
+* Blog post page
+
 ## 0.8.0
-* BlogCardComponent
+* BlogPostCardComponent
 
 ## 0.7.0
 * Language change

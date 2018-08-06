@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/home');
       } else {
         // from home
-        this.router.navigateByUrl('/blog');
+        this.router.navigateByUrl('/events');
       }
     } else {
       // swipe right
@@ -139,7 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onLangChange() {
     console.log('on lang change: ', this.selectedLang);
-    this.settings.setCurrentLang(this.selectedLang);
+    this.settings.setCurrentLangByLangCode(this.selectedLang);
   }
 
   private activeLinkIndexResolver(url: string) {
