@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  AfterContentInit,
+  ChangeDetectorRef,
+  AfterContentChecked
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, RouterState, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -14,7 +22,7 @@ import { ContentfulService } from './services/contentful.service';
   styleUrls: ['./app.component.scss'],
   animations: [routerTransitionTrigger]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   isHandsetPortrait$: Observable<boolean>;
   routerState: RouterState;
   routerSubscription: Subscription;
@@ -26,11 +34,17 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedLang: string;
   contactInfo$: Observable<GdgContactInfo>;
 
+  navTabsVisible: boolean;
+  menuBtnVisible: boolean;
+  goBackBtnVisible: boolean;
+  goBackTo: string;
+
   constructor(
     private translate: TranslateService,
     private router: Router,
-    private settings: SettingsService,
-    private contentful: ContentfulService
+    public settings: SettingsService,
+    private contentful: ContentfulService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.langs = this.settings.getLanguages();
     this.routeLinks = [
@@ -63,7 +77,9 @@ export class AppComponent implements OnInit, OnDestroy {
         iconClass: { 'icon-blog': true }
       }
     ];
+  }
 
+  ngOnInit() {
     this.langSubscription = this.settings
       .getCurrentLang()
       .subscribe((lang: Lang) => {
@@ -78,21 +94,41 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.url = event.url;
-        //  console.log('router url: ', this.url);
+        this.activeLinkIndexResolver(this.url);
       });
 
     this.contactInfo$ = this.contentful.getContactInfo();
   }
 
-  ngOnInit() {}
+  ngAfterContentChecked() {
+    this.settings.getNavTabsVisible().subscribe((data: boolean) => {
+      this.navTabsVisible = data;
+    });
+
+    this.settings.getGoBackBtnVisible().subscribe((data: boolean) => {
+      this.goBackBtnVisible = data;
+    });
+
+    this.settings.getMenuBtnVisible().subscribe((data: boolean) => {
+      this.menuBtnVisible = data;
+    });
+
+    this.settings.getGoBackTo().subscribe((data: string) => {
+      this.goBackTo = data;
+    });
+    this.cdRef.detectChanges();
+  }
 
   onRadzyminLogoClick() {
-    console.log('radzymin clicked!');
     this.router.navigateByUrl('/home');
   }
 
   getState(): string {
     if (this.url && this.url !== '/') {
+      const blogPostRegex = /blog\/.+/;
+      if (blogPostRegex.test(this.url)) {
+        return 'blog-post';
+      }
       return this.url.substr(1);
     } else {
       return 'home';
@@ -108,14 +144,19 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private swipeResolver(type: string) {
+    const blogPostRegex = /blog\/.+/;
+    const url = this.router.routerState.snapshot.url;
     if (type === 'left') {
-      if (this.router.routerState.snapshot.url.endsWith('home')) {
+      if (url.endsWith('home')) {
         this.router.navigateByUrl('/events');
-      } else if (this.router.routerState.snapshot.url.endsWith('events')) {
+      } else if (url.endsWith('events')) {
         this.router.navigateByUrl('/team');
-      } else if (this.router.routerState.snapshot.url.endsWith('team')) {
+      } else if (url.endsWith('team')) {
         this.router.navigateByUrl('/blog');
-      } else if (this.router.routerState.snapshot.url.endsWith('blog')) {
+      } else if (blogPostRegex.test(url)) {
+        // do nothing
+        return;
+      } else if (url.endsWith('blog')) {
         this.router.navigateByUrl('/home');
       } else {
         // from home
@@ -123,13 +164,16 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     } else {
       // swipe right
-      if (this.router.routerState.snapshot.url.endsWith('home')) {
+      if (url.endsWith('home')) {
         this.router.navigateByUrl('/blog');
-      } else if (this.router.routerState.snapshot.url.endsWith('events')) {
+      } else if (url.endsWith('events')) {
         this.router.navigateByUrl('/home');
-      } else if (this.router.routerState.snapshot.url.endsWith('team')) {
+      } else if (url.endsWith('team')) {
         this.router.navigateByUrl('/events');
-      } else if (this.router.routerState.snapshot.url.endsWith('blog')) {
+      } else if (blogPostRegex.test(url)) {
+        // do nothing
+        return;
+      } else if (url.endsWith('blog')) {
         this.router.navigateByUrl('/team');
       } else {
         this.router.navigateByUrl('/blog');
@@ -138,7 +182,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onLangChange() {
-    console.log('on lang change: ', this.selectedLang);
     this.settings.setCurrentLangByLangCode(this.selectedLang);
   }
 

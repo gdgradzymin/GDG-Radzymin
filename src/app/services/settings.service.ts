@@ -26,6 +26,11 @@ export class SettingsService {
 
   private lang$ = new BehaviorSubject<Lang>(this.langs[0]);
 
+  private navTabsVisible$ = new BehaviorSubject<boolean>(true);
+  private goBackBtnVisible$ = new BehaviorSubject<boolean>(false);
+  private goBackTo$ = new BehaviorSubject<string>('home');
+  private menuBtnVisible$ = new BehaviorSubject<boolean>(true);
+
   constructor() {}
 
   getLocale(): string {
@@ -50,15 +55,11 @@ export class SettingsService {
   }
 
   setCurrentLangByLocale(locale: string): void {
-    const l: Lang = this.langs.find(
-      item => item.locale === locale
-    );
+    const l: Lang = this.langs.find(item => item.locale === locale);
     if (l) {
       this.lang$.next(l);
     }
   }
-
-
 
   getLocaleByLangCode(langCode: string): string {
     const l: Lang = this.langs.find(
@@ -73,5 +74,44 @@ export class SettingsService {
 
   getCurrentLang(): Observable<Lang> {
     return this.lang$.asObservable();
+  }
+
+  getNavTabsVisible(): Observable<boolean> {
+    return this.navTabsVisible$.asObservable();
+  }
+
+  setNavTabsVisible(isVisible: boolean): void {
+    this.navTabsVisible$.next(isVisible);
+  }
+
+  getGoBackBtnVisible(): Observable<boolean> {
+    return this.goBackBtnVisible$.asObservable();
+  }
+
+  setGoBackBtnVisible(isVisible: boolean): void {
+    this.goBackBtnVisible$.next(isVisible);
+  }
+
+  getGoBackTo(): Observable<string> {
+    return this.goBackTo$.asObservable();
+  }
+
+  setGoBackTo(routeToGo: string): void {
+    this.goBackTo$.next(routeToGo);
+  }
+
+  getMenuBtnVisible(): Observable<boolean> {
+    return this.menuBtnVisible$.asObservable();
+  }
+
+  setMenuBtnVisible(isVisible: boolean): void {
+    this.menuBtnVisible$.next(isVisible);
+  }
+
+  resetNavigation(): void {
+    this.goBackBtnVisible$.next(false);
+    this.navTabsVisible$.next(true);
+    this.goBackTo$.next('home');
+    this.menuBtnVisible$.next(true);
   }
 }

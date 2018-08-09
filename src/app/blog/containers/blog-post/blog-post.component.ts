@@ -29,6 +29,11 @@ export class BlogPostComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.settings.setNavTabsVisible(false);
+    this.settings.setGoBackBtnVisible(true);
+    this.settings.setGoBackTo('blog');
+    this.settings.setMenuBtnVisible(false);
+
     this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
       // it's time to change reload content
       // console.log('blog post zmiana języka!');
@@ -68,6 +73,8 @@ export class BlogPostComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.settings.resetNavigation();
+
     if (this.routeSub) {
       this.routeSub.unsubscribe();
     }

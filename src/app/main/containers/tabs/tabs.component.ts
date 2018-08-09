@@ -36,44 +36,16 @@ import { Router, NavigationEnd } from '@angular/router';
   ]
 })
 export class TabsComponent implements OnInit, OnDestroy {
-  routeLinks: any[];
   activeLinkIndex = -1;
   routerSubscription: Subscription;
   tabsState = 'normal1';
+  @Input() activeLinkIdx;
 
   @Input() routerState: string;
 
+  @Input() routeLinks: any[];
+
   constructor(private router: Router) {
-    this.routeLinks = [
-      {
-        icon: 'home',
-        link: './home',
-        label: 'home',
-        iconClass: 'icon-home',
-        index: 0
-      },
-      {
-        icon: 'event',
-        link: './events',
-        label: 'events',
-        iconClass: 'icon-events',
-        index: 1
-      },
-      {
-        icon: 'supervised_user_circle',
-        link: './team',
-        label: 'team',
-        iconClass: 'icon-team',
-        index: 2
-      },
-      {
-        icon: 'chrome_reader_mode',
-        link: './blog',
-        label: 'blog',
-        iconClass: 'icon-blog',
-        index: 3
-      }
-    ];
   }
 
   ngOnInit() {
@@ -96,10 +68,10 @@ export class TabsComponent implements OnInit, OnDestroy {
       this.activeLinkIndex = 1;
     } else if (url.endsWith('team')) {
       this.activeLinkIndex = 2;
-    } else if (url.endsWith('blog')) {
+    } else if (url.endsWith('blog') || url.startsWith('/blog/')) {
       this.activeLinkIndex = 3;
     } else {
-      this.activeLinkIndex = 0;
+      // this.activeLinkIndex = 0;
     }
   }
 
