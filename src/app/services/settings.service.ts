@@ -31,6 +31,9 @@ export class SettingsService {
   private goBackTo$ = new BehaviorSubject<string>('home');
   private menuBtnVisible$ = new BehaviorSubject<boolean>(true);
 
+  private url$ = new BehaviorSubject<string>('/');
+  private urlState$ = new BehaviorSubject<string>('home');
+
   constructor() {}
 
   getLocale(): string {
@@ -106,6 +109,38 @@ export class SettingsService {
 
   setMenuBtnVisible(isVisible: boolean): void {
     this.menuBtnVisible$.next(isVisible);
+  }
+
+  getUrl(): Observable<string> {
+    return this.url$.asObservable();
+  }
+
+  setUrl(url: string): void {
+    this.url$.next(url);
+  }
+
+  getUrlState(): Observable<string> {
+    return this.urlState$.asObservable();
+  }
+
+  setUrlState(url: string) {
+    this.urlState$.next(this.getState(url));
+  }
+
+  getUrlStateValue(): string {
+    return this.urlState$.getValue();
+  }
+
+  private getState(url: string): string {
+    if (url && url !== '/') {
+      const blogPostRegex = /blog\/.+/;
+      if (blogPostRegex.test(url)) {
+        return 'blog-post';
+      }
+      return url.substr(1);
+    } else {
+      return 'home';
+    }
   }
 
   resetNavigation(): void {

@@ -4,11 +4,38 @@ import { ContentfulService } from '../../../services/contentful.service';
 import { flatMap, switchMap, map, filter } from 'rxjs/operators';
 import { GdgEvent } from '../../../models/gdg-event.model';
 import { SettingsService, Lang } from '../../../services/settings.service';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  group,
+  stagger,
+  keyframes,
+  query
+} from '@angular/animations';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss']
+  styleUrls: ['./events.component.scss'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0, transform: 'translateY(-50px)' }), { optional: true }),
+        query(
+          ':enter',
+          stagger('300ms', [
+            animate(
+              '800ms 200ms ease-out',
+              style({opacity: 1, transform: 'translateY(0)'})
+            )
+          ]), {optional: true}
+        )
+      ])
+    ])
+  ]
 })
 export class EventsComponent implements OnInit, OnDestroy {
   events$: Observable<GdgEvent[]>;

@@ -23,11 +23,13 @@ import { ContentfulService } from './services/contentful.service';
   animations: [routerTransitionTrigger]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
+
   isHandsetPortrait$: Observable<boolean>;
   routerState: RouterState;
   routerSubscription: Subscription;
   langSubscription: Subscription;
-  url: string;
+  url$: Observable<string>;
+  urlState$: Observable<string>;
   routeLinks: any[];
   activeLinkIndex = -1;
   langs: Lang[] = [];
@@ -80,6 +82,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.url$ = this.settings.getUrl();
+    this.urlState$ = this.settings.getUrlState();
+
     this.langSubscription = this.settings
       .getCurrentLang()
       .subscribe((lang: Lang) => {
@@ -93,8 +98,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.url = event.url;
-        this.activeLinkIndexResolver(this.url);
+        // this.url = event.url;
+        this.settings.setUrl(event.url);
+        this.settings.setUrlState(event.url);
+        this.activeLinkIndexResolver(event.url);
       });
 
     this.contactInfo$ = this.contentful.getContactInfo();
@@ -123,17 +130,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.router.navigateByUrl('/home');
   }
 
-  getState(): string {
-    if (this.url && this.url !== '/') {
-      const blogPostRegex = /blog\/.+/;
-      if (blogPostRegex.test(this.url)) {
-        return 'blog-post';
-      }
-      return this.url.substr(1);
-    } else {
-      return 'home';
-    }
-  }
+  // getState(): string {
+  //   if (this.url && this.url !== '/') {
+  //     const blogPostRegex = /blog\/.+/;
+  //     if (blogPostRegex.test(this.url)) {
+  //       return 'blog-post';
+  //     }
+  //     return this.url.substr(1);
+  //   } else {
+  //     return 'home';
+  //   }
+  // }
 
   swipeLeft() {
     this.swipeResolver('left');

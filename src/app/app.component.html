@@ -25,14 +25,22 @@
         <section name="content">
           <mat-toolbar color="primary" layout="row" id="mainToolbar" class="app-header">
 
-            <a [routerLink]="'/'" mat-link class="logo">
-              <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
-            </a>
+            <div style="height: 100%;" fxLayout="row" fxLayoutAlign="space-between center" >
 
-            <img src="../assets/gfx/radzymin_herb_wew_S.png" class="herb">
+                  <a [routerLink]="'/'" mat-link  fxLayout="row" fxLayoutAlign="start center">
+                    <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
+                  </a>
+
+                <div style="height: 100%;" fxLayout="row" fxLayoutAlign="start center">
+                    <img src="../assets/gfx/radzymin_herb_wew_S.png" class="herb">
+                </div>
+
+
+            </div>
+
 
             <span fxFlex="1 1 auto"></span>
-            <app-tabs [activeLinkIdx]="activeLinkIndex" [routeLinks]="routeLinks" fxShow fxHide.xs [routerState]="getState()" *ngIf="navTabsVisible"></app-tabs>
+            <app-tabs [activeLinkIdx]="activeLinkIndex" [routeLinks]="routeLinks" fxShow fxHide.xs [routerState]="urlState$ | async" *ngIf="navTabsVisible"></app-tabs>
 
             <mat-form-field class="lang">
               <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange()">
@@ -52,7 +60,7 @@
 
           </mat-toolbar>
 
-          <div [@routerTransition]="getState()" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
+          <div [@routerTransition]="urlState$ | async" (swipeleft)="swipeLeft()" (swiperight)="swipedRight()">
             <router-outlet #o="outlet"></router-outlet>
 
           </div>

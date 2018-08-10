@@ -5,7 +5,8 @@
 
 </app-page-header>
 <section name="team" style="width: 100%;padding-top: 30px;">
-  <div *ngIf="team$ | async as team; else loading" fxLayout="row wrap" fxLayoutAlign="center center" style="width: 100%;">
+  <div *ngIf="team$ | async as team; else loading" fxLayout="row wrap" fxLayoutAlign="center center" style="width: 100%;"
+  [@listAnimation]="team.length">
     <app-team-member *ngFor="let teamMember of team; let i=index " [teamMember]="teamMember" lp="{{i+1}}"></app-team-member>
   </div>
 

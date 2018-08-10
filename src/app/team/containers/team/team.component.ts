@@ -3,11 +3,28 @@ import { ContentfulService } from '../../../services/contentful.service';
 import { Observable, Subscription } from 'rxjs';
 import { GdgTeamMember } from '../../../models/gdg-team-member.model';
 import { SettingsService, Lang } from '../../../services/settings.service';
+import { trigger, transition, style, query, stagger, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss']
+  styleUrls: ['./team.component.scss'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0, transform: 'translateX(-100%)' }), { optional: true }),
+        query(
+          ':enter',
+          stagger('300ms', [
+            animate(
+              '800ms 200ms ease-out',
+              style({opacity: 1, transform: 'translateY(0)'})
+            )
+          ]), {optional: true}
+        )
+      ])
+    ])
+  ]
 })
 export class TeamComponent implements OnInit, OnDestroy {
   team$: Observable<GdgTeamMember[]>;

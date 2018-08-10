@@ -7,6 +7,7 @@ import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { BlogPostComponent } from './containers/blog-post/blog-post.component';
 import { AuthorCardComponent } from './components/author-card/author-card.component';
 import { PhotoGalleryComponent } from './components/photo-gallery/photo-gallery.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [

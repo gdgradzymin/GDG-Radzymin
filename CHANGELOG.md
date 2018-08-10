@@ -1,3 +1,6 @@
+## 0.10.0
+* Lists' animations
+
 ## 0.9.0
 * Blog post page
 
