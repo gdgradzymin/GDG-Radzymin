@@ -10,13 +10,16 @@ import { SettingsService } from './settings.service';
 import { GdgBlogPost } from '../models/gdg-blog-post.model';
 import { GdgContactInfo } from '../models/gdg-contact-info.model';
 import { GdgBlogPostLink } from '../models/gdg-blog-post-link.model';
+import { GdgHomeContent } from '../models/gdg-home-content.model';
+import { GdgImage } from '../models/gdg-image.model';
 
 export enum GdgContentTypes {
   EVENT = 'event',
   TEAM_MEMBER = 'teamMember',
   CONTACT_INFO = 'contactInfo',
   BLOG_POST = 'blogPost',
-  BLOG_POST_LINK = 'blogPostLink'
+  BLOG_POST_LINK = 'blogPostLink',
+  HOME_CONTENT = 'homeContent'
 }
 
 @Injectable({
@@ -73,6 +76,16 @@ export class ContentfulService {
         order: 'sys.createdAt'
       })
       .then(entry => console.log('contactInfo: ', entry.items));
+  }
+
+  logHomeContent(): void {
+    this.clinet
+      .getEntries({
+        content_type: GdgContentTypes.HOME_CONTENT,
+        locale: this.settings.getLocale(),
+        order: 'sys.createdAt'
+      })
+      .then(entry => console.log('homeContent: ', entry.items));
   }
 
   getContent(contentId: string) {
@@ -193,6 +206,71 @@ export class ContentfulService {
     );
   }
 
+  getHomeContent(
+    howMany: number,
+    sortAsc: boolean,
+    onlyActive: boolean
+  ): Observable<GdgHomeContent[]> {
+    const query = {
+      content_type: GdgContentTypes.HOME_CONTENT,
+      locale: this.settings.getLocale(),
+      limit: howMany,
+      include: 1
+    };
+    const orderBy = sortAsc ? 'fields.order' : '-fields.order';
+    Object.assign(query, { order: orderBy });
+
+    if (onlyActive) {
+      Object.assign(query, { 'fields.active': true });
+    }
+
+    const promise: Promise<
+      EntryCollection<GdgHomeContent[]>
+    > = this.clinet.getEntries(query).catch(error => {
+      console.log('błąd pobrania danych');
+      return null;
+    });
+    return from(promise).pipe(
+      map((entries: EntryCollection<any>) => {
+        return entries.items.map(item => {
+          return new GdgHomeContent(
+            item.fields.title,
+            item.fields.order,
+            item.fields.active,
+            item.fields.content,
+            item.fields.image
+              ? new GdgImage(
+                  item.fields.image.fields.file.url,
+                  item.fields.image.fields.title,
+                  item.fields.image.fields.description
+                )
+              : undefined
+          );
+        });
+      }),
+      catchError((error: any, caught: Observable<GdgBlogPost[]>) => {
+        return empty();
+      })
+    );
+  }
+
+  getHomeContentFull(howMany: number): Observable<GdgHomeContent[]> {
+    const promise: Promise<
+      EntryCollection<GdgHomeContent[]>
+    > = this.clinet.getEntries({
+      content_type: GdgContentTypes.HOME_CONTENT,
+      locale: this.settings.getLocale(),
+      order: '-sys.createdAt',
+      limit: howMany,
+      include: 1
+    });
+    return from(promise).pipe(
+      map((entries: EntryCollection<GdgHomeContent>) => {
+        return entries.items;
+      })
+    );
+  }
+
   getBlogPostLink(link: string): Observable<GdgBlogPostLink> {
     const query = {
       content_type: GdgContentTypes.BLOG_POST_LINK,
@@ -221,7 +299,9 @@ export class ContentfulService {
     );
   }
 
-  getBlogPostLinksByBlogPostId(blogPostId: string): Observable<GdgBlogPostLink[]> {
+  getBlogPostLinksByBlogPostId(
+    blogPostId: string
+  ): Observable<GdgBlogPostLink[]> {
     const query = {
       content_type: GdgContentTypes.BLOG_POST_LINK,
       'fields.blogPost.sys.id': blogPostId,
@@ -299,8 +379,12 @@ export class ContentfulService {
               entries.items[0].fields.author.fields.githubUrl
             ),
             entries.items[0].fields.keywords,
-            entries.items[0].fields.links ? entries.items[0].fields.links : undefined,
-            entries.items[0].fields.photos ? entries.items[0].fields.photos : undefined,
+            entries.items[0].fields.links
+              ? entries.items[0].fields.links
+              : undefined,
+            entries.items[0].fields.photos
+              ? entries.items[0].fields.photos
+              : undefined
           );
         }
       })

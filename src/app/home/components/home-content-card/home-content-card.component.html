@@ -1,0 +1,23 @@
+<div class="home-content" fxLayout="row" fxLayout.xs="column" style="min-height: 300px;" [ngClass]="getCardColorCss(lp)">
+
+  <div *ngIf="!isEven(lp)" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+    <img src="{{item.image?.imgUrl}}" class="content-img">
+  </div>
+
+  <div class="content-text-div" fxFlex="60" fxLayout="column" fxLayoutAlign="start start" >
+    <div fxLayout="column" fxLayoutAlign="start none">
+      <div class="content-title">{{item.title}}</div>
+      <div class="content-text">
+          {{item.content}}
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="isEven(lp)" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+    <img src="{{item.image?.imgUrl}}" style="max-width: 70%;">
+  </div>
+
+  <div fxFlex></div>
+</div>

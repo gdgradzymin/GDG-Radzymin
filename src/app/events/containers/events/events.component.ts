@@ -50,16 +50,17 @@ export class EventsComponent implements OnInit, OnDestroy {
     private contentful: ContentfulService,
     private settings: SettingsService
   ) {
-    this.langSubscription = this.settings
-      .getCurrentLang()
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        this.loadEvents();
-      });
+
   }
 
   ngOnInit() {
     this.loadEvents();
+    this.langSubscription = this.settings
+    .getCurrentLang()
+    .subscribe((lang: Lang) => {
+      // it's time to change reload content
+      this.loadEvents();
+    });
     this.eventsSub = this.events$.subscribe((events: any) => {
       this.events = events;
       // console.log('events from sub: ', this.events);

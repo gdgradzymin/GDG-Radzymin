@@ -1,25 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContentfulService } from '../../../services/contentful.service';
+import { GdgHomeContent } from '../../../models/gdg-home-content.model';
+import { Observable, Subscription } from 'rxjs';
+import { SettingsService, Lang } from '../../../services/settings.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  constructor(private contentful: ContentfulService) {}
+export class HomeComponent implements OnInit, OnDestroy {
+  homeItems$: Observable<GdgHomeContent[]>;
+  langSubscription: Subscription;
+
+  constructor(
+    private contentful: ContentfulService,
+    private settings: SettingsService
+  ) {}
 
   ngOnInit() {
-    this.contentful.getContactInfo().subscribe(data => {
-      console.log('Data from contact info: ', data);
-    });
+    this.langSubscription = this.settings
+      .getCurrentLang()
+      .subscribe((lang: Lang) => {
+        // it's time to change reload content
+        this.loadHomeItems();
+      });
 
-    this.contentful.getBlogPostsFull(100).subscribe(posts => {
-      console.log('blog posts: ', posts);
-    });
+    // this.contentful.logHomeContent();
+    this.loadHomeItems();
+  }
 
-    this.contentful.getBlogPostLinksFull(100).subscribe(blogLinks => {
-      console.log('blog links: ', blogLinks);
-    });
+  loadHomeItems() {
+    this.homeItems$ = this.contentful.getHomeContent(100, true, true);
+  }
+
+  ngOnDestroy() {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 }

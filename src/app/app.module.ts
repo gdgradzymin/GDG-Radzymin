@@ -29,6 +29,7 @@ import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { SettingsService } from './services/settings.service';
 import { BlogModule } from './blog/blog.module';
+import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
 
 registerLocaleData(localePl);
 
@@ -48,7 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, HomeContentCardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

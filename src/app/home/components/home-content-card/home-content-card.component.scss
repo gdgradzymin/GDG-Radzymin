@@ -1,0 +1,83 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+
+
+:host {
+  padding: 0;
+  width: 100%;
+}
+
+.home-content {
+  padding: 20px 20px;
+  width: 100%;
+}
+
+.content-title {
+  font-size: 2.0em;
+  margin-bottom: 20px;
+}
+
+.content-text {
+  font-size: 1.2em;
+  text-align: justify;
+}
+
+.content-img {
+  max-width: 90%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.content-text-div {
+  padding: 50px 30px;
+}
+
+@media only screen and (max-width: 599px) {
+  .content-img {
+    max-width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .content-title {
+    font-size: 1.6em;
+    margin-bottom: 15px;
+  }
+
+  .content-text-div {
+    padding: 30px 10px;
+  }
+
+  .content-text {
+    font-size: 1.1em;
+    text-align: justify;
+  }
+}
+
+
+
+.content-white {
+  background-color: #eceff1;
+  color: $primary-text-color;
+}
+
+.content-yellow {
+  background-color: $gdg-yellow;
+  color: $primary-color-text;
+}
+
+.content-red {
+  background-color: $gdg-red;
+  color: $primary-color-text;
+}
+
+.content-green {
+  background-color: $gdg-green;
+  color: $primary-color-text;
+}
+
+.content-blue {
+  background-color: $gdg-blue;
+  color: $primary-color-text;
+}
+
