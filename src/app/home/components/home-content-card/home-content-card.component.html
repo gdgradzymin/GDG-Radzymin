@@ -1,4 +1,4 @@
-<div class="home-content" fxLayout="row" fxLayout.xs="column" style="min-height: 300px;" [ngClass]="getCardColorCss(lp)">
+<div class="home-content" fxLayout="row" fxLayout.xs="column" [ngClass]="getCardColorCss(lp)">
 
   <div *ngIf="!isEven(lp)" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
     <img src="{{item.image?.imgUrl}}" class="content-img">
@@ -8,7 +8,7 @@
     <div fxLayout="column" fxLayoutAlign="start none">
       <div class="content-title">{{item.title}}</div>
       <div class="content-text">
-          {{item.content}}
+        <div [innerHTML]="item.content | mdToHtml" ></div>
       </div>
 
     </div>
@@ -16,7 +16,7 @@
   </div>
 
   <div *ngIf="isEven(lp)" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
-    <img src="{{item.image?.imgUrl}}" style="max-width: 70%;">
+    <img src="{{item.image?.imgUrl}}" class="content-img">
   </div>
 
   <div fxFlex></div>

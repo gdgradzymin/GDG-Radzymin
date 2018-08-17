@@ -24,9 +24,9 @@ export class HomeContentCardComponent implements OnInit {
       case 2:
         return { 'content-green': true };
       case 3:
-        return { 'content-yellow': true };
-      case 4:
         return { 'content-red': true };
+      case 4:
+        return { 'content-yellow': true };
       case 0:
         return { 'content-blue': true };
       default:

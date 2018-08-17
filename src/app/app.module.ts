@@ -18,7 +18,6 @@ import { TabsComponent } from './main/containers/tabs/tabs.component';
 import { HomeComponent } from './home/containers/home/home.component';
 import { EventsModule } from './events/events.module';
 import { TeamModule } from './team/team.module';
-import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
 import * as Hammer from 'hammerjs';
 import {
   HammerGestureConfig,
@@ -30,6 +29,7 @@ import localePl from '@angular/common/locales/pl';
 import { SettingsService } from './services/settings.service';
 import { BlogModule } from './blog/blog.module';
 import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
+import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
 
 registerLocaleData(localePl);
 
@@ -49,7 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HomeContentCardComponent],
+  declarations: [AppComponent, HomeComponent, HomeContentCardComponent, MdToHtmlPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,

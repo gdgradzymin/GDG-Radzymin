@@ -3,6 +3,8 @@ import { ContentfulService } from '../../../services/contentful.service';
 import { GdgHomeContent } from '../../../models/gdg-home-content.model';
 import { Observable, Subscription } from 'rxjs';
 import { SettingsService, Lang } from '../../../services/settings.service';
+import { GdgContactInfo } from '../../../models/gdg-contact-info.model';
+import { faMeetup } from '@fortawesome/fontawesome-free-brands';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,10 @@ import { SettingsService, Lang } from '../../../services/settings.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   homeItems$: Observable<GdgHomeContent[]>;
+  contactInfo$: Observable<GdgContactInfo>;
   langSubscription: Subscription;
+
+  faMeetup = faMeetup;
 
   constructor(
     private contentful: ContentfulService,
@@ -28,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // this.contentful.logHomeContent();
     this.loadHomeItems();
+    this.contactInfo$ = this.contentful.getContactInfo();
   }
 
   loadHomeItems() {
