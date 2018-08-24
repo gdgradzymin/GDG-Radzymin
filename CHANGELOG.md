@@ -1,3 +1,6 @@
+## 0.12.0
+* resolving user language from a web browser settings
+
 ## 0.11.0
 * HomeContentCard
 
