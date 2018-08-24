@@ -1,10 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export enum Locales {
+  PL = 'pl',
+  EN = 'en-US'
+}
+
 export interface Lang {
   code: string;
   name: string;
   locale: string;
+}
+
+export interface LangMap {
+  langNavigatorCode: string;
+  locale: Locales;
 }
 
 @Injectable({
@@ -15,12 +25,35 @@ export class SettingsService {
     {
       code: 'pl',
       name: 'polish',
-      locale: 'pl'
+      locale: Locales.PL
     },
     {
       code: 'en',
       name: 'english',
-      locale: 'en-US'
+      locale: Locales.EN
+    }
+  ];
+
+  private readonly langsMap: LangMap[] = [
+    {
+      langNavigatorCode: 'pl',
+      locale: Locales.PL
+    },
+    {
+      langNavigatorCode: 'pl-pl',
+      locale: Locales.PL
+    },
+    {
+      langNavigatorCode: 'en',
+      locale: Locales.EN
+    },
+    {
+      langNavigatorCode: 'en-gb',
+      locale: Locales.EN
+    },
+    {
+      langNavigatorCode: 'en-US',
+      locale: Locales.EN
     }
   ];
 
@@ -33,6 +66,8 @@ export class SettingsService {
 
   private url$ = new BehaviorSubject<string>('/');
   private urlState$ = new BehaviorSubject<string>('home');
+
+  private readonly defaultLocale = Locales.EN;
 
   constructor() {}
 
@@ -54,6 +89,53 @@ export class SettingsService {
     );
     if (l) {
       this.lang$.next(l);
+    }
+  }
+
+  setCurrentLangByNavigatorLang(
+    langFromNavigator: string,
+    langsArrayFromNavigator: string[]
+  ): void {
+    // first try to search using langFromNavigator
+    if (langFromNavigator && langFromNavigator.length > 0) {
+      const locale = this.searchLangsMap(langFromNavigator);
+      if (locale) {
+        this.setCurrentLangByLocale(locale);
+        return;
+      }
+    }
+
+    // if not found try with the langs array
+    if (langsArrayFromNavigator && langsArrayFromNavigator.length > 0) {
+      let itemFound = false;
+      langsArrayFromNavigator.forEach((item: string) => {
+        const locale = this.searchLangsMap(item);
+        if (locale && !itemFound) {
+          this.setCurrentLangByLocale(locale);
+          itemFound = true;
+        }
+      });
+      if (itemFound) {
+        return;
+      }
+    }
+
+    // if nothing was found set to default
+    this.setCurrentLangByLocale(this.defaultLocale);
+  }
+
+  private searchLangsMap(l: string): string {
+    // returns locale from langsMap
+    let mapping: LangMap = null;
+    mapping = this.langsMap.find(
+      (item: LangMap) =>
+        item.langNavigatorCode.toLowerCase() === l.toLowerCase()
+    );
+
+    if (mapping) {
+      return mapping.locale;
+    } else {
+      return null;
     }
   }
 

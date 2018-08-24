@@ -82,6 +82,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnInit() {
+    const userLang = navigator.language;
+    const userLangs = navigator.languages;
+    this.settings.setCurrentLangByNavigatorLang(userLang, userLangs.slice());
     this.url$ = this.settings.getUrl();
     this.urlState$ = this.settings.getUrlState();
 
