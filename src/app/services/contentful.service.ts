@@ -436,6 +436,9 @@ export class ContentfulService {
               : undefined,
             entries.items[0].fields.youtubeUrl
               ? entries.items[0].fields.youtubeUrl
+              : undefined,
+              entries.items[0].fields.githubUrl
+              ? entries.items[0].fields.githubUrl
               : undefined
           );
         } else {

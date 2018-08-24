@@ -27,6 +27,13 @@
     </a>
   </div>
 
+  <div *ngIf="contactInfo?.githubUrl">
+    <a mat-icon-button target="_blank" href="{{contactInfo?.githubUrl}}"
+    matTooltip="{{'githubprojectpage' | translate}}" matTooltipClass="tooltip-link">
+      <fa-icon [icon]="faGithub" class="links"></fa-icon>
+    </a>
+  </div>
+
   <div *ngIf="contactInfo?.email">
     <a mat-icon-button href="mailto:{{contactInfo?.email}}"
     matTooltip="{{contactInfo?.email}}" matTooltipClass="tooltip-link">

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { faFacebookSquare, faMeetup, faTwitter, faYoutube } from '@fortawesome/fontawesome-free-brands';
+import { faFacebookSquare, faMeetup, faTwitter, faYoutube, faGithub } from '@fortawesome/fontawesome-free-brands';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { GdgContactInfo } from '../../../models/gdg-contact-info.model';
 
@@ -15,6 +15,7 @@ export class FooterComponent implements OnInit {
   faEnvelope = faEnvelope;
   faTwitter = faTwitter;
   faYoutube = faYoutube;
+  faGithub = faGithub;
 
   @Input()
   contactInfo: GdgContactInfo;
@@ -22,7 +23,7 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('contact info from footer: ', this.contactInfo);
+   // console.log('contact info from footer: ', this.contactInfo);
   }
 
 }
