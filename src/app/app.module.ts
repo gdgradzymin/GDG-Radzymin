@@ -30,6 +30,7 @@ import { SettingsService } from './services/settings.service';
 import { BlogModule } from './blog/blog.module';
 import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
 import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
+import { MetatagsService } from './services/metatags.service';
 
 registerLocaleData(localePl);
 
@@ -49,7 +50,12 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HomeContentCardComponent, MdToHtmlPipe],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    HomeContentCardComponent,
+    MdToHtmlPipe
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -89,7 +95,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
-    }
+    },
+    MetatagsService
   ],
   bootstrap: [AppComponent]
 })

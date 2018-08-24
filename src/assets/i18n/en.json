@@ -1,10 +1,12 @@
 {
   "blog": "Blog",
   "blogpagedesc": "News from the group",
+  "blogpagekeywords": "Blog, GDG, Radzymin",
   "blogpagetitle": "GDG Radzymin - blog",
   "english": "English",
   "events": "Events",
   "eventspagedesc": "The list of scheduled events that you should not miss",
+  "eventspagekeywords": "events, meetings, meetups, workshops, GDG, Radzymin",
   "eventspagetitle": "GDG Radzymin - events",
   "followusontwitter": "Follow us on Twitter",
   "gdgradzymin": "GDG Radzymin",
@@ -13,6 +15,7 @@
   "gotomeetuppage": "Go to Meetup page",
   "home": "Home",
   "homepagedesc": "Welcome to GDG Radzymin",
+  "homepagekeywords": "GDG, Radzymin",
   "homepagetitle": "GDG Radzymin - welcome",
   "joinfbgroup": "Join Facebook group",
   "joinmeetupgroup": "Join Meetup group",
@@ -27,6 +30,7 @@
   "sortbytheoldest": "Sort by the oldest",
   "team": "Team",
   "teampagedesc": "GDG Radzymin organizers",
+  "teampagekeywords": "organizers, GDG, Radzymin, team",
   "teampagetitle": "GDG Radzymin - our team",
   "title": "GDG Radzymin"
 }

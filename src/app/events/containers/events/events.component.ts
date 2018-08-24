@@ -1,22 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ContentfulService } from '../../../services/contentful.service';
-import { flatMap, switchMap, map, filter } from 'rxjs/operators';
 import { GdgEvent } from '../../../models/gdg-event.model';
 import { SettingsService, Lang } from '../../../services/settings.service';
 import {
   trigger,
-  state,
   style,
   transition,
   animate,
-  group,
   stagger,
-  keyframes,
   query
 } from '@angular/animations';
-import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { MetatagsService } from '../../../services/metatags.service';
 
 @Component({
   selector: 'app-events',
@@ -50,12 +46,14 @@ export class EventsComponent implements OnInit, OnDestroy {
   showPastEvents = true;
   sortAsc = false;
   langSubscription: Subscription;
+  pageDescSub: Subscription;
+  pageTitleSub: Subscription;
+  pageKeywordsSub: Subscription;
 
   constructor(
     private contentful: ContentfulService,
     private settings: SettingsService,
-    private title: Title,
-    private meta: Meta,
+    private meta: MetatagsService,
     private translate: TranslateService
   ) {}
 
@@ -65,13 +63,24 @@ export class EventsComponent implements OnInit, OnDestroy {
       .getCurrentLang()
       .subscribe((lang: Lang) => {
         // it's time to change reload content
-        this.title.setTitle(
-          this.translate.instant('eventspagetitle')
-        );
-        this.meta.updateTag({
-          name: 'description',
-          content: this.translate.instant('eventspagedesc')
-        });
+        this.pageDescSub = this.translate
+          .get('eventspagedesc')
+          .subscribe((desc: string) => {
+            this.meta.updateMetaDesc(desc);
+          });
+
+        this.pageTitleSub = this.translate
+          .get('eventspagetitle')
+          .subscribe((title: string) => {
+            this.meta.updateTitle(title);
+          });
+
+        this.pageKeywordsSub = this.translate
+          .get('eventspagekeywords')
+          .subscribe((k: string) => {
+            this.meta.updateMetaKeywords(k);
+          });
+
         this.loadEvents();
       });
     this.eventsSub = this.events$.subscribe((events: any) => {
@@ -95,6 +104,16 @@ export class EventsComponent implements OnInit, OnDestroy {
     }
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+    if (this.pageDescSub) {
+      this.pageDescSub.unsubscribe();
+    }
+    if (this.pageTitleSub) {
+      this.pageTitleSub.unsubscribe();
+    }
+
+    if (this.pageKeywordsSub) {
+      this.pageKeywordsSub.unsubscribe();
     }
   }
 }

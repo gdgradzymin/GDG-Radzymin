@@ -3,10 +3,16 @@ import { ContentfulService } from '../../../services/contentful.service';
 import { GdgBlogPost } from '../../../models/gdg-blog-post.model';
 import { Observable, Subscription } from 'rxjs';
 import { SettingsService, Lang } from '../../../services/settings.service';
-import { trigger, transition, style, query, stagger, animate } from '@angular/animations';
+import {
+  trigger,
+  transition,
+  style,
+  query,
+  stagger,
+  animate
+} from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
-import { Title, Meta } from '@angular/platform-browser';
-
+import { MetatagsService } from '../../../services/metatags.service';
 
 @Component({
   selector: 'app-blog',
@@ -19,11 +25,9 @@ import { Title, Meta } from '@angular/platform-browser';
         query(
           ':enter',
           stagger('300ms', [
-            animate(
-              '800ms 300ms ease-out',
-              style({opacity: 1})
-            )
-          ]), {optional: true}
+            animate('800ms 300ms ease-out', style({ opacity: 1 }))
+          ]),
+          { optional: true }
         )
       ])
     ])
@@ -32,14 +36,15 @@ import { Title, Meta } from '@angular/platform-browser';
 export class BlogComponent implements OnInit, OnDestroy {
   blogPosts$: Observable<GdgBlogPost[]>;
   langSub: Subscription;
+  pageDescSub: Subscription;
+  pageTitleSub: Subscription;
+  pageKeywordsSub: Subscription;
   lang: Lang;
-
 
   constructor(
     private contentful: ContentfulService,
     private settings: SettingsService,
-    private title: Title,
-    private meta: Meta,
+    private meta: MetatagsService,
     private translate: TranslateService
   ) {}
 
@@ -48,13 +53,23 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
       // it's time to change reload content
       this.lang = lang;
-      this.title.setTitle(
-        this.translate.instant('blogpagetitle')
-      );
-      this.meta.updateTag({
-        name: 'description',
-        content: this.translate.instant('blogpagedesc')
-      });
+      this.pageDescSub = this.translate
+        .get('blogpagedesc')
+        .subscribe((desc: string) => {
+          this.meta.updateMetaDesc(desc);
+        });
+
+      this.pageTitleSub = this.translate
+        .get('blogpagetitle')
+        .subscribe((t: string) => {
+          this.meta.updateTitle(t);
+        });
+
+      this.pageKeywordsSub = this.translate
+        .get('blogpagekeywords')
+        .subscribe((k: string) => {
+          this.meta.updateMetaKeywords(k);
+        });
       this.loadBlogPosts();
     });
     this.loadBlogPosts();
@@ -64,12 +79,20 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.blogPosts$ = this.contentful.getBlogPosts(100, false);
   }
 
-
-
-
   ngOnDestroy() {
     if (this.langSub) {
       this.langSub.unsubscribe();
+    }
+    if (this.pageDescSub) {
+      this.pageDescSub.unsubscribe();
+    }
+
+    if (this.pageTitleSub) {
+      this.pageTitleSub.unsubscribe();
+    }
+
+    if (this.pageKeywordsSub) {
+      this.pageKeywordsSub.unsubscribe();
     }
   }
 }

@@ -1,10 +1,12 @@
 {
   "blog": "Blog",
   "blogpagedesc": "Aktualności z grupy",
+  "blogpagekeywords": "Blog, GDG, Radzymin",
   "blogpagetitle": "GDG Radzymin - blog",
   "english": "English",
   "events": "Wydrzenia",
   "eventspagedesc": "Lista planowanych wydarzeń, których nie możesz przegapić",
+  "eventspagekeywords": "wydarzenia, spotkania, warsztaty, meetupy, GDG, Radzymin",
   "eventspagetitle": "GDG Radzymin - wydarzenia",
   "followusontwitter": "Śledź nas na Twitterze",
   "gdgradzymin": "GDG Radzymin",
@@ -13,6 +15,7 @@
   "gotomeetuppage": "Przejdź do strony Meetup",
   "home": "Home",
   "homepagedesc": "Witamy na stronie GDG Radzymin",
+  "homepagekeywords": "GDG, Radzymin",
   "homepagetitle": "GDG Radzymin - witamy",
   "joinfbgroup": "Dołącz do grupy na Facebook",
   "joinmeetupgroup": "Dołącz do grupy na Meetup",
@@ -27,6 +30,7 @@
   "sortbytheoldest": "Sortuj od najstarszych",
   "team": "Zespół",
   "teampagedesc": "Organizatorzy GDG Radzymin",
+  "teampagekeywords": "organizatorzy, zespół, GDG, Radzymin",
   "teampagetitle": "GDG Radzymin - nasz zespół",
   "title": "GDG Radzymin",
   "welcometogdgradzymin": "Witaj na stronie GDG Radzymin"
