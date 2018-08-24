@@ -4,6 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { GdgTeamMember } from '../../../models/gdg-team-member.model';
 import { SettingsService, Lang } from '../../../services/settings.service';
 import { trigger, transition, style, query, stagger, animate } from '@angular/animations';
+import { Title, Meta } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-team',
@@ -34,12 +36,22 @@ export class TeamComponent implements OnInit, OnDestroy {
 
   constructor(
     private contentful: ContentfulService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private title: Title,
+    private meta: Meta,
+    private translate: TranslateService
   ) {
     this.langSubscription = this.settings
       .getCurrentLang()
       .subscribe((lang: Lang) => {
         // it's time to change reload content
+        this.title.setTitle(
+          this.translate.instant('teampagetitle')
+        );
+        this.meta.updateTag({
+          name: 'description',
+          content: this.translate.instant('teampagedesc')
+        });
         this.loadTeamMembers();
       });
   }

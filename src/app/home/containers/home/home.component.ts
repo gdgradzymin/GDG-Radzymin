@@ -5,6 +5,8 @@ import { Observable, Subscription } from 'rxjs';
 import { SettingsService, Lang } from '../../../services/settings.service';
 import { GdgContactInfo } from '../../../models/gdg-contact-info.model';
 import { faMeetup } from '@fortawesome/fontawesome-free-brands';
+import { Meta, Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +22,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private contentful: ContentfulService,
-    private settings: SettingsService
-  ) {}
+    private settings: SettingsService,
+    private meta: Meta,
+    private title: Title,
+    private translate: TranslateService
+  ) {
+  }
 
   ngOnInit() {
     this.langSubscription = this.settings
@@ -29,6 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((lang: Lang) => {
         // it's time to change reload content
         this.loadHomeItems();
+        this.title.setTitle(this.translate.instant('homepagetitle'));
+        this.meta.updateTag({name: 'description', content: this.translate.instant('homepagedesc')});
       });
 
     // this.contentful.logHomeContent();

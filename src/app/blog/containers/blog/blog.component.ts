@@ -4,6 +4,8 @@ import { GdgBlogPost } from '../../../models/gdg-blog-post.model';
 import { Observable, Subscription } from 'rxjs';
 import { SettingsService, Lang } from '../../../services/settings.service';
 import { trigger, transition, style, query, stagger, animate } from '@angular/animations';
+import { TranslateService } from '@ngx-translate/core';
+import { Title, Meta } from '@angular/platform-browser';
 
 
 @Component({
@@ -35,7 +37,10 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   constructor(
     private contentful: ContentfulService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private title: Title,
+    private meta: Meta,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -43,6 +48,13 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
       // it's time to change reload content
       this.lang = lang;
+      this.title.setTitle(
+        this.translate.instant('blogpagetitle')
+      );
+      this.meta.updateTag({
+        name: 'description',
+        content: this.translate.instant('blogpagedesc')
+      });
       this.loadBlogPosts();
     });
     this.loadBlogPosts();
