@@ -1,7 +1,7 @@
 {
-  "name": "gdg-radzymin",
-  "short_name": "gdg-radzymin",
-  "theme_color": "#1976d2",
+  "name": "GDG Radzymin",
+  "short_name": "GDG Radzymin",
+  "theme_color": "#2196F3",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",

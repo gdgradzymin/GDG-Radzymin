@@ -5,7 +5,8 @@ import {
   ChangeDetectionStrategy,
   AfterContentInit,
   ChangeDetectorRef,
-  AfterContentChecked
+  AfterContentChecked,
+  Inject
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, RouterState, NavigationEnd } from '@angular/router';
@@ -15,6 +16,8 @@ import { routerTransitionTrigger } from './main/animations/route-animations';
 import { SettingsService, Lang } from './services/settings.service';
 import { GdgContactInfo } from './models/gdg-contact-info.model';
 import { ContentfulService } from './services/contentful.service';
+import { Meta } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +26,6 @@ import { ContentfulService } from './services/contentful.service';
   animations: [routerTransitionTrigger]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
-
   isHandsetPortrait$: Observable<boolean>;
   routerState: RouterState;
   routerSubscription: Subscription;
@@ -46,7 +48,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     private router: Router,
     public settings: SettingsService,
     private contentful: ContentfulService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private meta: Meta,
+    @Inject(DOCUMENT) private _document: any
   ) {
     this.langs = this.settings.getLanguages();
     this.routeLinks = [
@@ -79,6 +83,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         iconClass: { 'icon-blog': true }
       }
     ];
+
+    this.meta.addTag({ name: 'description', content: 'GDG Radzymin' });
+    this.meta.addTag({
+      name: 'keywords',
+      content: 'GDG, Radzymin, Google Developers Group'
+    });
+    this.meta.addTag({ name: 'author', content: 'Sebastian Denis' });
   }
 
   ngOnInit() {
@@ -96,6 +107,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.translate.use(lang.code);
         this.selectedLang = lang.code;
+        this._document.documentElement.lang = lang.code;
       });
 
     this.routerSubscription = this.router.events

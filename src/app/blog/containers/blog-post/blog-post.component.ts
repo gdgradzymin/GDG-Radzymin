@@ -5,6 +5,7 @@ import { ContentfulService } from '../../../services/contentful.service';
 import { Subscription, Observable } from 'rxjs';
 import { SettingsService, Lang } from '../../../services/settings.service';
 import { GdgBlogPostLink } from '../../../models/gdg-blog-post-link.model';
+import { MetatagsService } from '../../../services/metatags.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -25,7 +26,8 @@ export class BlogPostComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private contentful: ContentfulService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private meta: MetatagsService
   ) {}
 
   ngOnInit() {
@@ -64,6 +66,9 @@ export class BlogPostComponent implements OnInit, OnDestroy {
     this.blogSub = this.blogPost$.subscribe({
       next: (blogPost: GdgBlogPost) => {
         this.blogPost = blogPost;
+        this.meta.updateTitle(this.blogPost.title);
+        this.meta.updateMetaDesc(this.blogPost.contentShort);
+        this.meta.updateMetaKeywords(this.blogPost.keywords);
       },
       error: (error: any) => {
         // in case of error
