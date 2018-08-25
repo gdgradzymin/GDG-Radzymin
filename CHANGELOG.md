@@ -1,3 +1,6 @@
+## 1.0.0
+* Ready for publishing
+
 ## 0.12.0
 * resolving user language from a web browser settings
 
