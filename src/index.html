@@ -11,34 +11,77 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#2196f3">
+  <meta name="theme-color" content="#2196F3">
 
   <style>
-    #loading {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(33, 150, 243, .3);
-      border-radius: 50%;
-      border-top-color: #2196F3;
-      animation: spin 1s ease-in-out infinite;
-      position: fixed;
-      left: calc(50% - 25px);
-      top: calc(50% - 25px)
+    .gdg-logo {
+      width: 60%;
+      max-width: 600px;
+      height: auto;
+      margin-bottom: 50px;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg)
-      }
+    #start {
+      position: fixed;
+      width: 100%;
+      top: calc(48% - 25px);
+      text-align: center;
+      align-content: center;
+      align-items: center;
+   
     }
+
+
+.loading-bar {
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  animation: loading 1s ease-in-out infinite;
+}
+.loading-bar:nth-child(1) {
+  background-color: #518ff5;
+  animation-delay: 0;
+}
+.loading-bar:nth-child(2) {
+  background-color: #dd4d40;
+  animation-delay: 0.09s;
+}
+.loading-bar:nth-child(3) {
+  background-color: #ffc20a;
+  animation-delay: .18s;
+}
+.loading-bar:nth-child(4) {
+  background-color: #149f5b;
+  animation-delay: .27s;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1, 2.2);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
   </style>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1976d2">
 </head>
 <body style="margin: 0px;font-family: Roboto, 'Helvetica Neue', sans-serif;">
   <app-root>
-    <div id="loading"></div>
+    <div id="start">
+      <img src="assets/gfx/gdg_mark_gdg_radzymin_S_black.png" class="gdg-logo">
+      <div class="loading">
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+          <div class="loading-bar"></div>
+        </div>
+    </div>
+  
     <noscript>
       <p>Sorry, JavaScript must be enabled to use this app</p>
     </noscript>
