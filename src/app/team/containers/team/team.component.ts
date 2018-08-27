@@ -78,11 +78,10 @@ export class TeamComponent implements OnInit, OnDestroy {
           });
         this.loadTeamMembers();
       });
-    this.contentful.logTeamMembers();
+    // this.contentful.logTeamMembers();
     this.loadTeamMembers();
     this.team$.subscribe((team: any) => {
       this.team = team;
-      console.log('team from sub: ', this.team);
     });
   }
 

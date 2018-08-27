@@ -1,17 +1,18 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"  rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <meta charset="utf-8">
   <title>GDG Radzymin</title>
   <base href="/">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#2196F3">
+
 
   <style>
     .gdg-logo {
@@ -28,60 +29,65 @@
       text-align: center;
       align-content: center;
       align-items: center;
-   
+
     }
 
 
-.loading-bar {
-  display: inline-block;
-  width: 4px;
-  height: 18px;
-  border-radius: 4px;
-  animation: loading 1s ease-in-out infinite;
-}
-.loading-bar:nth-child(1) {
-  background-color: #518ff5;
-  animation-delay: 0;
-}
-.loading-bar:nth-child(2) {
-  background-color: #dd4d40;
-  animation-delay: 0.09s;
-}
-.loading-bar:nth-child(3) {
-  background-color: #ffc20a;
-  animation-delay: .18s;
-}
-.loading-bar:nth-child(4) {
-  background-color: #149f5b;
-  animation-delay: .27s;
-}
+    .loading-bar {
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      border-radius: 4px;
+      animation: loading 1s ease-in-out infinite;
+    }
 
-@keyframes loading {
-  0% {
-    transform: scale(1);
-  }
-  20% {
-    transform: scale(1, 2.2);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
+    .loading-bar:nth-child(1) {
+      background-color: #518ff5;
+      animation-delay: 0;
+    }
+
+    .loading-bar:nth-child(2) {
+      background-color: #dd4d40;
+      animation-delay: 0.09s;
+    }
+
+    .loading-bar:nth-child(3) {
+      background-color: #ffc20a;
+      animation-delay: .18s;
+    }
+
+    .loading-bar:nth-child(4) {
+      background-color: #149f5b;
+      animation-delay: .27s;
+    }
+
+    @keyframes loading {
+      0% {
+        transform: scale(1);
+      }
+      20% {
+        transform: scale(1, 2.2);
+      }
+      40% {
+        transform: scale(1);
+      }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
 </head>
-<body style="margin: 0px;font-family: Roboto, 'Helvetica Neue', sans-serif;">
+
+<body style="margin: 0px;font-family: Roboto, 'Helvetica Neue', sans-serif;height: 100%;">
   <app-root>
     <div id="start">
       <img src="assets/gfx/gdg_mark_gdg_radzymin_S_black.png" class="gdg-logo">
       <div class="loading">
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-          <div class="loading-bar"></div>
-        </div>
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+        <div class="loading-bar"></div>
+      </div>
     </div>
-  
+
     <noscript>
       <p>Sorry, JavaScript must be enabled to use this app</p>
     </noscript>
@@ -89,4 +95,5 @@
 
 
 </body>
+
 </html>

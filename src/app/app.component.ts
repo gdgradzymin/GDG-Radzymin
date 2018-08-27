@@ -203,7 +203,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     }
   }
 
-  onLangChange() {
+  onLangChange(select: any) {
+    select.close();
     this.settings.setCurrentLangByLangCode(this.selectedLang);
   }
 
