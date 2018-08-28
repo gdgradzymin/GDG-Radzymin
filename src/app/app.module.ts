@@ -54,8 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    HomeContentCardComponent,
-    MdToHtmlPipe,
+    HomeContentCardComponent,    
     GdgDisclaimerComponent
   ],
   imports: [

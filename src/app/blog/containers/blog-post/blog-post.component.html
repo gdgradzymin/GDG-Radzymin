@@ -11,7 +11,7 @@ fxLayout="column" fxLayoutAlign="center center">
   </section>
 
   <section name="blog-post-content" class="blog-post-content">
-    {{post?.content}}
+    <div [innerHTML]="post?.content | mdToHtml" ></div>
   </section>
 
   <section name="author" class="blog-post-author">

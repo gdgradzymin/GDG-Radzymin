@@ -52,6 +52,8 @@
 @media only screen and (min-width: 600px) and (max-width: 699px) {
   .blog-post {
     padding-top: 90px;
+    padding-left: 2%;
+    padding-right: 2%;
   }
 
   .blog-post-title {
@@ -59,23 +61,30 @@
     margin-bottom: 20px;
     font-size: 1.4em;
   }
+
 }
 
 @media only screen and (min-width: 700px) and (max-width: 1279px) {
   .blog-post {
     padding-top: 100px;
+    padding-left: 5%;
+    padding-right: 5%;
   }
 
   .blog-post-title {
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 1.4em;
+    font-size: 1.6em;
   }
+
+
 }
 
 @media only screen and (min-width: 1279px) {
   .blog-post {
     padding-top: 110px;
+    padding-left: 10%;
+    padding-right: 10%;
   }
 
   .blog-post-header-photo {
@@ -85,9 +94,28 @@
   .blog-post-title {
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 1.6em;
+    font-size: 1.8em;
   }
+
+
 }
 
+:host ::ng-deep a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $primary-color;
+}
+
+:host ::ng-deep .content-white a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $primary-color;
+}
 
 

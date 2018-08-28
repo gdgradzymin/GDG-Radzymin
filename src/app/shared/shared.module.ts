@@ -9,6 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdToHtmlPipe } from '../pipes/md-to-html.pipe';
 
 @NgModule({
   imports: [
@@ -30,8 +31,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FontAwesomeModule,
     FooterComponent,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MdToHtmlPipe
   ],
-  declarations: [ PageHeaderComponent, FooterComponent ]
+  declarations: [ PageHeaderComponent, FooterComponent, MdToHtmlPipe ]
 })
 export class SharedModule { }
