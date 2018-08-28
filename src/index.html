@@ -33,6 +33,8 @@
     }
 
 
+
+
     .loading-bar {
       display: inline-block;
       width: 4px;
@@ -74,6 +76,16 @@
     }
   </style>
   <link rel="manifest" href="manifest.json">
+  <script>
+    function isES6() {
+      try {
+        Function("() => {};"); return true;
+      }
+      catch (exception) {
+        return false;
+      }
+    }
+  </script>
 </head>
 
 <body style="margin: 0px;font-family: Roboto, 'Helvetica Neue', sans-serif;height: 100%;">
@@ -86,6 +98,11 @@
         <div class="loading-bar"></div>
         <div class="loading-bar"></div>
       </div>
+      <script>
+        if (!isES6()) {
+          alert('PL: Używasz przeglądarki, która nie wspiera nowych technologii! Spróbuj z użyciem nowszych przeglądarek, np. Chrome.\n\nEN: You are using an old web browser that does not support the latest technologies. Please switch to one of the modern browsers, ie. Chrome.');
+        }
+      </script>
     </div>
 
     <noscript>
