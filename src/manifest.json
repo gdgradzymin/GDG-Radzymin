@@ -6,6 +6,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
+  "description": "GDG Radzymin web site",
+  "lang": "en-US",
+  "orientation": "any",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
@@ -45,6 +48,16 @@
     {
       "src": "assets/icons/icon-512x512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-2048x2048.png",
+      "sizes": "2048x2048",
       "type": "image/png"
     }
   ]
