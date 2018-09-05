@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EventsComponent } from '../events/containers/events/events.component';
 import { TeamComponent } from '../team/containers/team/team.component';
-import { HomeComponent } from '../home/containers/home/home.component';
+import { HomeComponent } from '../home/home.component';
 import { BlogComponent } from '../blog/containers/blog/blog.component';
 import { BlogPostComponent } from '../blog/containers/blog-post/blog-post.component';
 

@@ -9,10 +9,10 @@ export const environment = {
     spaceId: '8jdoyzwhnnrv',
     token: '390b3fde1b166081ec90a09d1fbaeb1daa7ed90dbfe30b9bd29842817fec1a5d'
   }
-
+  
 };
 
-/* abc
+/*
  * In development mode, to ignore zone related error stack frames such as
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
  * import the following file, but please comment it out in production mode
