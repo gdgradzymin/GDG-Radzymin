@@ -8,6 +8,10 @@
 # dependencies
 /node_modules
 
+# NativeScript
+/hooks
+/platforms
+
 # IDEs and editors
 /.idea
 .project
@@ -37,6 +41,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# by Sebek
+
 firebase-debug.log
 /src/environments/environment.ts
 /src/environments/environment.prod.ts

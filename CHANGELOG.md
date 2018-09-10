@@ -1,3 +1,7 @@
+## 2.0.0
+* Switched from Contentful SDK to REST API because of a problem with NativeScript compatibility
+* NativeScript sharing code ready!
+
 ## 1.0.0
 * Ready for publishing
 

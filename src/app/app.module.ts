@@ -14,8 +14,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MainModule } from './main/main.module';
-import { TabsComponent } from './main/containers/tabs/tabs.component';
-import { HomeComponent } from './home/containers/home/home.component';
+import { HomeComponent } from './home/home.component';
 import { EventsModule } from './events/events.module';
 import { TeamModule } from './team/team.module';
 import * as Hammer from 'hammerjs';
@@ -29,9 +28,9 @@ import localePl from '@angular/common/locales/pl';
 import { SettingsService } from './services/settings.service';
 import { BlogModule } from './blog/blog.module';
 import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
-import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
 import { MetatagsService } from './services/metatags.service';
 import { GdgDisclaimerComponent } from './home/components/gdg-disclaimer/gdg-disclaimer.component';
+
 
 registerLocaleData(localePl);
 
@@ -54,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    HomeContentCardComponent,    
+    HomeContentCardComponent,
     GdgDisclaimerComponent
   ],
   imports: [
