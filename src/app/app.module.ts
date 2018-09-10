@@ -30,6 +30,7 @@ import { BlogModule } from './blog/blog.module';
 import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
 import { MetatagsService } from './services/metatags.service';
 import { GdgDisclaimerComponent } from './home/components/gdg-disclaimer/gdg-disclaimer.component';
+import { App2Component } from '~/app/app2.component';
 
 
 registerLocaleData(localePl);
@@ -52,6 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    App2Component,
     HomeComponent,
     HomeContentCardComponent,
     GdgDisclaimerComponent
