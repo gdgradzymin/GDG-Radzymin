@@ -28,10 +28,9 @@ import localePl from '@angular/common/locales/pl';
 import { SettingsService } from './services/settings.service';
 import { BlogModule } from './blog/blog.module';
 import { HomeContentCardComponent } from './home/components/home-content-card/home-content-card.component';
-import { MdToHtmlPipe } from './pipes/md-to-html.pipe';
 import { MetatagsService } from './services/metatags.service';
 import { GdgDisclaimerComponent } from './home/components/gdg-disclaimer/gdg-disclaimer.component';
-import { ContentfulService } from '~/app/services/contentful.service';
+
 
 registerLocaleData(localePl);
 

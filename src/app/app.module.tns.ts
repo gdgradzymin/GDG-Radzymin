@@ -11,7 +11,14 @@ import { HomeComponent } from './home/home.component';
 
 // Uncomment and add to NgModule imports  if you need to use the HTTP wrapper
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
-import { ContentfulService } from '~/app/services/contentful.service';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 
 @NgModule({
   declarations: [
@@ -21,7 +28,15 @@ import { ContentfulService } from '~/app/services/contentful.service';
   imports: [
     NativeScriptModule,
     AppRoutingModule,
-    NativeScriptHttpClientModule
+    NativeScriptHttpClientModule,
+    TranslateModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
   ],

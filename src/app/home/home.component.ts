@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadHomeItems() {
     this.homeItems$ = this.contentful.getHomeContent(100, true, true);
-    this.contentful.logHomeContent();
+    // this.contentful.logHomeContent();
   }
 
   ngOnDestroy() {

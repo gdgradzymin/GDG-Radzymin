@@ -32,10 +32,10 @@ export class ContentfulService {
     environment.contentful.spaceId
   }/environments/master/entries?access_token=${environment.contentful.token}`;
 
-  private clinet = createClient({
-    space: environment.contentful.spaceId,
-    accessToken: environment.contentful.token
-  });
+  // private clinet = createClient({
+  //   space: environment.contentful.spaceId,
+  //   accessToken: environment.contentful.token
+  // });
 
   constructor(private settings: SettingsService, private http: HttpClient) {}
 
@@ -44,7 +44,7 @@ export class ContentfulService {
       environment.contentful.spaceId
     }/environments/master/entries/${entryId}?access_token=${
       environment.contentful.token
-    }?`;
+    }`;
   }
 
   getContentfulUrlParameters(params: Object): string {
@@ -280,35 +280,45 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           const links: Entry<any>[] = entries.includes.Entry;
-          console.log('Assets: ', assets);
-          console.log('Entries: ', links);
-
-          // TODO: zrobić prawidłowe pobieranie z links i assets
 
           return entries.items.map(item => {
-            // const profileImg = this.getAssetById(assets, )
-            console.log('Item: ', item);
+            const author = this.getEntryById(links, item.fields.author.sys.id);
+            const authorPhoto = this.getAssetById(
+              assets,
+              author.fields.profilePhoto.sys.id
+            );
+            const photoSmall = this.getAssetById(
+              assets,
+              item.fields.postPhotoSmall.sys.id
+            );
+            const postPhoto = this.getAssetById(
+              assets,
+              item.fields.postPhoto.sys.id
+            );
+            const blogPostLinks = this.getEntriesByContentType(
+              links,
+              GdgContentTypes.BLOG_POST_LINK
+            );
+
             return new GdgBlogPost(
               item.sys.id,
               item.fields.title,
               item.fields.postDate,
-              item.fields.postPhoto.fields.file.url,
-              item.fields.postPhotoSmall.fields.file.url,
+              postPhoto.fields.file.url,
+              photoSmall.fields.file.url,
               item.fields.content,
               item.fields.contentShort,
               new GdgTeamMember(
-                item.fields.author.fields.name,
-                item.fields.author.fields.tags,
-                item.fields.author.fields.profilePhoto
-                  ? item.fields.author.fields.profilePhoto.fields.file.url
-                  : undefined,
-                item.fields.author.fields.linkedinUrl,
-                item.fields.author.fields.twitterUrl,
-                item.fields.author.fields.githubUrl
+                author.fields.name,
+                author.fields.tags,
+                authorPhoto ? authorPhoto.fields.file.url : undefined,
+                author.fields.linkedinUrl,
+                author.fields.twitterUrl,
+                author.fields.githubUrl
               ),
               item.fields.keywords,
-              item.fields.links ? item.fields.links : undefined,
-              item.fields.photos ? item.fields.photos : undefined
+              blogPostLinks ? blogPostLinks : undefined,
+              undefined
             );
           });
         }),
@@ -455,11 +465,38 @@ export class ContentfulService {
     // );
   }
 
-  getAssetById(assetArray: Asset[], id: string): any {
+  private getAssetById(assetArray: Asset[], id: string): any {
     if (assetArray && assetArray.length > 0) {
       const newArray = assetArray.filter((item: Asset) => item.sys.id === id);
       if (newArray && newArray.length > 0) {
         return newArray[0];
+      }
+    }
+    return {};
+  }
+
+  private getEntryById(entriesArray: Entry<any>[], id: string): any {
+    if (entriesArray && entriesArray.length > 0) {
+      const newArray = entriesArray.filter(
+        (item: Entry<any>) => item.sys.id === id
+      );
+      if (newArray && newArray.length > 0) {
+        return newArray[0];
+      }
+    }
+    return {};
+  }
+
+  private getEntriesByContentType(
+    entriesArray: Entry<any>[],
+    contentType: GdgContentTypes
+  ): any {
+    if (entriesArray && entriesArray.length > 0) {
+      const newArray = entriesArray.filter(
+        (item: Entry<any>) => item.sys.contentType.sys.id === contentType
+      );
+      if (newArray && newArray.length > 0) {
+        return newArray;
       }
     }
     return {};
@@ -613,34 +650,48 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           if (entries && entries.items && entries.items[0]) {
             const assets: Asset[] = entries.includes.Asset;
-            const img = this.getAssetById(assets, entries.items[0].fields.image.sys.id);
-            // console.log('getBlogPost.entry: ', entries.items[0]);
+            const links: Entry<any>[] = entries.includes.Entry;
+
+            const author = this.getEntryById(
+              links,
+              entries.items[0].fields.author.sys.id
+            );
+            const authorPhoto = this.getAssetById(
+              assets,
+              author.fields.profilePhoto.sys.id
+            );
+            const photoSmall = this.getAssetById(
+              assets,
+              entries.items[0].fields.postPhotoSmall.sys.id
+            );
+            const postPhoto = this.getAssetById(
+              assets,
+              entries.items[0].fields.postPhoto.sys.id
+            );
+            const blogPostLinks = this.getEntriesByContentType(
+              links,
+              GdgContentTypes.BLOG_POST_LINK
+            );
+
             return new GdgBlogPost(
               entries.items[0].sys.id,
               entries.items[0].fields.title,
               entries.items[0].fields.postDate,
-              entries.items[0].fields.postPhoto.fields.file.url,
-              entries.items[0].fields.postPhotoSmall.fields.file.url,
+              postPhoto.fields.file.url,
+              photoSmall.fields.file.url,
               entries.items[0].fields.content,
               entries.items[0].fields.contentShort,
               new GdgTeamMember(
-                entries.items[0].fields.author.fields.name,
-                entries.items[0].fields.author.fields.tags,
-                entries.items[0].fields.author.fields.profilePhoto
-                  ? entries.items[0].fields.author.fields.profilePhoto.fields
-                      .file.url
-                  : undefined,
-                entries.items[0].fields.author.fields.linkedinUrl,
-                entries.items[0].fields.author.fields.twitterUrl,
-                entries.items[0].fields.author.fields.githubUrl
+                author.fields.name,
+                author.fields.tags,
+                authorPhoto ? authorPhoto.fields.file.url : undefined,
+                author.fields.linkedinUrl,
+                author.fields.twitterUrl,
+                author.fields.githubUrl
               ),
               entries.items[0].fields.keywords,
-              entries.items[0].fields.links
-                ? entries.items[0].fields.links
-                : undefined,
-              entries.items[0].fields.photos
-                ? entries.items[0].fields.photos
-                : undefined
+              blogPostLinks ? blogPostLinks : undefined,
+              undefined // post photos TODO: load an array of photos from entries
             );
           }
         })
@@ -798,22 +849,28 @@ export class ContentfulService {
   // }
 
   getTeamMembers(howMany: number): Observable<GdgTeamMember[]> {
-    const promise: Promise<
-      EntryCollection<GdgTeamMember[]>
-    > = this.clinet.getEntries({
+    const query = {
       content_type: GdgContentTypes.TEAM_MEMBER,
       locale: this.settings.getLocale(),
       order: 'sys.createdAt',
       limit: howMany
-    });
-    return from(promise).pipe(
+    };
+    return this.http
+    .get(
+      `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+        query
+      )}`,
+      { responseType: 'json' }
+    ).pipe(
       map((entries: EntryCollection<any>) => {
+        const assets: Asset[] = entries.includes.Asset;
         return entries.items.map(item => {
+          const profilePhoto = this.getAssetById(assets, item.fields.profilePhoto.sys.id);
           return new GdgTeamMember(
             item.fields.name,
             item.fields.tags,
-            item.fields.profilePhoto
-              ? item.fields.profilePhoto.fields.file.url
+            profilePhoto
+              ? profilePhoto.fields.file.url
               : undefined,
             item.fields.linkedinUrl,
             item.fields.twitterUrl,
