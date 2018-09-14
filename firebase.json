@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/gdg-radzymin",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
