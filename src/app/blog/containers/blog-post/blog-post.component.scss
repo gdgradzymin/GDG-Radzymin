@@ -6,6 +6,16 @@
 
 }
 
+:host ::ng-deep .image {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+:host ::ng-deep .plain-container {
+  display: block;
+}
+
+
 .blog-post-header-photo {
   width: 100%;
   height: auto;
@@ -24,6 +34,14 @@
 
 .blog-post-content {
   text-align: justify;
+  align-content: center;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.blog-post-photos {
+  text-align: center;
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;

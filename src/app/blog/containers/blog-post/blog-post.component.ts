@@ -1,16 +1,25 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GdgBlogPost } from '../../../models/gdg-blog-post.model';
-import { ContentfulService } from '../../../services/contentful.service';
-import { Subscription, Observable } from 'rxjs';
-import { SettingsService, Lang } from '../../../services/settings.service';
-import { GdgBlogPostLink } from '../../../models/gdg-blog-post-link.model';
-import { MetatagsService } from '../../../services/metatags.service';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
+import { ContentfulService } from "../../../services/contentful.service";
+import { Subscription, Observable } from "rxjs";
+import { SettingsService, Lang } from "../../../services/settings.service";
+import { GdgBlogPostLink } from "../../../models/gdg-blog-post-link.model";
+import { MetatagsService } from "../../../services/metatags.service";
+import {
+  Image,
+  PlainGalleryConfig,
+  PlainGalleryStrategy,
+  LineLayout,
+  GridLayout,
+  Description,
+  DescriptionStrategy
+} from "angular-modal-gallery";
 
 @Component({
-  selector: 'app-blog-post',
-  templateUrl: './blog-post.component.html',
-  styleUrls: ['./blog-post.component.scss']
+  selector: "app-blog-post",
+  templateUrl: "./blog-post.component.html",
+  styleUrls: ["./blog-post.component.scss"]
 })
 export class BlogPostComponent implements OnInit, OnDestroy {
   postLink: string;
@@ -21,6 +30,26 @@ export class BlogPostComponent implements OnInit, OnDestroy {
   blogSub: Subscription;
   langSub: Subscription;
   blogPostLinkSub: Subscription;
+
+  plainGalleryColumn: PlainGalleryConfig = {
+    strategy: PlainGalleryStrategy.GRID,
+    layout: new GridLayout(
+      { width: "98%", height: "auto" },
+      { length: 1, wrap: true }
+    )
+  };
+
+  plainGalleryGrid: PlainGalleryConfig = {
+    strategy: PlainGalleryStrategy.GRID,
+    layout: new GridLayout(
+      { width: "18%", height: "auto" },
+      { length: 5, wrap: true }
+    )
+  };
+
+  customDescription: Description = {
+    strategy: DescriptionStrategy.ALWAYS_HIDDEN
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -33,20 +62,20 @@ export class BlogPostComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.settings.setNavTabsVisible(false);
     this.settings.setGoBackBtnVisible(true);
-    this.settings.setGoBackTo('blog');
+    this.settings.setGoBackTo("blog");
     this.settings.setMenuBtnVisible(false);
 
     this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
       // it's time to change reload content
       // console.log('blog post zmiana języka!');
       if (this.blogPost) {
-        const url = '/blog/' + this.blogPost.getLink(lang.locale);
+        const url = "/blog/" + this.blogPost.getLink(lang.locale);
         this.router.navigateByUrl(url);
       }
     });
 
     this.routeSub = this.route.paramMap.subscribe(params => {
-      this.postLink = params.get('postLink');
+      this.postLink = params.get("postLink");
       if (this.postLink) {
         this.blogPostLinkSub = this.contentful
           .getBlogPostLink(this.postLink.toLowerCase())
@@ -56,6 +85,16 @@ export class BlogPostComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  private getImagesArray(): Array<Image> {
+    if (this.blogPost.photos) {
+      return this.blogPost.photos.map((imgstr: string, index: number) => {
+        return new Image(index, { img: imgstr });
+      });
+    } else {
+      return new Array<Image>();
+    }
   }
 
   private loadBlogPost(id: string, locale: string) {
@@ -72,7 +111,7 @@ export class BlogPostComponent implements OnInit, OnDestroy {
       },
       error: (error: any) => {
         // in case of error
-        console.log('An error during blog post loading!');
+        console.log("An error during blog post loading!");
       }
     });
   }

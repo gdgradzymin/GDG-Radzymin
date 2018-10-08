@@ -1,5 +1,5 @@
-import { GdgTeamMember } from './gdg-team-member.model';
-import { GdgBlogPostLink } from './gdg-blog-post-link.model';
+import { GdgTeamMember } from "./gdg-team-member.model";
+import { GdgBlogPostLink } from "./gdg-blog-post-link.model";
 
 export interface GdgBlogPostModel {
   id: string;
@@ -47,8 +47,6 @@ export class GdgBlogPost implements GdgBlogPostModel {
       });
       //  console.log('GdgBlog.constructor(): found photos = ', this.photos);
     }
-
-
   }
 
   getLink(locale: string): string {
@@ -61,7 +59,7 @@ export class GdgBlogPost implements GdgBlogPostModel {
     if (link) {
       return link;
     } else {
-      return '';
+      return "";
     }
   }
 }

@@ -1,33 +1,33 @@
-import { Injectable } from '@angular/core';
-import { createClient, EntryCollection, Entry, Asset } from 'contentful';
-import { environment } from '../../environments/environment.prod';
-import { from, Observable, of, empty, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import * as marked from 'marked';
-import { GdgEvent } from '../models/gdg-event.model';
-import { GdgTeamMember } from '../models/gdg-team-member.model';
-import { SettingsService } from './settings.service';
-import { GdgBlogPost } from '../models/gdg-blog-post.model';
-import { GdgContactInfo } from '../models/gdg-contact-info.model';
-import { GdgBlogPostLink } from '../models/gdg-blog-post-link.model';
-import { GdgHomeContent } from '../models/gdg-home-content.model';
-import { GdgImage } from '../models/gdg-image.model';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { createClient, EntryCollection, Entry, Asset } from "contentful";
+import { environment } from "../../environments/environment.prod";
+import { from, Observable, of, empty, throwError } from "rxjs";
+import { map, catchError } from "rxjs/operators";
+import * as marked from "marked";
+import { GdgEvent } from "../models/gdg-event.model";
+import { GdgTeamMember } from "../models/gdg-team-member.model";
+import { SettingsService } from "./settings.service";
+import { GdgBlogPost } from "../models/gdg-blog-post.model";
+import { GdgContactInfo } from "../models/gdg-contact-info.model";
+import { GdgBlogPostLink } from "../models/gdg-blog-post-link.model";
+import { GdgHomeContent } from "../models/gdg-home-content.model";
+import { GdgImage } from "../models/gdg-image.model";
+import { HttpClient } from "@angular/common/http";
 
 export enum GdgContentTypes {
-  EVENT = 'event',
-  TEAM_MEMBER = 'teamMember',
-  CONTACT_INFO = 'contactInfo',
-  BLOG_POST = 'blogPost',
-  BLOG_POST_LINK = 'blogPostLink',
-  HOME_CONTENT = 'homeContent'
+  EVENT = "event",
+  TEAM_MEMBER = "teamMember",
+  CONTACT_INFO = "contactInfo",
+  BLOG_POST = "blogPost",
+  BLOG_POST_LINK = "blogPostLink",
+  HOME_CONTENT = "homeContent"
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ContentfulService {
-  private readonly CONTENTFUL_URL = 'https://cdn.contentful.com';
+  private readonly CONTENTFUL_URL = "https://cdn.contentful.com";
   private readonly CONTENTFUL_URL_ENTRIES = `${this.CONTENTFUL_URL}/spaces/${
     environment.contentful.spaceId
   }/environments/master/entries?access_token=${environment.contentful.token}`;
@@ -50,7 +50,7 @@ export class ContentfulService {
   getContentfulUrlParameters(params: Object): string {
     return Object.entries(params)
       .map(([key, val]) => `${key}=${val}`)
-      .join('&');
+      .join("&");
   }
 
   logContent(contentId: string): void {
@@ -61,9 +61,9 @@ export class ContentfulService {
     this.http
       .get(`${this.getContentfulUrlEntry(contentId)}`)
       .subscribe(
-        resp => console.log('Content from logContent: ', resp),
-        err => console.log('An error in logContent: ', err),
-        () => console.log('logContent completed!')
+        resp => console.log("Content from logContent: ", resp),
+        err => console.log("An error in logContent: ", err),
+        () => console.log("logContent completed!")
       );
   }
 
@@ -83,9 +83,9 @@ export class ContentfulService {
         }&locale=${this.settings.getLocale()}&order=sys.createdAt`
       )
       .subscribe(
-        resp => console.log('Content from logEvents: ', resp),
-        err => console.log('An error in logEvents: ', err),
-        () => console.log('logEvents completed!')
+        resp => console.log("Content from logEvents: ", resp),
+        err => console.log("An error in logEvents: ", err),
+        () => console.log("logEvents completed!")
       );
   }
 
@@ -105,9 +105,9 @@ export class ContentfulService {
         }&locale=${this.settings.getLocale()}&order=sys.createdAt`
       )
       .subscribe(
-        resp => console.log('Content from logTeamMembers: ', resp),
-        err => console.log('An error in logTeamMembers: ', err),
-        () => console.log('logTeamMembers completed!')
+        resp => console.log("Content from logTeamMembers: ", resp),
+        err => console.log("An error in logTeamMembers: ", err),
+        () => console.log("logTeamMembers completed!")
       );
   }
 
@@ -127,9 +127,9 @@ export class ContentfulService {
         }&locale=${this.settings.getLocale()}&order=sys.createdAt`
       )
       .subscribe(
-        resp => console.log('Content from logBlogPosts: ', resp),
-        err => console.log('An error in logBlogPosts: ', err),
-        () => console.log('logBlogPosts completed!')
+        resp => console.log("Content from logBlogPosts: ", resp),
+        err => console.log("An error in logBlogPosts: ", err),
+        () => console.log("logBlogPosts completed!")
       );
   }
 
@@ -149,9 +149,9 @@ export class ContentfulService {
         }&locale=${this.settings.getLocale()}&order=sys.createdAt`
       )
       .subscribe(
-        resp => console.log('Content from logContactInfo: ', resp),
-        err => console.log('An error in logContactInfo: ', err),
-        () => console.log('logContactInfo completed!')
+        resp => console.log("Content from logContactInfo: ", resp),
+        err => console.log("An error in logContactInfo: ", err),
+        () => console.log("logContactInfo completed!")
       );
   }
 
@@ -172,9 +172,9 @@ export class ContentfulService {
         }&locale=${this.settings.getLocale()}&order=sys.createdAt`
       )
       .subscribe(
-        resp => console.log('Content from logHomeContent: ', resp),
-        err => console.log('An error in logHomeContent: ', err),
-        () => console.log('logHomeContent completed!')
+        resp => console.log("Content from logHomeContent: ", resp),
+        err => console.log("An error in logHomeContent: ", err),
+        () => console.log("logHomeContent completed!")
       );
   }
 
@@ -200,16 +200,16 @@ export class ContentfulService {
     };
     if (!showPast) {
       const today = new Date();
-      Object.assign(query, { 'fields.hiddenEventDate[gt]': today.toJSON() });
+      Object.assign(query, { "fields.hiddenEventDate[gt]": today.toJSON() });
     }
 
     if (gdgRadzyminOnly) {
-      Object.assign(query, { 'fields.isOrganizerGdgRadzymin': true });
+      Object.assign(query, { "fields.isOrganizerGdgRadzymin": true });
     }
 
     const orderBy = sortAsc
-      ? 'fields.hiddenEventDate'
-      : '-fields.hiddenEventDate';
+      ? "fields.hiddenEventDate"
+      : "-fields.hiddenEventDate";
     Object.assign(query, { order: orderBy });
 
     return this.http
@@ -217,7 +217,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<GdgEvent>) => {
@@ -266,7 +266,7 @@ export class ContentfulService {
       limit: howMany,
       include: 1
     };
-    const orderBy = sortAsc ? 'fields.postDate' : '-fields.postDate';
+    const orderBy = sortAsc ? "fields.postDate" : "-fields.postDate";
     Object.assign(query, { order: orderBy });
 
     return this.http
@@ -274,7 +274,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
@@ -323,7 +323,7 @@ export class ContentfulService {
           });
         }),
         catchError((error: any, caught: Observable<GdgBlogPost[]>) => {
-          console.log('error during fetching blogPosts: ', error);
+          console.log("error during fetching blogPosts: ", error);
           return empty();
         })
       );
@@ -395,11 +395,11 @@ export class ContentfulService {
       limit: howMany,
       include: 1
     };
-    const orderBy = sortAsc ? 'fields.order' : '-fields.order';
+    const orderBy = sortAsc ? "fields.order" : "-fields.order";
     Object.assign(query, { order: orderBy });
 
     if (onlyActive) {
-      Object.assign(query, { 'fields.active': true });
+      Object.assign(query, { "fields.active": true });
     }
 
     return this.http
@@ -407,7 +407,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
@@ -430,7 +430,7 @@ export class ContentfulService {
           });
         }),
         catchError((error: any, caught: Observable<GdgHomeContent[]>) => {
-          console.log('Błąd w home: ', error);
+          console.log("Błąd w home: ", error);
           return empty();
         })
       );
@@ -471,6 +471,16 @@ export class ContentfulService {
       if (newArray && newArray.length > 0) {
         return newArray[0];
       }
+    }
+    return {};
+  }
+
+  private getAssetsByIds(assetArray: Asset[], ids: Array<string>): any {
+    if (assetArray && assetArray.length > 0 && ids && ids.length > 0) {
+      const newArray = assetArray.filter((item: Asset) => {
+        return ids.includes(item.sys.id);
+      });
+      return newArray;
     }
     return {};
   }
@@ -522,8 +532,8 @@ export class ContentfulService {
   getBlogPostLink(link: string): Observable<GdgBlogPostLink> {
     const query = {
       content_type: GdgContentTypes.BLOG_POST_LINK,
-      'fields.link': link,
-      order: '-sys.createdAt',
+      "fields.link": link,
+      order: "-sys.createdAt",
       include: 1,
       limit: 1
     };
@@ -533,7 +543,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
@@ -574,8 +584,8 @@ export class ContentfulService {
   ): Observable<GdgBlogPostLink[]> {
     const query = {
       content_type: GdgContentTypes.BLOG_POST_LINK,
-      'fields.blogPost.sys.id': blogPostId,
-      order: '-sys.createdAt',
+      "fields.blogPost.sys.id": blogPostId,
+      order: "-sys.createdAt",
       include: 1
     };
 
@@ -584,7 +594,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
@@ -634,7 +644,7 @@ export class ContentfulService {
     const query = {
       content_type: GdgContentTypes.BLOG_POST,
       locale: locale,
-      'sys.id': id,
+      "sys.id": id,
       include: 1,
       limit: 1
     };
@@ -644,13 +654,22 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
           if (entries && entries.items && entries.items[0]) {
+           // console.log("Entries", entries);
             const assets: Asset[] = entries.includes.Asset;
             const links: Entry<any>[] = entries.includes.Entry;
+            let postPhotos = null;
+            if (entries.items[0].fields.photos) {
+              const photosIds: Array<string> = entries.items[0].fields.photos.map(item => item.sys.id);
+              postPhotos = this.getAssetsByIds(
+                assets,
+                photosIds
+              );
+            }
 
             const author = this.getEntryById(
               links,
@@ -673,6 +692,9 @@ export class ContentfulService {
               GdgContentTypes.BLOG_POST_LINK
             );
 
+
+           // console.log("Post photos", postPhotos);
+
             return new GdgBlogPost(
               entries.items[0].sys.id,
               entries.items[0].fields.title,
@@ -691,7 +713,7 @@ export class ContentfulService {
               ),
               entries.items[0].fields.keywords,
               blogPostLinks ? blogPostLinks : undefined,
-              undefined // post photos TODO: load an array of photos from entries
+              postPhotos ? postPhotos : undefined,
             );
           }
         })
@@ -754,8 +776,8 @@ export class ContentfulService {
     const query = {
       content_type: GdgContentTypes.CONTACT_INFO,
       locale: this.settings.getLocale(),
-      order: '-sys.createdAt',
-      'fields.active': true,
+      order: "-sys.createdAt",
+      "fields.active": true,
       limit: 1
     };
 
@@ -764,7 +786,7 @@ export class ContentfulService {
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
           query
         )}`,
-        { responseType: 'json' }
+        { responseType: "json" }
       )
       .pipe(
         map((entries: EntryCollection<any>) => {
@@ -852,33 +874,35 @@ export class ContentfulService {
     const query = {
       content_type: GdgContentTypes.TEAM_MEMBER,
       locale: this.settings.getLocale(),
-      order: 'sys.createdAt',
+      order: "sys.createdAt",
       limit: howMany
     };
     return this.http
-    .get(
-      `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
-        query
-      )}`,
-      { responseType: 'json' }
-    ).pipe(
-      map((entries: EntryCollection<any>) => {
-        const assets: Asset[] = entries.includes.Asset;
-        return entries.items.map(item => {
-          const profilePhoto = this.getAssetById(assets, item.fields.profilePhoto.sys.id);
-          return new GdgTeamMember(
-            item.fields.name,
-            item.fields.tags,
-            profilePhoto
-              ? profilePhoto.fields.file.url
-              : undefined,
-            item.fields.linkedinUrl,
-            item.fields.twitterUrl,
-            item.fields.githubUrl
-          );
-        });
-      })
-    );
+      .get(
+        `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+          query
+        )}`,
+        { responseType: "json" }
+      )
+      .pipe(
+        map((entries: EntryCollection<any>) => {
+          const assets: Asset[] = entries.includes.Asset;
+          return entries.items.map(item => {
+            const profilePhoto = this.getAssetById(
+              assets,
+              item.fields.profilePhoto.sys.id
+            );
+            return new GdgTeamMember(
+              item.fields.name,
+              item.fields.tags,
+              profilePhoto ? profilePhoto.fields.file.url : undefined,
+              item.fields.linkedinUrl,
+              item.fields.twitterUrl,
+              item.fields.githubUrl
+            );
+          });
+        })
+      );
   }
 
   // getTeamMembersFull(howMany: number): Observable<GdgTeamMember[]> {
