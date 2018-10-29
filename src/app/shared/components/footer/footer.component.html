@@ -7,7 +7,7 @@
   </div>
 
   <div *ngIf="contactInfo?.twitterUrl">
-    <a mat-icon-button target="_blank" href="contactInfo?.twitterUrl"
+    <a mat-icon-button target="_blank" href="{{contactInfo?.twitterUrl}}"
     matTooltip="{{'followusontwitter' | translate}}"  matTooltipClass="tooltip-link">
       <fa-icon [icon]="faTwitter" class="links"></fa-icon>
     </a>

@@ -280,7 +280,7 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           const links: Entry<any>[] = entries.includes.Entry;
-
+          console.log("Blog posts: ", entries);
           return entries.items.map(item => {
             const author = this.getEntryById(links, item.fields.author.sys.id);
             const authorPhoto = this.getAssetById(
@@ -297,7 +297,8 @@ export class ContentfulService {
             );
             const blogPostLinks = this.getEntriesByContentType(
               links,
-              GdgContentTypes.BLOG_POST_LINK
+              GdgContentTypes.BLOG_POST_LINK,
+              this.settings.getLocale()
             );
 
             return new GdgBlogPost(
@@ -499,12 +500,20 @@ export class ContentfulService {
 
   private getEntriesByContentType(
     entriesArray: Entry<any>[],
-    contentType: GdgContentTypes
+    contentType: GdgContentTypes,
+    locale?: string
   ): any {
     if (entriesArray && entriesArray.length > 0) {
-      const newArray = entriesArray.filter(
-        (item: Entry<any>) => item.sys.contentType.sys.id === contentType
-      );
+      const newArray = entriesArray.filter((item: Entry<any>) => {
+        if (locale) {
+          return (
+            item.sys.contentType.sys.id === contentType &&
+            item.sys.locale.toLowerCase === locale.toLowerCase
+          );
+        } else {
+          return item.sys.contentType.sys.id === contentType;
+        }
+      });
       if (newArray && newArray.length > 0) {
         return newArray;
       }
@@ -659,16 +668,15 @@ export class ContentfulService {
       .pipe(
         map((entries: EntryCollection<any>) => {
           if (entries && entries.items && entries.items[0]) {
-           // console.log("Entries", entries);
+            // console.log("Entries", entries);
             const assets: Asset[] = entries.includes.Asset;
             const links: Entry<any>[] = entries.includes.Entry;
             let postPhotos = null;
             if (entries.items[0].fields.photos) {
-              const photosIds: Array<string> = entries.items[0].fields.photos.map(item => item.sys.id);
-              postPhotos = this.getAssetsByIds(
-                assets,
-                photosIds
-              );
+              const photosIds: Array<
+                string
+              > = entries.items[0].fields.photos.map(item => item.sys.id);
+              postPhotos = this.getAssetsByIds(assets, photosIds);
             }
 
             const author = this.getEntryById(
@@ -692,8 +700,7 @@ export class ContentfulService {
               GdgContentTypes.BLOG_POST_LINK
             );
 
-
-           // console.log("Post photos", postPhotos);
+            // console.log("Post photos", postPhotos);
 
             return new GdgBlogPost(
               entries.items[0].sys.id,
@@ -713,7 +720,7 @@ export class ContentfulService {
               ),
               entries.items[0].fields.keywords,
               blogPostLinks ? blogPostLinks : undefined,
-              postPhotos ? postPhotos : undefined,
+              postPhotos ? postPhotos : undefined
             );
           }
         })
