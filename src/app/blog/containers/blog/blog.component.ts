@@ -17,15 +17,15 @@ import { MetatagsService } from '../../../services/metatags.service';
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
-  styleUrls: ['./blog.component.scss'],
+  styleUrls: ["./blog.component.scss"],
   animations: [
-    trigger('listAnimation', [
-      transition('* => *', [
-        query(':enter', style({ opacity: 0 }), { optional: true }),
+    trigger("listAnimation", [
+      transition("* => *", [
+        query(":enter", style({ opacity: 0 }), { optional: true }),
         query(
-          ':enter',
-          stagger('300ms', [
-            animate('800ms 300ms ease-out', style({ opacity: 1 }))
+          ":enter",
+          stagger("300ms", [
+            animate("800ms 300ms ease-out", style({ opacity: 1 }))
           ]),
           { optional: true }
         )
@@ -54,19 +54,19 @@ export class BlogComponent implements OnInit, OnDestroy {
       // it's time to change reload content
       this.lang = lang;
       this.pageDescSub = this.translate
-        .get('blogpagedesc')
+        .get("blogpagedesc")
         .subscribe((desc: string) => {
           this.meta.updateMetaDesc(desc);
         });
 
       this.pageTitleSub = this.translate
-        .get('blogpagetitle')
+        .get("blogpagetitle")
         .subscribe((t: string) => {
           this.meta.updateTitle(t);
         });
 
       this.pageKeywordsSub = this.translate
-        .get('blogpagekeywords')
+        .get("blogpagekeywords")
         .subscribe((k: string) => {
           this.meta.updateMetaKeywords(k);
         });

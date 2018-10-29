@@ -280,7 +280,6 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           const links: Entry<any>[] = entries.includes.Entry;
-          console.log("Blog posts: ", entries);
           return entries.items.map(item => {
             const author = this.getEntryById(links, item.fields.author.sys.id);
             const authorPhoto = this.getAssetById(
@@ -299,7 +298,9 @@ export class ContentfulService {
               links,
               GdgContentTypes.BLOG_POST_LINK,
               this.settings.getLocale()
-            );
+            ).filter((itemPostLink: Entry<any>) => {
+              return itemPostLink.fields.blogPost.sys.id === item.sys.id;
+            });
 
             return new GdgBlogPost(
               item.sys.id,
