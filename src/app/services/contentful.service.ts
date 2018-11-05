@@ -13,6 +13,7 @@ import { GdgBlogPostLink } from "../models/gdg-blog-post-link.model";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
 import { GdgImage } from "../models/gdg-image.model";
 import { HttpClient } from "@angular/common/http";
+import { GdgDevFest } from "../models/gdg-devfest.model";
 
 export enum GdgContentTypes {
   EVENT = "event",
@@ -20,7 +21,8 @@ export enum GdgContentTypes {
   CONTACT_INFO = "contactInfo",
   BLOG_POST = "blogPost",
   BLOG_POST_LINK = "blogPostLink",
-  HOME_CONTENT = "homeContent"
+  HOME_CONTENT = "homeContent",
+  DEVFEST = "devFest"
 }
 
 @Injectable({
@@ -465,6 +467,64 @@ export class ContentfulService {
     //     return empty();
     //   })
     // );
+  }
+
+  getDevFests(
+    howMany: number,
+    sortAsc: boolean,
+    onlyCurrent: boolean
+  ): Observable<Array<GdgDevFest>> {
+
+    const query = {
+      content_type: GdgContentTypes.DEVFEST,
+      locale: this.settings.getLocale(),
+      limit: howMany,
+      include: 1
+    };
+    const orderBy = sortAsc ? "fields.year" : "-fields.year";
+    Object.assign(query, { order: orderBy });
+
+    if (onlyCurrent) {
+      Object.assign(query, { "fields.isCurrent": true });
+    }
+
+
+    return this.http
+      .get(
+        `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+          query
+        )}`,
+        { responseType: "json" }
+      )
+      .pipe(
+        map((entries: EntryCollection<any>) => {
+          const assets: Asset[] = entries.includes.Asset;
+          return entries.items.map((item: Entry<GdgDevFest | any>) => {
+           // const img = this.getAssetById(assets, item.fields.descriptionImage.sys.id);
+            return new GdgDevFest(
+              item.fields.isCurrent,
+              item.fields.year,
+              item.fields.title,
+              item.fields.eventStartDate,
+              item.fields.eventEndDate,
+              item.fields.descriptionTitle,
+              item.fields.description,
+              item.fields.descriptionImage
+                ? new GdgImage("descImage", "descImage", "descImage")
+                : undefined,
+              item.fields.shareTitle,
+              item.fields.share,
+              item.fields.shareImage
+                ? new GdgImage("shareImage", "shareImage", "shareImage")
+                : undefined
+            );
+          });
+        }),
+        catchError((error: any, caught: Observable<GdgDevFest[]>) => {
+          console.log("Błąd w devfest: ", error);
+          return empty();
+        })
+      );
   }
 
   private getAssetById(assetArray: Asset[], id: string): any {

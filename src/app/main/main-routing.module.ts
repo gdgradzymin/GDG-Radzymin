@@ -1,37 +1,42 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { EventsComponent } from '../events/containers/events/events.component';
-import { TeamComponent } from '../team/containers/team/team.component';
-import { HomeComponent } from '../home/home.component';
-import { BlogComponent } from '../blog/containers/blog/blog.component';
-import { BlogPostComponent } from '../blog/containers/blog-post/blog-post.component';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { EventsComponent } from "../events/containers/events/events.component";
+import { TeamComponent } from "../team/containers/team/team.component";
+import { HomeComponent } from "../home/home.component";
+import { BlogComponent } from "../blog/containers/blog/blog.component";
+import { BlogPostComponent } from "../blog/containers/blog-post/blog-post.component";
+import { DevFestComponent } from "../devfest/containers/devfest/devfest.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: HomeComponent
   },
   {
-    path: 'home',
+    path: "home",
     component: HomeComponent
   },
   {
-    path: 'events',
+    path: "events",
     component: EventsComponent
   },
   {
-    path: 'team',
+    path: "team",
     component: TeamComponent
   },
   {
-    path: 'blog',
+    path: "blog",
     component: BlogComponent
   },
   {
-    path: 'blog/:postLink',
+    path: "blog/:postLink",
     component: BlogPostComponent
   },
-  { path: '**',  redirectTo: '/' },
+  {
+    path: "devfest",
+    component: DevFestComponent
+  },
+  { path: "**", redirectTo: "/" }
 ];
 
 @NgModule({

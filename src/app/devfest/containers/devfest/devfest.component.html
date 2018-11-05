@@ -1,0 +1,18 @@
+<section name="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px">
+  <h1>abc</h1>
+  <h1>abc</h1>
+  <h1>abc</h1>
+  <div *ngIf="devFests$ | async as devFests; else loading">
+    <div *ngFor="let devFest of devFests">
+      <h1>{{devFest.title}}</h1>
+      <app-devfest-desc [title]="devFest.descriptionTitle" [content]="devFest.description" [image]="devFest.descriptionImage">
+      </app-devfest-desc>
+      <app-devfest-share [title]="devFest.shareTitle" [content]="devFest.share" [image]="devFest.shareImage">
+      </app-devfest-share>
+    </div>
+
+  </div>
+  <ng-template #loading>
+    <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
+  </ng-template>
+</section>
