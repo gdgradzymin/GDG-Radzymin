@@ -36,7 +36,7 @@ import { Router, NavigationEnd } from "@angular/router";
   ]
 })
 export class TabsComponent implements OnInit, OnDestroy {
-  activeLinkIndex = -1;
+  activeLinkIndex = 0;
   routerSubscription: Subscription;
   tabsState = "normal1";
   @Input() activeLinkIdx;
@@ -62,7 +62,9 @@ export class TabsComponent implements OnInit, OnDestroy {
   }
 
   private activeLinkIndexResolver(url: string) {
-    if (url.endsWith("home")) {
+    if (url.endsWith("devfest")) {
+      this.activeLinkIndex = 4;
+    } else if (url.endsWith("home")) {
       this.activeLinkIndex = 0;
     } else if (url.endsWith("events")) {
       this.activeLinkIndex = 1;

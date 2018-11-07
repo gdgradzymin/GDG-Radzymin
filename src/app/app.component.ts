@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   url$: Observable<string>;
   urlState$: Observable<string>;
   routeLinks: any[];
-  activeLinkIndex = -1;
+  activeLinkIndex = 0;
   langs: Lang[] = [];
   selectedLang: string;
   contactInfo$: Observable<GdgContactInfo>;
@@ -54,13 +54,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   ) {
     this.langs = this.settings.getLanguages();
     this.routeLinks = [
-      {
-        icon: "adb",
-        link: "./devfest",
-        label: "devfest",
-        index: -1,
-        iconClass: { "icon-adb": true }
-      },
       {
         icon: "home",
         link: "./home",
@@ -88,7 +81,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         label: "blog",
         index: 3,
         iconClass: { "icon-blog": true }
-      }
+      },
+      {
+        icon: "adb",
+        link: "./devfest",
+        label: "devfest",
+        index: 0,
+        iconClass: { "icon-adb": true }
+      },
     ];
 
     this.meta.addTag({ name: "description", content: "GDG Radzymin" });
@@ -224,6 +224,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
       this.activeLinkIndex = 2;
     } else if (url.endsWith("blog")) {
       this.activeLinkIndex = 3;
+    } else if (url.endsWith("devfest")) {
+      this.activeLinkIndex = 4;
     } else {
       this.activeLinkIndex = 0;
     }
