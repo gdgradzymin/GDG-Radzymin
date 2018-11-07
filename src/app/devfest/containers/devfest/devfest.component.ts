@@ -20,6 +20,7 @@ export class DevFestComponent implements OnInit, OnDestroy {
   pageDescSub: Subscription;
   pageTitleSub: Subscription;
   pageKeywordsSub: Subscription;
+  urlState$: Observable<string>;
 
 
   constructor(
@@ -55,6 +56,7 @@ export class DevFestComponent implements OnInit, OnDestroy {
         this.loadDevFests();
       });
 
+      this.urlState$ = this.settings.getUrlState();
     // this.contentful.logHomeContent();
     this.loadDevFests();
     this.contactInfo$ = this.contentful.getContactInfo();

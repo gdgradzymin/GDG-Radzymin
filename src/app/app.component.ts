@@ -2,8 +2,6 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
-  AfterContentInit,
   ChangeDetectorRef,
   AfterContentChecked,
   Inject
@@ -11,7 +9,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { Router, RouterState, NavigationEnd } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
-import { map, filter } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 import { routerTransitionTrigger } from "./main/animations/route-animations";
 import { SettingsService, Lang } from "./services/settings.service";
 import { GdgContactInfo } from "./models/gdg-contact-info.model";
@@ -182,10 +180,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         this.router.navigateByUrl("/team");
       } else if (url.endsWith("team")) {
         this.router.navigateByUrl("/blog");
+      }  else if (url.endsWith("blog")) {
+        this.router.navigateByUrl("/devfest");
       } else if (blogPostRegex.test(url)) {
         // do nothing
         return;
-      } else if (url.endsWith("blog")) {
+      } else if (url.endsWith("devfest")) {
         this.router.navigateByUrl("/home");
       } else {
         // from home
@@ -194,7 +194,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     } else {
       // swipe right
       if (url.endsWith("home")) {
-        this.router.navigateByUrl("/blog");
+        this.router.navigateByUrl("/devfest");
       } else if (url.endsWith("events")) {
         this.router.navigateByUrl("/home");
       } else if (url.endsWith("team")) {
@@ -204,8 +204,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
         return;
       } else if (url.endsWith("blog")) {
         this.router.navigateByUrl("/team");
-      } else {
+      } else if (url.endsWith("devfest")) {
         this.router.navigateByUrl("/blog");
+      } else {
+        this.router.navigateByUrl("/devfest");
       }
     }
   }
