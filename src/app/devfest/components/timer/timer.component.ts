@@ -11,7 +11,7 @@ import { timer, Subscription } from "rxjs";
 @Component({
   selector: "app-timer",
   templateUrl: "./timer.component.html",
-  styleUrls: ["./timer.component.css"]
+  styleUrls: ["./timer.component.scss"]
 })
 export class TimerComponent implements OnInit, OnDestroy {
   @Input()
@@ -32,9 +32,9 @@ export class TimerComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit() {
-    this.timerSubscription = timer(2000, 1000).subscribe((t: any) => {
+    this.timerSubscription = timer(1000, 1000).subscribe((t: any) => {
       this.milisecLeft = this.getTimeDiff(this.eventDate);
-      this.daysLeft = this.getDaysDiff(this.milisecLeft);
+      this.calculateDiff(this.milisecLeft);
     });
   }
 
@@ -53,8 +53,16 @@ export class TimerComponent implements OnInit, OnDestroy {
     return end - now;
   }
 
-  private getDaysDiff(milisecDiff: number): number {
-    return Math.floor(milisecDiff / 1000 / 60 / (60 * 24));
+  calculateDiff(milisecDiff: number): void {
+
+    this.secondsLeft = Math.floor(milisecDiff / 1000);
+    this.minutesLeft = Math.floor(this.secondsLeft / 60);
+    this.hoursLeft = Math.floor(this.minutesLeft / 60);
+    this.daysLeft = Math.floor(this.hoursLeft / 24);
+
+    this.hoursLeft %= 24;
+    this.minutesLeft %= 60;
+    this.secondsLeft %= 60;
   }
 
   ngOnDestroy(): void {

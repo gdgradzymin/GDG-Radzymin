@@ -1,0 +1,45 @@
+<div
+  style="width: 100%;height: 400px;background-color: F1F3F4;"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+>
+  <div
+    style="height: 400px;padding-right: 100px;"
+    fxLayout="column"
+    fxLayoutAlign="space-evenly end"
+  >
+    <img
+      src="/src/assets/gfx/devfest_title.png"
+      style="height: 40%;width: auto;"
+    />
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="column" fxLayoutAlign="start center">
+        <mat-icon class="devfest-header-date-icon" style="margin-right: 20px;"
+          >event</mat-icon
+        >
+      </div>
+      <div class="devfest-header-date" fxLayout="column">
+        {{ devFest.eventStartDate | date: "d MMMM y, h:mm" }}
+      </div>
+    </div>
+    <div fxLayout="column">
+      <a
+        href="{{devFest.meetupLink}}"
+        mat-flat-button
+        target="_blank"
+        style="letter-spacing: 1px;"
+        class="register-btn"
+      >
+        {{ "registration" | translate }}
+      </a>
+    </div>
+  </div>
+  <div
+    style="height: 100%;width: 425px;"
+    class="devfest-header-logo"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <app-timer [eventDate]="devFest.getEventStartDateInMilisec()"></app-timer>
+  </div>
+</div>

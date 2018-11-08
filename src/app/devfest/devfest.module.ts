@@ -6,11 +6,12 @@ import { DevFestComponent } from "./containers/devfest/devfest.component";
 import { DevfestDescComponent } from "./components/devfest-desc/devfest-desc.component";
 import { DevfestShareComponent } from "./components/devfest-share/devfest-share.component";
 import { TimerComponent } from "./components/timer/timer.component";
+import { DevfestTitleComponent } from './components/devfest-title/devfest-title.component';
 
 
 @NgModule({
   imports: [CommonModule, SharedModule, MaterialModule],
   exports: [],
-  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent]
+  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent, DevfestTitleComponent]
 })
 export class DevFestModule {}

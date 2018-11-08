@@ -439,34 +439,7 @@ export class ContentfulService {
         })
       );
 
-    // const promise: Promise<
-    //   EntryCollection<GdgHomeContent[]>
-    // > = this.clinet.getEntries(query).catch(error => {
-    //   console.log('błąd pobrania danych');
-    //   return null;
-    // });
-    // return from(promise).pipe(
-    //   map((entries: EntryCollection<any>) => {
-    //     return entries.items.map(item => {
-    //       return new GdgHomeContent(
-    //         item.fields.title,
-    //         item.fields.order,
-    //         item.fields.active,
-    //         item.fields.content,
-    //         item.fields.image
-    //           ? new GdgImage(
-    //               item.fields.image.fields.file.url,
-    //               item.fields.image.fields.title,
-    //               item.fields.image.fields.description
-    //             )
-    //           : undefined
-    //       );
-    //     });
-    //   }),
-    //   catchError((error: any, caught: Observable<GdgHomeContent[]>) => {
-    //     return empty();
-    //   })
-    // );
+
   }
 
   getDevFests(
@@ -474,7 +447,6 @@ export class ContentfulService {
     sortAsc: boolean,
     onlyCurrent: boolean
   ): Observable<Array<GdgDevFest>> {
-
     const query = {
       content_type: GdgContentTypes.DEVFEST,
       locale: this.settings.getLocale(),
@@ -488,7 +460,6 @@ export class ContentfulService {
       Object.assign(query, { "fields.isCurrent": true });
     }
 
-
     return this.http
       .get(
         `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
@@ -500,7 +471,10 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           return entries.items.map((item: Entry<GdgDevFest | any>) => {
-            const descriptionImage = this.getAssetById(assets, item.fields.descriptionImage.sys.id);
+            const descriptionImage = this.getAssetById(
+              assets,
+              item.fields.descriptionImage.sys.id
+            );
             console.log("Desc image: ", descriptionImage);
             return new GdgDevFest(
               item.fields.isCurrent,
@@ -508,10 +482,15 @@ export class ContentfulService {
               item.fields.title,
               item.fields.eventStartDate,
               item.fields.eventEndDate,
+              item.fields.meetupLink,
               item.fields.descriptionTitle,
               item.fields.description,
               item.fields.descriptionImage
-                ? new GdgImage(descriptionImage.fields.file.url, "descImage", "descImage")
+                ? new GdgImage(
+                    descriptionImage.fields.file.url,
+                    "descImage",
+                    "descImage"
+                  )
                 : undefined,
               item.fields.shareTitle,
               item.fields.share,

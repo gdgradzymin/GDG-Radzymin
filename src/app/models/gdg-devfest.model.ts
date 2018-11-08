@@ -6,12 +6,14 @@ export interface IGdgDevFest {
   title: string;
   eventStartDate: string;
   eventEndDate: string;
+  meetupLink: string;
   descriptionTitle?: string;
   description?: string;
   descriptionImage?: GdgImage;
   shareTitle?: string;
   share?: string;
   shareImage?: GdgImage;
+  
 }
 
 export class GdgDevFest implements IGdgDevFest {
@@ -21,6 +23,7 @@ export class GdgDevFest implements IGdgDevFest {
     public title: string,
     public eventStartDate: string,
     public eventEndDate: string,
+    public meetupLink: string,
     public descriptionTitle?: string,
     public description?: string,
     public descriptionImage?: GdgImage,
@@ -33,11 +36,8 @@ export class GdgDevFest implements IGdgDevFest {
   }
 
   getEventStartDateInMilisec(): number {
-    console.log("startDate: " + this.eventStartDate);
     const date = new Date(this.eventStartDate);
-    console.log("startDate as date: " + date);
     const dateMilisec = date.getTime();
-    console.log("startDate as milisec: " + dateMilisec);
     return dateMilisec;
   }
 }

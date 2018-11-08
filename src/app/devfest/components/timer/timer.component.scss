@@ -1,0 +1,19 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+.timer {
+  font-size: 1.6em;
+  width: 300px;
+  background-color: $gdg-blue;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.timer-number {
+  margin-right: 5px;
+}
+
+.timer-letter {
+  font-size: 0.6em;
+}
