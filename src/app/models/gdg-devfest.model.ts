@@ -29,5 +29,15 @@ export class GdgDevFest implements IGdgDevFest {
     public shareImage?: GdgImage
   ) {
     console.log("descTitle from constr: " + this.descriptionTitle);
+    console.log("descImage from constr: " + this.descriptionImage.imgUrl);
+  }
+
+  getEventStartDateInMilisec(): number {
+    console.log("startDate: " + this.eventStartDate);
+    const date = new Date(this.eventStartDate);
+    console.log("startDate as date: " + date);
+    const dateMilisec = date.getTime();
+    console.log("startDate as milisec: " + dateMilisec);
+    return dateMilisec;
   }
 }

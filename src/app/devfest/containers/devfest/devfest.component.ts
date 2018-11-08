@@ -10,7 +10,7 @@ import { GdgContactInfo } from "~/app/models/gdg-contact-info.model";
 @Component({
   selector: "app-devfest",
   templateUrl: "./devfest.component.html",
-  styleUrls: ["./devfest.component.css"]
+  styleUrls: ["./devfest.component.scss"]
 })
 export class DevFestComponent implements OnInit, OnDestroy {
 

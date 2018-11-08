@@ -1,0 +1,31 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+.devfest-header {
+  font-size: 2.8em;
+  text-align: right;
+}
+
+.devfest-header-logo {
+
+    background-image: url("/src/assets/gfx/devfest_title_img.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: cover;
+}
+
+.devfest-header-date {
+    font-family: 'Open Sans', sans-serif, Roboto;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: $gdg-blue;
+}
+
+.devfest-header-date-icon {
+    font-size: 1.8em;
+    color: $gdg-blue;
+}
+
+.register-btn {
+    background-color: $gdg-blue !important;
+}

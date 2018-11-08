@@ -500,7 +500,8 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           return entries.items.map((item: Entry<GdgDevFest | any>) => {
-           // const img = this.getAssetById(assets, item.fields.descriptionImage.sys.id);
+            const descriptionImage = this.getAssetById(assets, item.fields.descriptionImage.sys.id);
+            console.log("Desc image: ", descriptionImage);
             return new GdgDevFest(
               item.fields.isCurrent,
               item.fields.year,
@@ -510,7 +511,7 @@ export class ContentfulService {
               item.fields.descriptionTitle,
               item.fields.description,
               item.fields.descriptionImage
-                ? new GdgImage("descImage", "descImage", "descImage")
+                ? new GdgImage(descriptionImage.fields.file.url, "descImage", "descImage")
                 : undefined,
               item.fields.shareTitle,
               item.fields.share,

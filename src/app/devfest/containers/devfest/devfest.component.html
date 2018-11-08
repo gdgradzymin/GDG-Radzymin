@@ -1,28 +1,76 @@
-<app-page-header [urlState]="urlState$ | async" >
-  <section name="header-content" class="header-content" fxLayout="column" fxLayoutAlign="end start" style="padding-top: 150px;background: red;">
-     
-    <h3>DevFest Radzymin</h3>
-    <h3>2018</h3>
-
-  </section>
-
-</app-page-header>
-
-<section name="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px">
-  <h1>abc</h1>
-  <h1>abc</h1>
-  <h1>abc</h1>
-  <div *ngIf="devFests$ | async as devFests; else loading">
-    <div *ngFor="let devFest of devFests">
-      <h1>{{devFest.title}}</h1>
-      <app-devfest-desc [title]="devFest.descriptionTitle" [content]="devFest.description" [image]="devFest.descriptionImage">
+<section
+  name="content"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="30px"
+  style="padding-top: 80px;"
+>
+  <div
+    *ngIf="(devFests$ | async) as devFests; else: loading"
+    style="width: 100%;"
+  >
+    <div *ngFor="let devFest of devFests" style="width: 100%;">
+      <div
+        style="width: 100%;height: 400px;"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+      >
+        <div
+          style="height: 400px;padding-right: 100px;"
+          fxLayout="column"
+          fxLayoutAlign="space-evenly end"
+        >
+          <img
+            src="/src/assets/gfx/devfest_title.png"
+            style="height: 40%;width: auto;"
+          />
+          <div fxLayout="row" fxLayoutAlign="center start">
+            <div fxLayout="column" fxLayoutAlign="start center">
+              <mat-icon
+                class="devfest-header-date-icon"
+                style="margin-right: 20px;"
+                >event</mat-icon
+              >
+            </div>
+            <div class="devfest-header-date" fxLayout="column">
+              {{ devFest.eventStartDate | date: "d MMMM y, h:mm" }}
+            </div>
+          </div>
+          <div fxLayout="column">
+            <a href="abc" mat-flat-button target="_blank" style="letter-spacing: 1px;" class="register-btn">
+              {{ "registration" | translate }}
+            </a>
+          </div>
+        </div>
+        <div
+          style="height: 100%;width: 425px;"
+          class="devfest-header-logo"
+          fxLayout="column"
+          fxLayoutAlign="center start"
+        >
+        <app-timer [eventDate]="devFest.getEventStartDateInMilisec()"></app-timer>
+        </div>
+      </div>
+      <app-devfest-desc
+        [title]="devFest.descriptionTitle"
+        [content]="devFest.description"
+        [image]="devFest.descriptionImage"
+      >
       </app-devfest-desc>
-      <app-devfest-share [title]="devFest.shareTitle" [content]="devFest.share" [image]="devFest.shareImage">
+      <app-devfest-share
+        [title]="devFest.shareTitle"
+        [content]="devFest.share"
+        [image]="devFest.shareImage"
+      >
       </app-devfest-share>
     </div>
-
   </div>
   <ng-template #loading>
-    <mat-spinner color="primary" class="my-spinner" diameter="50" strokeWidth="4"></mat-spinner>
+    <mat-spinner
+      color="primary"
+      class="my-spinner"
+      diameter="50"
+      strokeWidth="4"
+    ></mat-spinner>
   </ng-template>
 </section>
