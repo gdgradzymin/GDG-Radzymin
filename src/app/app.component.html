@@ -40,7 +40,7 @@
   
   
               <span fxFlex="1 1 auto"></span>
-              <app-tabs [activeLinkIdx]="activeLinkIndex" [routeLinks]="routeLinks" fxShow fxHide.xs [routerState]="urlState$ | async" *ngIf="navTabsVisible"></app-tabs>
+              <app-tabs [activeLinkIdx]="activeLinkIndex" [routeLinks]="routeLinks" fxShow fxHide.lt-md [routerState]="urlState$ | async" *ngIf="navTabsVisible"></app-tabs>
   
               <mat-form-field class="lang">
                 <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange(select)" #select>
@@ -51,7 +51,7 @@
               </mat-form-field>
   
   
-              <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-xs [fxShow]="menuBtnVisible">
+              <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-sm [fxShow]="menuBtnVisible">
                 <mat-icon>menu</mat-icon>
               </button>
   

@@ -1,0 +1,62 @@
+<section
+  name="content"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="30px"
+  style="padding-top: 60px;"
+>
+  <div
+    *ngIf="(devFests$ | async) as devFests; else: loading"
+    style="width: 100%;padding-top: 30px;"
+  >
+    <div
+      *ngFor="let devFest of devFests"
+      style="width: 100%;padding-bottom: 30px;"
+    >
+      <app-devfest-title [devFest]="devFest"></app-devfest-title>
+
+      <app-devfest-desc
+        [title]="devFest.descriptionTitle"
+        [content]="devFest.description"
+        [image]="devFest.descriptionImage"
+        [meetupLink]="devFest.meetupLink"
+      >
+      </app-devfest-desc>
+
+      <app-devfest-speakers
+        [title]="devFest.speakersTitle"
+        [content]="devFest.speakers"
+        [image]="devFest.speakersImage"
+      ></app-devfest-speakers>
+
+      <app-devfest-agenda
+      [title]="devFest.agendaTitle"
+      [content]="devFest.agenda"
+      [image]="devFest.agendaImage"
+    ></app-devfest-agenda>
+
+    <app-devfest-share
+    [title]="devFest.shareTitle"
+    [content]="devFest.share"
+    [image]="devFest.shareImage"
+  >
+  </app-devfest-share>
+
+    <app-devfest-partners
+    [title]="devFest.partnersTitle"
+    [content]="devFest.partners"
+    [image]="devFest.partnersImage"
+  ></app-devfest-partners>
+
+     
+    </div>
+  </div>
+  <ng-template #loading>
+    <mat-spinner
+      color="primary"
+      class="my-spinner"
+      diameter="50"
+      strokeWidth="4"
+    ></mat-spinner>
+  </ng-template>
+</section>

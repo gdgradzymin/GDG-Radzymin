@@ -13,6 +13,7 @@ import { GdgBlogPostLink } from "../models/gdg-blog-post-link.model";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
 import { GdgImage } from "../models/gdg-image.model";
 import { HttpClient } from "@angular/common/http";
+import { GdgDevFest } from "../models/gdg-devfest.model";
 
 export enum GdgContentTypes {
   EVENT = "event",
@@ -20,7 +21,8 @@ export enum GdgContentTypes {
   CONTACT_INFO = "contactInfo",
   BLOG_POST = "blogPost",
   BLOG_POST_LINK = "blogPostLink",
-  HOME_CONTENT = "homeContent"
+  HOME_CONTENT = "homeContent",
+  DEVFEST = "devFest"
 }
 
 @Injectable({
@@ -436,35 +438,138 @@ export class ContentfulService {
           return empty();
         })
       );
+  }
 
-    // const promise: Promise<
-    //   EntryCollection<GdgHomeContent[]>
-    // > = this.clinet.getEntries(query).catch(error => {
-    //   console.log('błąd pobrania danych');
-    //   return null;
-    // });
-    // return from(promise).pipe(
-    //   map((entries: EntryCollection<any>) => {
-    //     return entries.items.map(item => {
-    //       return new GdgHomeContent(
-    //         item.fields.title,
-    //         item.fields.order,
-    //         item.fields.active,
-    //         item.fields.content,
-    //         item.fields.image
-    //           ? new GdgImage(
-    //               item.fields.image.fields.file.url,
-    //               item.fields.image.fields.title,
-    //               item.fields.image.fields.description
-    //             )
-    //           : undefined
-    //       );
-    //     });
-    //   }),
-    //   catchError((error: any, caught: Observable<GdgHomeContent[]>) => {
-    //     return empty();
-    //   })
-    // );
+  getDevFests(
+    howMany: number,
+    sortAsc: boolean,
+    onlyCurrent: boolean
+  ): Observable<Array<GdgDevFest>> {
+    const query = {
+      content_type: GdgContentTypes.DEVFEST,
+      locale: this.settings.getLocale(),
+      limit: howMany,
+      include: 1
+    };
+    const orderBy = sortAsc ? "fields.year" : "-fields.year";
+    Object.assign(query, { order: orderBy });
+
+    if (onlyCurrent) {
+      Object.assign(query, { "fields.isCurrent": true });
+    }
+
+    return this.http
+      .get(
+        `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+          query
+        )}`,
+        { responseType: "json" }
+      )
+      .pipe(
+        map((entries: EntryCollection<any>) => {
+          const assets: Asset[] = entries.includes.Asset;
+          return entries.items.map((item: Entry<GdgDevFest | any>) => {
+            let descriptionImage: any = null;
+            let shareImage: any = null;
+            let agendaImage: any = null;
+            let speakersImage: any = null;
+            let partnersImage: any = null;
+
+            if (item.fields.descriptionImage) {
+              descriptionImage = this.getAssetById(
+                assets,
+                item.fields.descriptionImage.sys.id
+              );
+            }
+
+            if (item.fields.shareImage) {
+              shareImage = this.getAssetById(
+                assets,
+                item.fields.shareImage.sys.id
+              );
+            }
+
+            if (item.fields.agendaImage) {
+              agendaImage = this.getAssetById(
+                assets,
+                item.fields.agendaImage.sys.id
+              );
+            }
+
+            if (item.fields.speakersImage) {
+              speakersImage = this.getAssetById(
+                assets,
+                item.fields.speakersImage.sys.id
+              );
+            }
+
+            if (item.fields.partnersImage) {
+              partnersImage = this.getAssetById(
+                assets,
+                item.fields.partnersImage.sys.id
+              );
+            }
+
+            return new GdgDevFest(
+              item.fields.isCurrent,
+              item.fields.year,
+              item.fields.title,
+              item.fields.eventStartDate,
+              item.fields.eventEndDate,
+              item.fields.meetupLink,
+              item.fields.descriptionTitle,
+              item.fields.description,
+              descriptionImage
+                ? new GdgImage(
+                    descriptionImage.fields.file.url,
+                    descriptionImage.fields.title,
+                    descriptionImage.fields.file.description
+                  )
+                : undefined,
+              item.fields.shareTitle,
+              item.fields.share,
+              shareImage
+                ? new GdgImage(
+                    shareImage.fields.file.url,
+                    shareImage.fields.title,
+                    shareImage.fields.file.description
+                  )
+                : undefined,
+                item.fields.agendaTitle,
+                item.fields.agendaContent,
+                agendaImage
+                  ? new GdgImage(
+                    agendaImage.fields.file.url,
+                    agendaImage.fields.title,
+                    agendaImage.fields.file.description
+                    )
+                  : undefined,
+                  item.fields.speakersTitle,
+                  item.fields.speakersContent,
+                  speakersImage
+                    ? new GdgImage(
+                      speakersImage.fields.file.url,
+                      speakersImage.fields.title,
+                      speakersImage.fields.file.description
+                      )
+                    : undefined,
+                    item.fields.partnersTitle,
+                    item.fields.partnersContent,
+                    partnersImage
+                      ? new GdgImage(
+                        partnersImage.fields.file.url,
+                        partnersImage.fields.title,
+                        partnersImage.fields.file.description
+                        )
+                      : undefined
+            );
+          });
+        }),
+        catchError((error: any, caught: Observable<GdgDevFest[]>) => {
+          console.log("Błąd w devfest: ", error);
+          return empty();
+        })
+      );
   }
 
   private getAssetById(assetArray: Asset[], id: string): any {

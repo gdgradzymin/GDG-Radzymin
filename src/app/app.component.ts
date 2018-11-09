@@ -2,27 +2,25 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ChangeDetectionStrategy,
-  AfterContentInit,
   ChangeDetectorRef,
   AfterContentChecked,
   Inject
-} from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Router, RouterState, NavigationEnd } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
-import { routerTransitionTrigger } from './main/animations/route-animations';
-import { SettingsService, Lang } from './services/settings.service';
-import { GdgContactInfo } from './models/gdg-contact-info.model';
-import { ContentfulService } from './services/contentful.service';
-import { Meta } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/platform-browser';
+} from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { Router, RouterState, NavigationEnd } from "@angular/router";
+import { Observable, Subscription } from "rxjs";
+import { filter } from "rxjs/operators";
+import { routerTransitionTrigger } from "./main/animations/route-animations";
+import { SettingsService, Lang } from "./services/settings.service";
+import { GdgContactInfo } from "./models/gdg-contact-info.model";
+import { ContentfulService } from "./services/contentful.service";
+import { Meta } from "@angular/platform-browser";
+import { DOCUMENT } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
   animations: [routerTransitionTrigger]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
@@ -33,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   url$: Observable<string>;
   urlState$: Observable<string>;
   routeLinks: any[];
-  activeLinkIndex = -1;
+  activeLinkIndex = 0;
   langs: Lang[] = [];
   selectedLang: string;
   contactInfo$: Observable<GdgContactInfo>;
@@ -55,41 +53,48 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
     this.langs = this.settings.getLanguages();
     this.routeLinks = [
       {
-        icon: 'home',
-        link: './home',
-        label: 'home',
+        icon: "home",
+        link: "./home",
+        label: "home",
         index: 0,
-        iconClass: { 'icon-home': true }
+        iconClass: { "icon-home": true }
       },
       {
-        icon: 'event',
-        link: './events',
-        label: 'events',
+        icon: "event",
+        link: "./events",
+        label: "events",
         index: 1,
-        iconClass: { 'icon-events': true }
+        iconClass: { "icon-events": true }
       },
       {
-        icon: 'supervised_user_circle',
-        link: './team',
-        label: 'team',
+        icon: "supervised_user_circle",
+        link: "./team",
+        label: "team",
         index: 2,
-        iconClass: { 'icon-team': true }
+        iconClass: { "icon-team": true }
       },
       {
-        icon: 'chrome_reader_mode',
-        link: './blog',
-        label: 'blog',
+        icon: "chrome_reader_mode",
+        link: "./blog",
+        label: "blog",
         index: 3,
-        iconClass: { 'icon-blog': true }
-      }
+        iconClass: { "icon-blog": true }
+      },
+      {
+        icon: "adb",
+        link: "./devfest",
+        label: "devfest",
+        index: 0,
+        iconClass: { "icon-adb": true }
+      },
     ];
 
-    this.meta.addTag({ name: 'description', content: 'GDG Radzymin' });
+    this.meta.addTag({ name: "description", content: "GDG Radzymin" });
     this.meta.addTag({
-      name: 'keywords',
-      content: 'GDG, Radzymin, Google Developers Group'
+      name: "keywords",
+      content: "GDG, Radzymin, Google Developers Group"
     });
-    this.meta.addTag({ name: 'author', content: 'Sebastian Denis' });
+    this.meta.addTag({ name: "author", content: "Sebastian Denis" });
   }
 
   ngOnInit() {
@@ -142,7 +147,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   onRadzyminLogoClick() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl("/home");
   }
 
   // getState(): string {
@@ -158,47 +163,51 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   // }
 
   swipeLeft() {
-    this.swipeResolver('left');
+    this.swipeResolver("left");
   }
 
   swipedRight() {
-    this.swipeResolver('right');
+    this.swipeResolver("right");
   }
 
   private swipeResolver(type: string) {
     const blogPostRegex = /blog\/.+/;
     const url = this.router.routerState.snapshot.url;
-    if (type === 'left') {
-      if (url.endsWith('home')) {
-        this.router.navigateByUrl('/events');
-      } else if (url.endsWith('events')) {
-        this.router.navigateByUrl('/team');
-      } else if (url.endsWith('team')) {
-        this.router.navigateByUrl('/blog');
+    if (type === "left") {
+      if (url.endsWith("home")) {
+        this.router.navigateByUrl("/events");
+      } else if (url.endsWith("events")) {
+        this.router.navigateByUrl("/team");
+      } else if (url.endsWith("team")) {
+        this.router.navigateByUrl("/blog");
+      }  else if (url.endsWith("blog")) {
+        this.router.navigateByUrl("/devfest");
       } else if (blogPostRegex.test(url)) {
         // do nothing
         return;
-      } else if (url.endsWith('blog')) {
-        this.router.navigateByUrl('/home');
+      } else if (url.endsWith("devfest")) {
+        this.router.navigateByUrl("/home");
       } else {
         // from home
-        this.router.navigateByUrl('/events');
+        this.router.navigateByUrl("/events");
       }
     } else {
       // swipe right
-      if (url.endsWith('home')) {
-        this.router.navigateByUrl('/blog');
-      } else if (url.endsWith('events')) {
-        this.router.navigateByUrl('/home');
-      } else if (url.endsWith('team')) {
-        this.router.navigateByUrl('/events');
+      if (url.endsWith("home")) {
+        this.router.navigateByUrl("/devfest");
+      } else if (url.endsWith("events")) {
+        this.router.navigateByUrl("/home");
+      } else if (url.endsWith("team")) {
+        this.router.navigateByUrl("/events");
       } else if (blogPostRegex.test(url)) {
         // do nothing
         return;
-      } else if (url.endsWith('blog')) {
-        this.router.navigateByUrl('/team');
+      } else if (url.endsWith("blog")) {
+        this.router.navigateByUrl("/team");
+      } else if (url.endsWith("devfest")) {
+        this.router.navigateByUrl("/blog");
       } else {
-        this.router.navigateByUrl('/blog');
+        this.router.navigateByUrl("/devfest");
       }
     }
   }
@@ -209,14 +218,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   private activeLinkIndexResolver(url: string) {
-    if (url.endsWith('home')) {
+    if (url.endsWith("home")) {
       this.activeLinkIndex = 0;
-    } else if (url.endsWith('events')) {
+    } else if (url.endsWith("events")) {
       this.activeLinkIndex = 1;
-    } else if (url.endsWith('team')) {
+    } else if (url.endsWith("team")) {
       this.activeLinkIndex = 2;
-    } else if (url.endsWith('blog')) {
+    } else if (url.endsWith("blog")) {
       this.activeLinkIndex = 3;
+    } else if (url.endsWith("devfest")) {
+      this.activeLinkIndex = 4;
     } else {
       this.activeLinkIndex = 0;
     }

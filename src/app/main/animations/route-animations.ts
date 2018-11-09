@@ -83,250 +83,331 @@ export const routerTransitionTrigger = trigger('routerTransition', [
         ':leave',
         [
           style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('team => events', [
+  transition("team => events", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('blog => home', [
+  transition("blog => devfest", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('home => blog', [
+  transition("devfest => home", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('team => blog', [
+  transition("home => devfest", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('blog => team', [
+  transition("blog => devfest", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('events => blog', [
+  transition("devfest => blog", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('blog => events', [
+  transition("team => blog", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('* => blog-post', [
+  transition("blog => team", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateY(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateY(0%)' }))
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateY(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateY(-100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('blog-post => *', [
+  transition("events => blog", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateY(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateY(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateY(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateY(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
+        ],
+        { optional: true }
+      )
+    ])
+  ]),
+  transition("blog => events", [
+    /* order */
+    /* 1 */ query(
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
+      { optional: true }
+    ),
+    /* 2 */ group([
+      // block executes in parallel
+      query(
+        ":enter",
+        [
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
+        ],
+        { optional: true }
+      ),
+      query(
+        ":leave",
+        [
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
+        ],
+        { optional: true }
+      )
+    ])
+  ]),
+  transition("* => blog-post", [
+    /* order */
+    /* 1 */ query(
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
+      { optional: true }
+    ),
+    /* 2 */ group([
+      // block executes in parallel
+      query(
+        ":enter",
+        [
+          style({ transform: "translateY(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateY(0%)" }))
+        ],
+        { optional: true }
+      ),
+      query(
+        ":leave",
+        [
+          style({ transform: "translateY(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateY(-100%)" }))
+        ],
+        { optional: true }
+      )
+    ])
+  ]),
+  transition("blog-post => *", [
+    /* order */
+    /* 1 */ query(
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
+      { optional: true }
+    ),
+    /* 2 */ group([
+      // block executes in parallel
+      query(
+        ":enter",
+        [
+          style({ transform: "translateY(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateY(0%)" }))
+        ],
+        { optional: true }
+      ),
+      query(
+        ":leave",
+        [
+          style({ transform: "translateY(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateY(100%)" }))
         ],
         { optional: true }
       )

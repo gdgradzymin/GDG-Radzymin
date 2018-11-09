@@ -1,0 +1,77 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+:host {
+    width: 100%;
+
+}
+
+.main {
+    background-color: #ffffff;
+    padding: 50px 100px;
+    
+}
+
+.title {
+    text-align: left;
+    width: 100%;
+    font-size: 2.0em;
+    font-weight: 500;
+    color: $secondary-text-color;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    letter-spacing: .02em;
+}
+
+.content {
+    text-align: left;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+.image {
+    width: 70%;
+    height: auto;
+}
+
+
+@media only screen and (max-width: 599px) {
+    .main {
+      padding: 50px 10px;
+    }
+
+    .title {
+        text-align: center;
+    }
+  
+    .content {
+      text-align: justify;
+      font-size: 0.9em;
+      width: 100%;
+    }
+  
+    .image {
+      width: 70%;
+      height: auto;
+    }
+  }
+  
+  @media only screen and (min-width: 600px) and (max-width: 1279px) {
+    .main {
+      padding: 50px 10px;
+    }
+  
+    .content {
+      font-size: 0.9em;
+      width: 100%;
+    }
+
+    .image {
+        width: 90%;
+        height: auto;
+      }
+  }
+
+
+

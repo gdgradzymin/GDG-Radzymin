@@ -1,4 +1,5 @@
-<div [ngStyle.xs]="{'height.px': 80}" [ngStyle.gt-xs]="{'height.px': 150}" class="page-header">
+<div [ngStyle.xs]="{'height.px': 80}" [ngStyle.gt-xs]="{'height.px': 150}" 
+[ngClass]="cssClass"  >
   <ng-content style="height: 100%;"></ng-content>
 </div>
 

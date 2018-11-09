@@ -33,6 +33,7 @@ import { GdgDisclaimerComponent } from "./home/components/gdg-disclaimer/gdg-dis
 import { App2Component } from "~/app/app2.component";
 import "mousetrap";
 import { ModalGalleryModule } from "angular-modal-gallery";
+import { DevFestModule } from "./devfest/devfest.module";
 
 registerLocaleData(localePl);
 
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TeamModule,
     MaterialModule,
     BlogModule,
+    DevFestModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register("/ngsw-worker.js", {
       enabled: environment.production
