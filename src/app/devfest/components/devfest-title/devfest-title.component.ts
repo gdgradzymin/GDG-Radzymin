@@ -7,13 +7,10 @@ import { GdgDevFest } from "~/app/models/gdg-devfest.model";
   styleUrls: ["./devfest-title.component.scss"]
 })
 export class DevfestTitleComponent implements OnInit {
-
   @Input()
   devFest: GdgDevFest;
-  
-  constructor() { }
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }

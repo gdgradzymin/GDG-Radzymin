@@ -13,7 +13,15 @@ export interface IGdgDevFest {
   shareTitle?: string;
   share?: string;
   shareImage?: GdgImage;
-  
+  agendaTitle?: string;
+  agenda?: string;
+  agendaImage?: GdgImage;
+  speakersTitle?: string;
+  speakers?: string;
+  speakersImage?: GdgImage;
+  partnersTitle?: string;
+  partners?: string;
+  partnersImage?: GdgImage;
 }
 
 export class GdgDevFest implements IGdgDevFest {
@@ -29,11 +37,17 @@ export class GdgDevFest implements IGdgDevFest {
     public descriptionImage?: GdgImage,
     public shareTitle?: string,
     public share?: string,
-    public shareImage?: GdgImage
-  ) {
-    console.log("descTitle from constr: " + this.descriptionTitle);
-    console.log("descImage from constr: " + this.descriptionImage.imgUrl);
-  }
+    public shareImage?: GdgImage,
+    public agendaTitle?: string,
+    public agenda?: string,
+    public agendaImage?: GdgImage,
+    public speakersTitle?: string,
+    public speakers?: string,
+    public speakersImage?: GdgImage,
+    public partnersTitle?: string,
+    public partners?: string,
+    public partnersImage?: GdgImage
+  ) {}
 
   getEventStartDateInMilisec(): number {
     const date = new Date(this.eventStartDate);

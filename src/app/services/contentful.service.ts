@@ -438,8 +438,6 @@ export class ContentfulService {
           return empty();
         })
       );
-
-
   }
 
   getDevFests(
@@ -471,11 +469,47 @@ export class ContentfulService {
         map((entries: EntryCollection<any>) => {
           const assets: Asset[] = entries.includes.Asset;
           return entries.items.map((item: Entry<GdgDevFest | any>) => {
-            const descriptionImage = this.getAssetById(
-              assets,
-              item.fields.descriptionImage.sys.id
-            );
-            console.log("Desc image: ", descriptionImage);
+            let descriptionImage: any = null;
+            let shareImage: any = null;
+            let agendaImage: any = null;
+            let speakersImage: any = null;
+            let partnersImage: any = null;
+
+            if (item.fields.descriptionImage) {
+              descriptionImage = this.getAssetById(
+                assets,
+                item.fields.descriptionImage.sys.id
+              );
+            }
+
+            if (item.fields.shareImage) {
+              shareImage = this.getAssetById(
+                assets,
+                item.fields.shareImage.sys.id
+              );
+            }
+
+            if (item.fields.agendaImage) {
+              agendaImage = this.getAssetById(
+                assets,
+                item.fields.agendaImage.sys.id
+              );
+            }
+
+            if (item.fields.speakersImage) {
+              speakersImage = this.getAssetById(
+                assets,
+                item.fields.speakersImage.sys.id
+              );
+            }
+
+            if (item.fields.partnersImage) {
+              partnersImage = this.getAssetById(
+                assets,
+                item.fields.partnersImage.sys.id
+              );
+            }
+
             return new GdgDevFest(
               item.fields.isCurrent,
               item.fields.year,
@@ -485,18 +519,49 @@ export class ContentfulService {
               item.fields.meetupLink,
               item.fields.descriptionTitle,
               item.fields.description,
-              item.fields.descriptionImage
+              descriptionImage
                 ? new GdgImage(
                     descriptionImage.fields.file.url,
-                    "descImage",
-                    "descImage"
+                    descriptionImage.fields.title,
+                    descriptionImage.fields.file.description
                   )
                 : undefined,
               item.fields.shareTitle,
               item.fields.share,
-              item.fields.shareImage
-                ? new GdgImage("shareImage", "shareImage", "shareImage")
-                : undefined
+              shareImage
+                ? new GdgImage(
+                    shareImage.fields.file.url,
+                    shareImage.fields.title,
+                    shareImage.fields.file.description
+                  )
+                : undefined,
+                item.fields.agendaTitle,
+                item.fields.agendaContent,
+                agendaImage
+                  ? new GdgImage(
+                    agendaImage.fields.file.url,
+                    agendaImage.fields.title,
+                    agendaImage.fields.file.description
+                    )
+                  : undefined,
+                  item.fields.speakersTitle,
+                  item.fields.speakersContent,
+                  speakersImage
+                    ? new GdgImage(
+                      speakersImage.fields.file.url,
+                      speakersImage.fields.title,
+                      speakersImage.fields.file.description
+                      )
+                    : undefined,
+                    item.fields.partnersTitle,
+                    item.fields.partnersContent,
+                    partnersImage
+                      ? new GdgImage(
+                        partnersImage.fields.file.url,
+                        partnersImage.fields.title,
+                        partnersImage.fields.file.description
+                        )
+                      : undefined
             );
           });
         }),

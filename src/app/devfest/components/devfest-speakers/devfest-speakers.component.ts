@@ -2,11 +2,11 @@ import { Component, OnInit, Input } from "@angular/core";
 import { GdgImage } from "~/app/models/gdg-image.model";
 
 @Component({
-  selector: "app-devfest-share",
-  templateUrl: "./devfest-share.component.html",
-  styleUrls: ["./devfest-share.component.scss"]
+  selector: "app-devfest-speakers",
+  templateUrl: "./devfest-speakers.component.html",
+  styleUrls: ["./devfest-speakers.component.scss"]
 })
-export class DevfestShareComponent implements OnInit {
+export class DevfestSpeakersComponent implements OnInit {
 
   @Input()
   title: string;
@@ -19,7 +19,5 @@ export class DevfestShareComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

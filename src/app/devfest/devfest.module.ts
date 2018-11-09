@@ -7,11 +7,14 @@ import { DevfestDescComponent } from "./components/devfest-desc/devfest-desc.com
 import { DevfestShareComponent } from "./components/devfest-share/devfest-share.component";
 import { TimerComponent } from "./components/timer/timer.component";
 import { DevfestTitleComponent } from './components/devfest-title/devfest-title.component';
+import { DevfestSpeakersComponent } from './components/devfest-speakers/devfest-speakers.component';
+import { DevfestAgendaComponent } from './components/devfest-agenda/devfest-agenda.component';
+import { DevfestPartnersComponent } from './components/devfest-partners/devfest-partners.component';
 
 
 @NgModule({
   imports: [CommonModule, SharedModule, MaterialModule],
   exports: [],
-  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent, DevfestTitleComponent]
+  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent, DevfestTitleComponent, DevfestSpeakersComponent, DevfestAgendaComponent, DevfestPartnersComponent]
 })
 export class DevFestModule {}
