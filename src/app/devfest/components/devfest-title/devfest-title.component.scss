@@ -9,7 +9,7 @@
 .title-container {
   width: 100%;
   height: 400px;
-  background-color: F1F3F4;
+  background-color: $gdg-grey-light;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -40,6 +40,7 @@
   font-size: 1.1em;
   font-weight: bold;
   color: $gdg-green;
+  text-align: right;
 }
 
 .devfest-header-place-icon {

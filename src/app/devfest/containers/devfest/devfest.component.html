@@ -3,15 +3,15 @@
   fxLayout="column"
   fxLayoutAlign="center center"
   fxLayoutGap="30px"
-  style="padding-top: 60px;"
+  class="devfest-section"
 >
   <div
     *ngIf="(devFests$ | async) as devFests; else: loading"
-    style="width: 100%;padding-top: 30px;"
+     class="devfest-container"
   >
     <div
       *ngFor="let devFest of devFests"
-      style="width: 100%;padding-bottom: 30px;"
+      style="width: 100%;"
     >
       <app-devfest-title [devFest]="devFest"></app-devfest-title>
 

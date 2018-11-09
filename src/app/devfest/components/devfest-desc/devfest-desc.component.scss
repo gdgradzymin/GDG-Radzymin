@@ -42,6 +42,10 @@
   color: #fff;
 }
 
+:host ::ng-deep li {
+  padding-bottom: 10px;
+}
+
 .register-btn {
   background-color: $gdg-yellow !important;
   font-size: 1.1em;
@@ -54,7 +58,7 @@
 
   .desc-content {
     text-align: justify;
-    font-size: 0.9em;
+    font-size: 1.0em;
   }
 
   .desc-title {

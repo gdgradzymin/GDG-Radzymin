@@ -2,7 +2,7 @@
   "name": "GDG Radzymin",
   "short_name": "GDG Radzymin",
   "theme_color": "#2196F3",
-  "background_color": "#fafafa",
+  "background_color": "#F2F5F5",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

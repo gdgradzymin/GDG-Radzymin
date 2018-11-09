@@ -5,84 +5,84 @@ import {
   trigger,
   group,
   query
-} from '@angular/animations';
+} from "@angular/animations";
 
-export const routerTransitionTrigger = trigger('routerTransition', [
-  transition('home => events', [
+export const routerTransitionTrigger = trigger("routerTransition", [
+  transition("home => events", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('events => home', [
+  transition("events => home", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(-100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(100%)' }))
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
     ])
   ]),
-  transition('events => team', [
+  transition("events => team", [
     /* order */
     /* 1 */ query(
-      ':enter, :leave',
-      style({ position: 'fixed', width: '100%' }),
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
       { optional: true }
     ),
     /* 2 */ group([
       // block executes in parallel
       query(
-        ':enter',
+        ":enter",
         [
-          style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-in-out', style({ transform: 'translateX(0%)' }))
+          style({ transform: "translateX(100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
         ],
         { optional: true }
       ),
       query(
-        ':leave',
+        ":leave",
         [
-          style({ transform: 'translateX(0%)' }),
+          style({ transform: "translateX(0%)" }),
           animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
         ],
         { optional: true }
@@ -165,33 +165,6 @@ export const routerTransitionTrigger = trigger('routerTransition', [
         [
           style({ transform: "translateX(0%)" }),
           animate("0.5s ease-in-out", style({ transform: "translateX(-100%)" }))
-        ],
-        { optional: true }
-      )
-    ])
-  ]),
-  transition("home => devfest", [
-    /* order */
-    /* 1 */ query(
-      ":enter, :leave",
-      style({ position: "fixed", width: "100%" }),
-      { optional: true }
-    ),
-    /* 2 */ group([
-      // block executes in parallel
-      query(
-        ":enter",
-        [
-          style({ transform: "translateX(-100%)" }),
-          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
-        ],
-        { optional: true }
-      ),
-      query(
-        ":leave",
-        [
-          style({ transform: "translateX(0%)" }),
-          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
@@ -408,6 +381,33 @@ export const routerTransitionTrigger = trigger('routerTransition', [
         [
           style({ transform: "translateY(0%)" }),
           animate("0.5s ease-in-out", style({ transform: "translateY(100%)" }))
+        ],
+        { optional: true }
+      )
+    ])
+  ]),
+  transition("home => devfest", [
+    /* order */
+    /* 1 */ query(
+      ":enter, :leave",
+      style({ position: "fixed", width: "100%" }),
+      { optional: true }
+    ),
+    /* 2 */ group([
+      // block executes in parallel
+      query(
+        ":enter",
+        [
+          style({ transform: "translateX(-100%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(0%)" }))
+        ],
+        { optional: true }
+      ),
+      query(
+        ":leave",
+        [
+          style({ transform: "translateX(0%)" }),
+          animate("0.5s ease-in-out", style({ transform: "translateX(100%)" }))
         ],
         { optional: true }
       )
