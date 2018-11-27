@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { createClient, EntryCollection, Entry, Asset } from "contentful";
 import { environment } from "../../environments/environment.prod";
-import { from, Observable, of, empty, throwError } from "rxjs";
-import { map, catchError } from "rxjs/operators";
+import { from, Observable, of, empty, throwError, timer } from "rxjs";
+import { map, catchError, shareReplay, timeout, retryWhen, delayWhen, take } from "rxjs/operators";
 import * as marked from "marked";
 import { GdgEvent } from "../models/gdg-event.model";
 import { GdgTeamMember } from "../models/gdg-team-member.model";
@@ -14,6 +14,8 @@ import { GdgHomeContent } from "../models/gdg-home-content.model";
 import { GdgImage } from "../models/gdg-image.model";
 import { HttpClient } from "@angular/common/http";
 import { GdgDevFest } from "../models/gdg-devfest.model";
+import { GdgDevFestEventItem } from "../models/gdg-devfest-event-item.model";
+import { GdgDevFestSpeaker } from "../models/gdg-devfest-speaker.model";
 
 export enum GdgContentTypes {
   EVENT = "event",
@@ -22,7 +24,9 @@ export enum GdgContentTypes {
   BLOG_POST = "blogPost",
   BLOG_POST_LINK = "blogPostLink",
   HOME_CONTENT = "homeContent",
-  DEVFEST = "devFest"
+  DEVFEST = "devFest",
+  DEVFEST_SPEAKER = "devFestSpeaker",
+  DEVFEST_EVENT_ITEM = "devFestEventItem",
 }
 
 @Injectable({
@@ -33,6 +37,9 @@ export class ContentfulService {
   private readonly CONTENTFUL_URL_ENTRIES = `${this.CONTENTFUL_URL}/spaces/${
     environment.contentful.spaceId
   }/environments/master/entries?access_token=${environment.contentful.token}`;
+
+  timeoutTime = 20000;
+  delayWhenTime = 10000;
 
   // private clinet = createClient({
   //   space: environment.contentful.spaceId,
@@ -568,6 +575,125 @@ export class ContentfulService {
         catchError((error: any, caught: Observable<GdgDevFest[]>) => {
           console.log("Błąd w devfest: ", error);
           return empty();
+        })
+      );
+  }
+
+  getGdgDevFestEventItems(
+    howMany: number
+  ): Observable<Array<GdgDevFestEventItem>> {
+    const query = {
+      content_type: GdgContentTypes.DEVFEST_EVENT_ITEM,
+      locale: this.settings.getLocale(),
+      order: "fields.startDate",
+      limit: howMany
+    };
+
+    return this.http
+      .get(
+        `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+          query
+        )}`,
+        { responseType: "json" }
+      )
+      .pipe(
+        shareReplay(),
+        timeout(this.timeoutTime),
+        retryWhen((errors: any) => {
+          return errors.pipe(
+            delayWhen(() => timer(this.delayWhenTime)),
+            take(5)
+          );
+        }),
+        map((entries: EntryCollection<GdgDevFestEventItem>) => {
+          let assets: Array<Asset> = null;
+          let links: Array<Entry<any>> = null;
+
+          if (entries.includes) {
+            assets = entries.includes.Asset;
+            links = entries.includes.Entry;
+          }
+
+          return entries.items.map((item: Entry<any>) => {
+            let speaker = null;
+            if (links && item.fields.presenter) {
+              speaker = this.getEntryById(links, item.fields.presenter.sys.id);
+            }
+
+            let speakerPhoto = null;
+            if (speaker) {
+              speakerPhoto = this.getAssetById(
+                assets,
+                speaker.fields.photo.sys.id
+              );
+            }
+
+            return new GdgDevFestEventItem(
+              item.fields.title,
+              item.fields.type,
+              item.fields.category,
+              item.fields.shortDescription,
+              item.fields.description,
+              item.fields.startDate,
+              item.fields.endDate,
+              speaker
+                ? new GdgDevFestSpeaker(
+                    speaker.fields.name,
+                    speaker.fields.role,
+                    speakerPhoto ? speakerPhoto.fields.file.url : undefined,
+                    speakerPhoto ? speakerPhoto.fields.title : undefined,
+                    speakerPhoto ? speakerPhoto.fields.description : undefined,
+                    speaker.description ? speaker.description : undefined
+                  )
+                : undefined
+            );
+          });
+        })
+      );
+  }
+
+  getSpeakers(howMany: number): Observable<Array<GdgDevFestSpeaker>> {
+    const query = {
+      content_type: GdgContentTypes.DEVFEST_SPEAKER,
+      locale: this.settings.getLocale(),
+      order: "fields.name",
+      limit: howMany
+    };
+
+    return this.http
+      .get(
+        `${this.CONTENTFUL_URL_ENTRIES}&${this.getContentfulUrlParameters(
+          query
+        )}`,
+        { responseType: "json" }
+      )
+      .pipe(
+        shareReplay(),
+        timeout(this.timeoutTime),
+        retryWhen((errors: any) => {
+          return errors.pipe(
+            delayWhen(() => timer(this.delayWhenTime)),
+            take(5)
+          );
+        }),
+        map((entries: EntryCollection<any>) => {
+          const assets: Array<Asset> = entries.includes.Asset;
+
+          return entries.items.map((item: Entry<any>) => {
+            const profilePhoto: Asset = this.getAssetById(
+              assets,
+              item.fields.photo.sys.id
+            );
+
+            return new GdgDevFestSpeaker(
+              item.fields.name,
+              item.fields.role,
+              item.fields.description,
+              profilePhoto ? profilePhoto.fields.file.url : undefined,
+              profilePhoto ? profilePhoto.fields.title : undefined,
+              profilePhoto ? profilePhoto.fields.description : undefined,
+            );
+          });
         })
       );
   }
