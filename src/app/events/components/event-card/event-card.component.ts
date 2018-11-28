@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { GdgEvent } from '../../../models/gdg-event.model';
-import { faCalendarAlt, faClock } from '@fortawesome/fontawesome-free-regular';
-import { faMeetup } from '@fortawesome/fontawesome-free-brands';
+import { Component, OnInit, Input } from "@angular/core";
+import { GdgEvent } from "../../../models/gdg-event.model";
+import { faCalendarAlt, faClock } from "@fortawesome/fontawesome-free-regular";
+import { faMeetup } from "@fortawesome/fontawesome-free-brands";
 
 @Component({
-  selector: 'app-event-card',
-  templateUrl: './event-card.component.html',
-  styleUrls: ['./event-card.component.scss']
+  selector: "app-event-card",
+  templateUrl: "./event-card.component.html",
+  styleUrls: ["./event-card.component.scss"]
 })
 export class EventCardComponent implements OnInit {
   @Input() event: GdgEvent;
@@ -21,9 +21,9 @@ export class EventCardComponent implements OnInit {
 
   getCardColorCss(): {} {
     if (this.event && this.event.isOrganizerGdgRadzymin) {
-      return { 'mat-card-header-gdg-radzymin': true };
+      return { "mat-card-header-gdg-radzymin": true };
     } else {
-      return { 'mat-card-header-other': true };
+      return { "mat-card-header-other": true };
     }
   }
 }

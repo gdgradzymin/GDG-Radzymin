@@ -6,6 +6,8 @@ import { TranslateService } from "@ngx-translate/core";
 import { Observable, Subscription } from "rxjs";
 import { GdgDevFest } from "~/app/models/gdg-devfest.model";
 import { GdgContactInfo } from "~/app/models/gdg-contact-info.model";
+import { GdgDevFestEventItem } from "~/app/models/gdg-devfest-event-item.model";
+import { GdgDevFestSpeaker } from "~/app/models/gdg-devfest-speaker.model";
 
 @Component({
   selector: "app-devfest",
@@ -15,6 +17,8 @@ import { GdgContactInfo } from "~/app/models/gdg-contact-info.model";
 export class DevFestComponent implements OnInit, OnDestroy {
 
   devFests$: Observable<GdgDevFest[]>;
+  devFestEventItems$: Observable<Array<GdgDevFestEventItem>>;
+  devFestSpeakers$: Observable<Array<GdgDevFestSpeaker>>;
   contactInfo$: Observable<GdgContactInfo>;
   langSubscription: Subscription;
   pageDescSub: Subscription;
@@ -64,8 +68,12 @@ export class DevFestComponent implements OnInit, OnDestroy {
 
   loadDevFests() {
     this.devFests$ = this.contentful.getDevFests(1, true, true);
+    this.devFestEventItems$ = this.contentful.getGdgDevFestEventItems(100);
+    this.devFestSpeakers$ = this.contentful.getGdgDevFestSpeakers(100);
     // this.contentful.logHomeContent();
   }
+
+
 
   ngOnDestroy() {
     if (this.langSubscription) {

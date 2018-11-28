@@ -27,7 +27,7 @@ export enum EventItemIcon {
 export enum EventItemIconWeb {
   PRESENTATION = "fa-microphone-alt",
   BREAK = "fa-comments",
-  EATING = "fa-tensils",
+  EATING = "fa-utensils",
   QA = "fa-question-circle",
   REGISTRATION = "fa-id-card",
   PARTY = "fa-cocktail",

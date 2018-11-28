@@ -12,6 +12,10 @@ fxLayoutGap="20px"  >
     <div class="content">
         <div [innerHtml]="content | mdToHtml"></div>
     </div>
+
+    <app-devfest-schedule [schedule]="devFestEventItems"></app-devfest-schedule>
+
+
   </div>
 
 

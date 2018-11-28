@@ -1,16 +1,29 @@
-<div fxLayout.gt-xs="row" fxLayout="column-reverse" fxLayoutAlign="space-evenly center" class="main" 
-fxLayoutGap="20px"  >
-  <div fxLayout="column" fxLayoutAlign="space-around center" fxFlex="60" 
-  style="padding-left: 5%;padding-right: 5%;width: 100%;" >
-    <div class="title">{{title}}</div>
-    <div class="content">{{content}}</div>
+<div
+  fxLayout.gt-xs="row"
+  fxLayout="column-reverse"
+  fxLayoutAlign="space-evenly center"
+  class="main"
+  fxLayoutGap="20px"
+>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxFlex="75"
+    style="padding-left: 5%;padding-right: 5%;width: 100%;"
+  >
+    <div class="title">{{ title }}</div>
+    <div class="content">{{ content }}</div>
+
+    <div *ngFor="let speaker of speakers" style="margin-bottom: 10px;">
+        <app-devfest-speaker [speaker]="speaker" ></app-devfest-speaker >
+          <hr style="margin-top: 20px;margin-bottom: 20px;">
+          </div>
   </div>
-  
-  <div fxLayout="column" fxLayoutAlign="center center"  fxFlex="40">
-    <img src="{{image.imgUrl}}" class="image">
+
+  <div fxLayout="column" fxLayoutAlign="center center" fxFlex="25">
+    <img src="{{image.imgUrl}}" class="image" />
   </div>
 
-  <app-devfest-speaker></app-devfest-speaker>
 
-
+ 
 </div>

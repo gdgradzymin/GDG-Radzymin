@@ -652,7 +652,7 @@ export class ContentfulService {
       );
   }
 
-  getSpeakers(howMany: number): Observable<Array<GdgDevFestSpeaker>> {
+  getGdgDevFestSpeakers(howMany: number): Observable<Array<GdgDevFestSpeaker>> {
     const query = {
       content_type: GdgContentTypes.DEVFEST_SPEAKER,
       locale: this.settings.getLocale(),
@@ -688,10 +688,10 @@ export class ContentfulService {
             return new GdgDevFestSpeaker(
               item.fields.name,
               item.fields.role,
-              item.fields.description,
               profilePhoto ? profilePhoto.fields.file.url : undefined,
               profilePhoto ? profilePhoto.fields.title : undefined,
               profilePhoto ? profilePhoto.fields.description : undefined,
+              item.fields.description,
             );
           });
         })

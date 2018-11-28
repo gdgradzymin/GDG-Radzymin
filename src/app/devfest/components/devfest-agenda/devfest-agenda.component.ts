@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { GdgImage } from "~/app/models/gdg-image.model";
+import { GdgDevFestEventItem } from "~/app/models/gdg-devfest-event-item.model";
 
 @Component({
   selector: "app-devfest-agenda",
@@ -16,6 +17,9 @@ export class DevfestAgendaComponent implements OnInit {
 
   @Input()
   image: GdgImage;
+
+  @Input()
+  devFestEventItems: Array<GdgDevFestEventItem>;
 
   constructor() { }
 
