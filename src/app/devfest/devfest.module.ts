@@ -10,11 +10,12 @@ import { DevfestTitleComponent } from './components/devfest-title/devfest-title.
 import { DevfestSpeakersComponent } from './components/devfest-speakers/devfest-speakers.component';
 import { DevfestAgendaComponent } from './components/devfest-agenda/devfest-agenda.component';
 import { DevfestPartnersComponent } from './components/devfest-partners/devfest-partners.component';
+import { DevfestSpeakerComponent } from './components/devfest-speaker/devfest-speaker.component';
 
 
 @NgModule({
   imports: [CommonModule, SharedModule, MaterialModule],
   exports: [],
-  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent, DevfestTitleComponent, DevfestSpeakersComponent, DevfestAgendaComponent, DevfestPartnersComponent]
+  declarations: [DevFestComponent, DevfestDescComponent, DevfestShareComponent, TimerComponent, DevfestTitleComponent, DevfestSpeakersComponent, DevfestAgendaComponent, DevfestPartnersComponent, DevfestSpeakerComponent]
 })
 export class DevFestModule {}
