@@ -22,14 +22,6 @@
         [meetupLink]="devFest.meetupLink"
       >
       </app-devfest-desc>
-
-      <app-devfest-speakers
-        [title]="devFest.speakersTitle"
-        [content]="devFest.speakers"
-        [image]="devFest.speakersImage"
-        [speakers]="devFestSpeakers$ | async"
-      ></app-devfest-speakers>
-
       <app-devfest-agenda
       id="agenda"
       [title]="devFest.agendaTitle"
@@ -37,6 +29,15 @@
       [image]="devFest.agendaImage"
       [devFestEventItems]="devFestEventItems$ | async"
     ></app-devfest-agenda>
+    
+      <app-devfest-speakers
+        [title]="devFest.speakersTitle"
+        [content]="devFest.speakers"
+        [image]="devFest.speakersImage"
+        [speakers]="devFestSpeakers$ | async"
+      ></app-devfest-speakers>
+
+      
 
     <app-devfest-share
     [title]="devFest.shareTitle"

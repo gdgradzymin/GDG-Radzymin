@@ -54,6 +54,22 @@ export class DevfestScheduleItemComponent implements OnInit {
 
   ngOnInit() {}
 
+  isNow(): boolean {
+    const now = new Date();
+    // console.log("Now: " + now);
+
+    const eventStart = new Date(this.eventItem.startDate);
+    const eventEnd = new Date(this.eventItem.endDate);
+
+    if (eventStart <= now && eventEnd >= now) {
+      // console.log("tak to teraz!");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getEventIcon(): IconDefinition {
     switch (this.eventItem.getEventItemIcon(true).toLowerCase()) {
       case EventItemIconWeb.BREAK:
