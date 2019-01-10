@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { GdgDevFestEventItem } from "~/app/models/gdg-devfest-event-item.model";
+import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 
 @Component({
   selector: "app-devfest-schedule",

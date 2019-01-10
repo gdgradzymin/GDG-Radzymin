@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ContentfulService } from "~/app/services/contentful.service";
-import { SettingsService, Lang } from "~/app/services/settings.service";
-import { MetatagsService } from "~/app/services/metatags.service";
+import { ContentfulService } from "../../../services/contentful.service";
+import { SettingsService, Lang } from "../../../services/settings.service";
+import { MetatagsService } from "../../../services/metatags.service";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable, Subscription } from "rxjs";
-import { GdgDevFest } from "~/app/models/gdg-devfest.model";
-import { GdgContactInfo } from "~/app/models/gdg-contact-info.model";
-import { GdgDevFestEventItem } from "~/app/models/gdg-devfest-event-item.model";
-import { GdgDevFestSpeaker } from "~/app/models/gdg-devfest-speaker.model";
+import { GdgDevFest } from "../../../models/gdg-devfest.model";
+import { GdgContactInfo } from "../../../models/gdg-contact-info.model";
+import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
+import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
 
 @Component({
   selector: "app-devfest",

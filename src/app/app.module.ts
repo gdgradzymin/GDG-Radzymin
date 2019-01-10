@@ -30,7 +30,7 @@ import { BlogModule } from "./blog/blog.module";
 import { HomeContentCardComponent } from "./home/components/home-content-card/home-content-card.component";
 import { MetatagsService } from "./services/metatags.service";
 import { GdgDisclaimerComponent } from "./home/components/gdg-disclaimer/gdg-disclaimer.component";
-import { App2Component } from "~/app/app2.component";
+import { App2Component } from "../app/app2.component";
 import "mousetrap";
 import { ModalGalleryModule } from "angular-modal-gallery";
 import { DevFestModule } from "./devfest/devfest.module";
@@ -48,9 +48,10 @@ export class MyHammerConfig extends HammerGestureConfig {
 }
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
+
 
 @NgModule({
   declarations: [
@@ -82,7 +83,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
     })

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { GdgDevFestSpeaker } from "~/app/models/gdg-devfest-speaker.model";
+import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
 
 @Component({
   selector: "app-devfest-speaker",
