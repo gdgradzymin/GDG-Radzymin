@@ -1,15 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div id="myapp" class="gdg-theme">
     <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #sidenav class="app-sidenav">
+      <mat-sidenav #sidenav class="app-sidenav" data-cy="sidenav">
         <div class="sidenav-header">
           <img src="../assets/gfx/gdg_radzymin_S.png" style="max-width: 100%;max-height: 100%;height: auto;">
         </div>
   
-        <mat-nav-list style="margin-top: 10px; width: 100%;">
+        <mat-nav-list style="margin-top: 10px; width: 100%;" data-cy="sidenav-list">
   
           <a mat-list-item [id]="'sideMenuLink'+routeLink.label" *ngFor="let routeLink of routeLinks; let i = index;" [routerLink]="routeLink.link"
-            routerLinkActive="active" (click)="sidenav.close()">
+            routerLinkActive="active" (click)="sidenav.close()" >
             <mat-icon mat-list-icon [ngClass]="routeLink.iconClass">{{routeLink.icon}}</mat-icon>
             <span mat-line>{{routeLink.label | translate}}</span>
           </a>
@@ -27,7 +27,7 @@
   
               <div style="height: 100%;" fxLayout="row" fxLayoutAlign="space-between center" >
   
-                    <a [routerLink]="'/'" mat-link  fxLayout="row" fxLayoutAlign="start center">
+                    <a [routerLink]="'/'" mat-link  fxLayout="row" fxLayoutAlign="start center" data-cy="logo-home">
                       <img src="../assets/gfx/flat_gdg_logo_mark_gdg_radzymin_S.png" class="logo">
                     </a>
   
@@ -51,11 +51,11 @@
               </mat-form-field>
   
   
-              <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-sm [fxShow]="menuBtnVisible">
+              <button mat-icon-button (click)="sidenav.toggle()" id="sideMenuBtn" fxHide.gt-sm [fxShow]="menuBtnVisible" data-cy="side-menu-btn">
                 <mat-icon>menu</mat-icon>
               </button>
   
-              <app-go-back [goBackTo]="goBackTo" [fxShow]="goBackBtnVisible"></app-go-back>
+              <app-go-back [goBackTo]="goBackTo" [fxShow]="goBackBtnVisible" data-cy="go-back-btn"></app-go-back>
   
   
             </mat-toolbar>
@@ -70,7 +70,7 @@
   
   
   
-          <section name="footer" class="footer">
+          <section name="footer" class="footer" data-cy="footer-section">
             <app-footer [contactInfo]="contactInfo$ | async"></app-footer>
           </section>
   
