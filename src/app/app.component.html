@@ -42,9 +42,9 @@
               <span fxFlex="1 1 auto"></span>
               <app-tabs [activeLinkIdx]="activeLinkIndex" [routeLinks]="routeLinks" fxShow fxHide.lt-md [routerState]="urlState$ | async" *ngIf="navTabsVisible"></app-tabs>
   
-              <mat-form-field class="lang">
-                <mat-select [(value)]="selectedLang" (selectionChange)="onLangChange(select)" #select>
-                  <mat-option *ngFor="let l of langs" [value]="l.code">
+              <mat-form-field class="lang" >
+                <mat-select id="lang-select" [(value)]="selectedLang" (selectionChange)="onLangChange(select)" #select>
+                  <mat-option *ngFor="let l of langs" [value]="l.code" [id]="'lang-option-'+l.code">
                     {{l.code.toUpperCase()}}
                   </mat-option>
                 </mat-select>

@@ -49,3 +49,6 @@ firebase-debug.log
 /src/environments/environment.prod.ts
 .firebase/hosting.ZGlzdA.cache
 .firebase/
+
+# cypress 
+cypress/integration/examples
