@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ContentfulService } from "../services/contentful.service";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription, Subject } from "rxjs";
 import { SettingsService, Lang } from "../services/settings.service";
 import { GdgContactInfo } from "../models/gdg-contact-info.model";
 import { faMeetup } from "@fortawesome/fontawesome-free-brands";
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../services/metatags.service";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-home",
@@ -16,10 +17,7 @@ import { MetatagsService } from "../services/metatags.service";
 export class HomeComponent implements OnInit, OnDestroy {
   homeItems$: Observable<GdgHomeContent[]>;
   contactInfo$: Observable<GdgContactInfo>;
-  langSubscription: Subscription;
-  pageDescSub: Subscription;
-  pageTitleSub: Subscription;
-  pageKeywordsSub: Subscription;
+  destroySubject$: Subject<void> = new Subject();
 
   faMeetup = faMeetup;
 
@@ -31,24 +29,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.langSubscription = this.settings
+    this.settings
       .getCurrentLang()
+      .pipe(takeUntil(this.destroySubject$))
       .subscribe((lang: Lang) => {
         // it's time to change reload content
-        this.pageDescSub = this.translate
+        this.translate
           .get("homepagedesc")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((desc: string) => {
             this.meta.updateMetaDesc(desc);
           });
 
-        this.pageTitleSub = this.translate
+        this.translate
           .get("homepagetitle")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((t: string) => {
             this.meta.updateTitle(t);
           });
 
-        this.pageKeywordsSub = this.translate
+        this.translate
           .get("homepagekeywords")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((k: string) => {
             this.meta.updateMetaKeywords(k);
           });
@@ -67,16 +69,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
-
-    if (this.pageTitleSub) {
-      this.pageTitleSub.unsubscribe();
-    }
-
-    if (this.pageKeywordsSub) {
-      this.pageKeywordsSub.unsubscribe();
-    }
+    this.destroySubject$.next();
   }
 }

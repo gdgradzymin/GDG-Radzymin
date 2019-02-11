@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { ContentfulService } from "../../../services/contentful.service";
-import { Subscription, Observable } from "rxjs";
+import { Subscription, Observable, Subject } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import { GdgBlogPostLink } from "../../../models/gdg-blog-post-link.model";
 import { MetatagsService } from "../../../services/metatags.service";
@@ -10,11 +10,11 @@ import {
   Image,
   PlainGalleryConfig,
   PlainGalleryStrategy,
-  LineLayout,
   GridLayout,
   Description,
   DescriptionStrategy
 } from "angular-modal-gallery";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-blog-post",
@@ -26,10 +26,8 @@ export class BlogPostComponent implements OnInit, OnDestroy {
   blogPost: GdgBlogPost;
   blogPost$: Observable<GdgBlogPost>;
 
-  routeSub: Subscription;
+  destroySubject$: Subject<void> = new Subject();
   blogSub: Subscription;
-  langSub: Subscription;
-  blogPostLinkSub: Subscription;
 
   plainGalleryColumn: PlainGalleryConfig = {
     strategy: PlainGalleryStrategy.GRID,
@@ -65,26 +63,32 @@ export class BlogPostComponent implements OnInit, OnDestroy {
     this.settings.setGoBackTo("blog");
     this.settings.setMenuBtnVisible(false);
 
-    this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
-      // it's time to change reload content
-      // console.log('blog post zmiana języka!');
-      if (this.blogPost) {
-        const url = "/blog/" + this.blogPost.getLink(lang.locale);
-        this.router.navigateByUrl(url);
-      }
-    });
+    this.settings
+      .getCurrentLang()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((lang: Lang) => {
+        // it's time to change reload content
+        // console.log('blog post zmiana języka!');
+        if (this.blogPost) {
+          const url = "/blog/" + this.blogPost.getLink(lang.locale);
+          this.router.navigateByUrl(url);
+        }
+      });
 
-    this.routeSub = this.route.paramMap.subscribe(params => {
-      this.postLink = params.get("postLink");
-      if (this.postLink) {
-        this.blogPostLinkSub = this.contentful
-          .getBlogPostLink(this.postLink.toLowerCase())
-          .subscribe((link: GdgBlogPostLink) => {
-            this.loadBlogPost(link.blogPostId, link.locale);
-            this.settings.setCurrentLangByLocale(link.locale);
-          });
-      }
-    });
+    this.route.paramMap
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe(params => {
+        this.postLink = params.get("postLink");
+        if (this.postLink) {
+          this.contentful
+            .getBlogPostLink(this.postLink.toLowerCase())
+            .pipe(takeUntil(this.destroySubject$))
+            .subscribe((link: GdgBlogPostLink) => {
+              this.loadBlogPost(link.blogPostId, link.locale);
+              this.settings.setCurrentLangByLocale(link.locale);
+            });
+        }
+      });
   }
 
   private getImagesArray(): Array<Image> {
@@ -118,18 +122,10 @@ export class BlogPostComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.settings.resetNavigation();
+    this.destroySubject$.next();
 
-    if (this.routeSub) {
-      this.routeSub.unsubscribe();
-    }
     if (this.blogSub) {
       this.blogSub.unsubscribe();
-    }
-    if (this.langSub) {
-      this.langSub.unsubscribe();
-    }
-    if (this.blogPostLinkSub) {
-      this.blogPostLinkSub.unsubscribe();
     }
   }
 }

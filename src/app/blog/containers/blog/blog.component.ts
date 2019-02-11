@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContentfulService } from '../../../services/contentful.service';
-import { GdgBlogPost } from '../../../models/gdg-blog-post.model';
-import { Observable, Subscription } from 'rxjs';
-import { SettingsService, Lang } from '../../../services/settings.service';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ContentfulService } from "../../../services/contentful.service";
+import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
+import { Observable, Subscription, Subject } from "rxjs";
+import { SettingsService, Lang } from "../../../services/settings.service";
 import {
   trigger,
   transition,
@@ -10,13 +10,14 @@ import {
   query,
   stagger,
   animate
-} from '@angular/animations';
-import { TranslateService } from '@ngx-translate/core';
-import { MetatagsService } from '../../../services/metatags.service';
+} from "@angular/animations";
+import { TranslateService } from "@ngx-translate/core";
+import { MetatagsService } from "../../../services/metatags.service";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
-  selector: 'app-blog',
-  templateUrl: './blog.component.html',
+  selector: "app-blog",
+  templateUrl: "./blog.component.html",
   styleUrls: ["./blog.component.scss"],
   animations: [
     trigger("listAnimation", [
@@ -35,10 +36,7 @@ import { MetatagsService } from '../../../services/metatags.service';
 })
 export class BlogComponent implements OnInit, OnDestroy {
   blogPosts$: Observable<GdgBlogPost[]>;
-  langSub: Subscription;
-  pageDescSub: Subscription;
-  pageTitleSub: Subscription;
-  pageKeywordsSub: Subscription;
+  destroySubject$: Subject<void> = new Subject();
   lang: Lang;
 
   constructor(
@@ -50,28 +48,34 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.contentful.logBlogPosts();
-    this.langSub = this.settings.getCurrentLang().subscribe((lang: Lang) => {
-      // it's time to change reload content
-      this.lang = lang;
-      this.pageDescSub = this.translate
-        .get("blogpagedesc")
-        .subscribe((desc: string) => {
-          this.meta.updateMetaDesc(desc);
-        });
+    this.settings
+      .getCurrentLang()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((lang: Lang) => {
+        // it's time to change reload content
+        this.lang = lang;
+        this.translate
+          .get("blogpagedesc")
+          .pipe(takeUntil(this.destroySubject$))
+          .subscribe((desc: string) => {
+            this.meta.updateMetaDesc(desc);
+          });
 
-      this.pageTitleSub = this.translate
-        .get("blogpagetitle")
-        .subscribe((t: string) => {
-          this.meta.updateTitle(t);
-        });
+        this.translate
+          .get("blogpagetitle")
+          .pipe(takeUntil(this.destroySubject$))
+          .subscribe((t: string) => {
+            this.meta.updateTitle(t);
+          });
 
-      this.pageKeywordsSub = this.translate
-        .get("blogpagekeywords")
-        .subscribe((k: string) => {
-          this.meta.updateMetaKeywords(k);
-        });
-      this.loadBlogPosts();
-    });
+        this.translate
+          .get("blogpagekeywords")
+          .pipe(takeUntil(this.destroySubject$))
+          .subscribe((k: string) => {
+            this.meta.updateMetaKeywords(k);
+          });
+        this.loadBlogPosts();
+      });
     this.loadBlogPosts();
   }
 
@@ -80,19 +84,6 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.langSub) {
-      this.langSub.unsubscribe();
-    }
-    if (this.pageDescSub) {
-      this.pageDescSub.unsubscribe();
-    }
-
-    if (this.pageTitleSub) {
-      this.pageTitleSub.unsubscribe();
-    }
-
-    if (this.pageKeywordsSub) {
-      this.pageKeywordsSub.unsubscribe();
-    }
+    this.destroySubject$.next();
   }
 }

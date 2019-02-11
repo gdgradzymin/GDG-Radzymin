@@ -3,11 +3,12 @@ import { ContentfulService } from "../../../services/contentful.service";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import { MetatagsService } from "../../../services/metatags.service";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription, Subject } from "rxjs";
 import { GdgDevFest } from "../../../models/gdg-devfest.model";
 import { GdgContactInfo } from "../../../models/gdg-contact-info.model";
 import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-devfest",
@@ -15,17 +16,13 @@ import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
   styleUrls: ["./devfest.component.scss"]
 })
 export class DevFestComponent implements OnInit, OnDestroy {
-
   devFests$: Observable<GdgDevFest[]>;
   devFestEventItems$: Observable<Array<GdgDevFestEventItem>>;
   devFestSpeakers$: Observable<Array<GdgDevFestSpeaker>>;
   contactInfo$: Observable<GdgContactInfo>;
-  langSubscription: Subscription;
-  pageDescSub: Subscription;
-  pageTitleSub: Subscription;
-  pageKeywordsSub: Subscription;
-  urlState$: Observable<string>;
 
+  urlState$: Observable<string>;
+  destroySubject$: Subject<void> = new Subject();
 
   constructor(
     private contentful: ContentfulService,
@@ -35,24 +32,28 @@ export class DevFestComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.langSubscription = this.settings
+    this.settings
       .getCurrentLang()
+      .pipe(takeUntil(this.destroySubject$))
       .subscribe((lang: Lang) => {
         // it's time to change reload content
-        this.pageDescSub = this.translate
+        this.translate
           .get("devfestpagedesc")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((desc: string) => {
             this.meta.updateMetaDesc(desc);
           });
 
-        this.pageTitleSub = this.translate
+        this.translate
           .get("devfestpagetitle")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((t: string) => {
             this.meta.updateTitle(t);
           });
 
-        this.pageKeywordsSub = this.translate
+        this.translate
           .get("devfestpagekeywords")
+          .pipe(takeUntil(this.destroySubject$))
           .subscribe((k: string) => {
             this.meta.updateMetaKeywords(k);
           });
@@ -60,7 +61,7 @@ export class DevFestComponent implements OnInit, OnDestroy {
         this.loadDevFests();
       });
 
-      this.urlState$ = this.settings.getUrlState();
+    this.urlState$ = this.settings.getUrlState();
     // this.contentful.logHomeContent();
     this.loadDevFests();
     this.contactInfo$ = this.contentful.getContactInfo();
@@ -73,20 +74,7 @@ export class DevFestComponent implements OnInit, OnDestroy {
     // this.contentful.logHomeContent();
   }
 
-
-
   ngOnDestroy() {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
-
-    if (this.pageTitleSub) {
-      this.pageTitleSub.unsubscribe();
-    }
-
-    if (this.pageKeywordsSub) {
-      this.pageKeywordsSub.unsubscribe();
-    }
+    this.destroySubject$.next();
   }
-
 }
