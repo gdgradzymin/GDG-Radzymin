@@ -1,13 +1,22 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ContentfulService } from "../services/contentful.service";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
-import { Observable, Subscription, Subject } from "rxjs";
+import { Observable, Subscription, Subject, forkJoin } from "rxjs";
 import { SettingsService, Lang } from "../services/settings.service";
 import { GdgContactInfo } from "../models/gdg-contact-info.model";
 import { faMeetup } from "@fortawesome/fontawesome-free-brands";
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../services/metatags.service";
-import { takeUntil } from "rxjs/operators";
+import { combineLatest } from "rxjs";
+import {
+  takeUntil,
+  concatMap,
+  merge,
+  mergeMap,
+  switchMap,
+  concat,
+  withLatestFrom
+} from "rxjs/operators";
 
 @Component({
   selector: "app-home",
@@ -29,38 +38,34 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.settings
+    const currentLang$ = this.settings
       .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        this.translate
-          .get("homepagedesc")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((desc: string) => {
-            this.meta.updateMetaDesc(desc);
-          });
+      .pipe(takeUntil(this.destroySubject$));
 
-        this.translate
-          .get("homepagetitle")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((t: string) => {
-            this.meta.updateTitle(t);
-          });
-
-        this.translate
-          .get("homepagekeywords")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((k: string) => {
-            this.meta.updateMetaKeywords(k);
-          });
-
+    currentLang$
+      .pipe(
+        takeUntil(this.destroySubject$),
+        mergeMap(() => {
+          return combineLatest(
+            this.translate
+              .get("homepagedesc")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("homepagetitle")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("homepagekeywords")
+              .pipe(takeUntil(this.destroySubject$))
+          );
+        })
+      )
+      .subscribe((translations: Array<string>) => {
+        this.meta.updateMetaDesc(translations[0]);
+        this.meta.updateTitle(translations[1]);
+        this.meta.updateMetaKeywords(translations[2]);
         this.loadHomeItems();
+        this.contactInfo$ = this.contentful.getContactInfo();
       });
-
-    // this.contentful.logHomeContent();
-    this.loadHomeItems();
-    this.contactInfo$ = this.contentful.getContactInfo();
   }
 
   loadHomeItems() {

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ContentfulService } from "../../../services/contentful.service";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
-import { Observable, Subscription, Subject } from "rxjs";
+import { Observable, Subject, combineLatest } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import {
   trigger,
@@ -13,7 +13,7 @@ import {
 } from "@angular/animations";
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, mergeMap } from "rxjs/operators";
 
 @Component({
   selector: "app-blog",
@@ -47,36 +47,36 @@ export class BlogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // this.contentful.logBlogPosts();
-    this.settings
+    const currentLang$ = this.settings
       .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        this.lang = lang;
-        this.translate
-          .get("blogpagedesc")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((desc: string) => {
-            this.meta.updateMetaDesc(desc);
-          });
+      .pipe(takeUntil(this.destroySubject$));
 
-        this.translate
-          .get("blogpagetitle")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((t: string) => {
-            this.meta.updateTitle(t);
-          });
-
-        this.translate
-          .get("blogpagekeywords")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((k: string) => {
-            this.meta.updateMetaKeywords(k);
-          });
+    currentLang$
+      .pipe(
+        takeUntil(this.destroySubject$),
+        mergeMap((lang) => {
+          this.lang = lang;
+          return combineLatest(
+            this.translate
+              .get("blogpagedesc")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("blogpagetitle")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("blogpagekeywords")
+              .pipe(takeUntil(this.destroySubject$))
+          );
+        })
+      )
+      .subscribe((translations: Array<string>) => {
+        this.meta.updateMetaDesc(translations[0]);
+        this.meta.updateTitle(translations[1]);
+        this.meta.updateMetaKeywords(translations[2]);
         this.loadBlogPosts();
       });
-    this.loadBlogPosts();
+
+
   }
 
   loadBlogPosts(): void {

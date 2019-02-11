@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ContentfulService } from "../../../services/contentful.service";
-import { Observable, Subscription, Subject } from "rxjs";
+import { Observable, Subscription, Subject, combineLatest } from "rxjs";
 import { GdgTeamMember } from "../../../models/gdg-team-member.model";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@angular/animations";
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, mergeMap } from "rxjs/operators";
 
 @Component({
   selector: "app-team",
@@ -41,7 +41,6 @@ import { takeUntil } from "rxjs/operators";
 })
 export class TeamComponent implements OnInit, OnDestroy {
   team$: Observable<GdgTeamMember[]>;
-  team: GdgTeamMember[] = [];
   destroySubject$: Subject<void> = new Subject();
 
   constructor(
@@ -52,38 +51,35 @@ export class TeamComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.settings
-      .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        this.translate
-          .get("teampagedesc")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((desc: string) => {
-            this.meta.updateMetaDesc(desc);
-          });
 
-        this.translate
-          .get("teampagetitle")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((title: string) => {
-            this.meta.updateTitle(title);
-          });
+    const currentLang$ = this.settings
+    .getCurrentLang()
+    .pipe(takeUntil(this.destroySubject$));
 
-        this.translate
-          .get("teampagekeywords")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((k: string) => {
-            this.meta.updateMetaKeywords(k);
-          });
-        this.loadTeamMembers();
-      });
-    // this.contentful.logTeamMembers();
-    this.loadTeamMembers();
-    this.team$.subscribe((team: any) => {
-      this.team = team;
+  currentLang$
+    .pipe(
+      takeUntil(this.destroySubject$),
+      mergeMap(() => {
+        return combineLatest(
+          this.translate
+            .get("teampagedesc")
+            .pipe(takeUntil(this.destroySubject$)),
+          this.translate
+            .get("teampagetitle")
+            .pipe(takeUntil(this.destroySubject$)),
+          this.translate
+            .get("teampagekeywords")
+            .pipe(takeUntil(this.destroySubject$))
+        );
+      })
+    )
+    .subscribe((translations: Array<string>) => {
+      this.meta.updateMetaDesc(translations[0]);
+      this.meta.updateTitle(translations[1]);
+      this.meta.updateMetaKeywords(translations[2]);
+      this.loadTeamMembers();
     });
+
   }
 
   loadTeamMembers(): void {
