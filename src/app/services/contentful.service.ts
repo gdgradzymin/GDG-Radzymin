@@ -2,7 +2,15 @@ import { Injectable } from "@angular/core";
 import { createClient, EntryCollection, Entry, Asset } from "contentful";
 import { environment } from "../../environments/environment.prod";
 import { from, Observable, of, empty, throwError, timer } from "rxjs";
-import { map, catchError, shareReplay, timeout, retryWhen, delayWhen, take } from "rxjs/operators";
+import {
+  map,
+  catchError,
+  shareReplay,
+  timeout,
+  retryWhen,
+  delayWhen,
+  take
+} from "rxjs/operators";
 import * as marked from "marked";
 import { GdgEvent } from "../models/gdg-event.model";
 import { GdgTeamMember } from "../models/gdg-team-member.model";
@@ -26,7 +34,7 @@ export enum GdgContentTypes {
   HOME_CONTENT = "homeContent",
   DEVFEST = "devFest",
   DEVFEST_SPEAKER = "devFestSpeaker",
-  DEVFEST_EVENT_ITEM = "devFestEventItem",
+  DEVFEST_EVENT_ITEM = "devFestEventItem"
 }
 
 @Injectable({
@@ -542,33 +550,33 @@ export class ContentfulService {
                     shareImage.fields.file.description
                   )
                 : undefined,
-                item.fields.agendaTitle,
-                item.fields.agendaContent,
-                agendaImage
-                  ? new GdgImage(
+              item.fields.agendaTitle,
+              item.fields.agendaContent,
+              agendaImage
+                ? new GdgImage(
                     agendaImage.fields.file.url,
                     agendaImage.fields.title,
                     agendaImage.fields.file.description
-                    )
-                  : undefined,
-                  item.fields.speakersTitle,
-                  item.fields.speakersContent,
-                  speakersImage
-                    ? new GdgImage(
-                      speakersImage.fields.file.url,
-                      speakersImage.fields.title,
-                      speakersImage.fields.file.description
-                      )
-                    : undefined,
-                    item.fields.partnersTitle,
-                    item.fields.partnersContent,
-                    partnersImage
-                      ? new GdgImage(
-                        partnersImage.fields.file.url,
-                        partnersImage.fields.title,
-                        partnersImage.fields.file.description
-                        )
-                      : undefined
+                  )
+                : undefined,
+              item.fields.speakersTitle,
+              item.fields.speakersContent,
+              speakersImage
+                ? new GdgImage(
+                    speakersImage.fields.file.url,
+                    speakersImage.fields.title,
+                    speakersImage.fields.file.description
+                  )
+                : undefined,
+              item.fields.partnersTitle,
+              item.fields.partnersContent,
+              partnersImage
+                ? new GdgImage(
+                    partnersImage.fields.file.url,
+                    partnersImage.fields.title,
+                    partnersImage.fields.file.description
+                  )
+                : undefined
             );
           });
         }),
@@ -691,7 +699,7 @@ export class ContentfulService {
               profilePhoto ? profilePhoto.fields.file.url : undefined,
               profilePhoto ? profilePhoto.fields.title : undefined,
               profilePhoto ? profilePhoto.fields.description : undefined,
-              item.fields.description,
+              item.fields.description
             );
           });
         })

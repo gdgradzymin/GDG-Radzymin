@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
 
 export enum Locales {
-  PL = 'pl',
-  EN = 'en-US'
+  PL = "pl",
+  EN = "en-US"
 }
 
 export interface Lang {
@@ -18,41 +18,41 @@ export interface LangMap {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SettingsService {
   private readonly langs: Lang[] = [
     {
-      code: 'pl',
-      name: 'polish',
+      code: "pl",
+      name: "polish",
       locale: Locales.PL
     },
     {
-      code: 'en',
-      name: 'english',
+      code: "en",
+      name: "english",
       locale: Locales.EN
     }
   ];
 
   private readonly langsMap: LangMap[] = [
     {
-      langNavigatorCode: 'pl',
+      langNavigatorCode: "pl",
       locale: Locales.PL
     },
     {
-      langNavigatorCode: 'pl-pl',
+      langNavigatorCode: "pl-pl",
       locale: Locales.PL
     },
     {
-      langNavigatorCode: 'en',
+      langNavigatorCode: "en",
       locale: Locales.EN
     },
     {
-      langNavigatorCode: 'en-gb',
+      langNavigatorCode: "en-gb",
       locale: Locales.EN
     },
     {
-      langNavigatorCode: 'en-US',
+      langNavigatorCode: "en-US",
       locale: Locales.EN
     }
   ];
@@ -61,11 +61,11 @@ export class SettingsService {
 
   private navTabsVisible$ = new BehaviorSubject<boolean>(true);
   private goBackBtnVisible$ = new BehaviorSubject<boolean>(false);
-  private goBackTo$ = new BehaviorSubject<string>('home');
+  private goBackTo$ = new BehaviorSubject<string>("home");
   private menuBtnVisible$ = new BehaviorSubject<boolean>(true);
 
-  private url$ = new BehaviorSubject<string>('/');
-  private urlState$ = new BehaviorSubject<string>('home');
+  private url$ = new BehaviorSubject<string>("/");
+  private urlState$ = new BehaviorSubject<string>("home");
 
   private readonly defaultLocale = Locales.EN;
 
@@ -214,21 +214,21 @@ export class SettingsService {
   }
 
   private getState(url: string): string {
-    if (url && url !== '/') {
+    if (url && url !== "/") {
       const blogPostRegex = /blog\/.+/;
       if (blogPostRegex.test(url)) {
-        return 'blog-post';
+        return "blog-post";
       }
       return url.substr(1);
     } else {
-      return 'home';
+      return "home";
     }
   }
 
   resetNavigation(): void {
     this.goBackBtnVisible$.next(false);
     this.navTabsVisible$.next(true);
-    this.goBackTo$.next('home');
+    this.goBackTo$.next("home");
     this.menuBtnVisible$.next(true);
   }
 }
