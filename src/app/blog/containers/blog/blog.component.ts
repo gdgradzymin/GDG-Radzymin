@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ContentfulService } from "../../../services/contentful.service";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { Observable, Subject, combineLatest } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
@@ -14,6 +13,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
 import { takeUntil, mergeMap } from "rxjs/operators";
+import { StateService } from "~/app/services/state.service";
 
 @Component({
   selector: "app-blog",
@@ -40,7 +40,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   lang: Lang;
 
   constructor(
-    private contentful: ContentfulService,
+    private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
     private translate: TranslateService
@@ -54,7 +54,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     currentLang$
       .pipe(
         takeUntil(this.destroySubject$),
-        mergeMap((lang) => {
+        mergeMap(lang => {
           this.lang = lang;
           return combineLatest(
             this.translate
@@ -73,14 +73,8 @@ export class BlogComponent implements OnInit, OnDestroy {
         this.meta.updateMetaDesc(translations[0]);
         this.meta.updateTitle(translations[1]);
         this.meta.updateMetaKeywords(translations[2]);
-        this.loadBlogPosts();
       });
-
-
-  }
-
-  loadBlogPosts(): void {
-    this.blogPosts$ = this.contentful.getBlogPosts(100, false);
+    this.blogPosts$ = this.state.getBlogPosts();
   }
 
   ngOnDestroy() {

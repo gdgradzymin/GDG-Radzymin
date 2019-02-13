@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { Observable, Subscription, combineLatest, Subject } from "rxjs";
 import { ContentfulService } from "../../../services/contentful.service";
 import { GdgEvent } from "../../../models/gdg-event.model";
@@ -14,11 +14,13 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
 import { mergeMap, takeUntil } from "rxjs/operators";
+import { StateService } from "~/app/services/state.service";
 
 @Component({
   selector: "app-events",
   templateUrl: "./events.component.html",
   styleUrls: ["./events.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("listAnimation", [
       transition("* => *", [
@@ -42,14 +44,14 @@ import { mergeMap, takeUntil } from "rxjs/operators";
 export class EventsComponent implements OnInit, OnDestroy {
   events$: Observable<GdgEvent[]>;
 
-  gdgRadzyminOnly = false;
-  showPastEvents = true;
-  sortAsc = false;
+  gdgRadzyminOnly: boolean;
+  showPastEvents: boolean;
+  sortAsc: boolean;
 
   destroySubject$: Subject<void> = new Subject();
 
   constructor(
-    private contentful: ContentfulService,
+    private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
     private translate: TranslateService
@@ -81,19 +83,47 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.meta.updateMetaDesc(translations[0]);
         this.meta.updateTitle(translations[1]);
         this.meta.updateMetaKeywords(translations[2]);
-        this.loadEvents();
+
       });
 
+      this.events$ = this.state.getFilteredEvents();
+
+      this.state.getEventsFilterGdgRadzyminOnly().pipe(
+        takeUntil(this.destroySubject$)
+      ).subscribe(
+        (gdgRadzyminOnly: boolean) => {
+          this.gdgRadzyminOnly = gdgRadzyminOnly;
+        }
+      );
+
+      this.state.getEventsFilterShowPastEvents().pipe(
+        takeUntil(this.destroySubject$)
+      ).subscribe(
+        (showPastEvents: boolean) => {
+          this.showPastEvents = showPastEvents;
+        }
+      );
+
+      this.state.getEventsFilterSortAsc().pipe(
+        takeUntil(this.destroySubject$)
+      ).subscribe(
+        (sortAsc: boolean) => {
+          this.sortAsc = sortAsc;
+        }
+      );
 
   }
 
-  loadEvents() {
-    this.events$ = this.contentful.getEvents(
-      100,
-      this.showPastEvents,
-      this.gdgRadzyminOnly,
-      this.sortAsc
-    );
+  changeFilter1(gdgRadzyminOnly: boolean): void {
+    this.state.setEventsFilterGdgRadzyminOnly(gdgRadzyminOnly);
+  }
+
+  changeFilter2(showPastEvents: boolean): void {
+    this.state.setEventsFilterShowPastEvents(showPastEvents);
+  }
+
+  changeFilter3(sortAsc: boolean): void {
+    this.state.setEventsFilterSortAsc(sortAsc);
   }
 
   ngOnDestroy() {

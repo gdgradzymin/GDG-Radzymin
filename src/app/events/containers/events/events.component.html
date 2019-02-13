@@ -5,9 +5,9 @@
 </app-page-header>
 <section name="filters" class="filters" fxLayout.xs="column" fxLayout="row" fxLayoutAlign.xs="center start" fxLayoutAlign="center center"
   fxLayoutGap="30px" fxLayoutGap.xs="10px" fxLayout.sm="row wrap">
-  <mat-slide-toggle [(ngModel)]="gdgRadzyminOnly" (change)="loadEvents()">{{'onlygdgradzyminevents' | translate}}</mat-slide-toggle>
-  <mat-slide-toggle [(ngModel)]="showPastEvents" (change)="loadEvents()">{{'showpastevents' | translate}}</mat-slide-toggle>
-  <mat-slide-toggle [(ngModel)]="sortAsc" (change)="loadEvents()">{{'sortbytheoldest' | translate}}</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="gdgRadzyminOnly" (change)="changeFilter1(gdgRadzyminOnly)">{{'onlygdgradzyminevents' | translate}}</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="showPastEvents" (change)="changeFilter2(showPastEvents)">{{'showpastevents' | translate}}</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="sortAsc" (change)="changeFilter3(sortAsc)">{{'sortbytheoldest' | translate}}</mat-slide-toggle>
 </section>
 
 <section name="events" style="width: 100%;padding-bottom: 20px; padding-left: 5px;padding-right: 5px;"
