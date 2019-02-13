@@ -34,6 +34,7 @@ import { App2Component } from "../app/app2.component";
 import "mousetrap";
 import { ModalGalleryModule } from "angular-modal-gallery";
 import { DevFestModule } from "./devfest/devfest.module";
+import { StateService } from "./services/state.service";
 
 registerLocaleData(localePl);
 
@@ -103,7 +104,8 @@ export function createTranslateLoader(http: HttpClient) {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
     },
-    MetatagsService
+    MetatagsService,
+    StateService
   ],
   bootstrap: [AppComponent]
 })

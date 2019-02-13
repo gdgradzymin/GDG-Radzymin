@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { ContentfulService } from "../../../services/contentful.service";
-import { Subscription, Observable, Subject } from "rxjs";
+import { Subscription, Observable, Subject, combineLatest } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import { GdgBlogPostLink } from "../../../models/gdg-blog-post-link.model";
 import { MetatagsService } from "../../../services/metatags.service";
@@ -63,20 +63,23 @@ export class BlogPostComponent implements OnInit, OnDestroy {
     this.settings.setGoBackTo("blog");
     this.settings.setMenuBtnVisible(false);
 
-    this.settings
+    const currentLang$ = this.settings
       .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        // console.log('blog post zmiana języka!');
-        if (this.blogPost) {
-          const url = "/blog/" + this.blogPost.getLink(lang.locale);
-          this.router.navigateByUrl(url);
-        }
-      });
+      .pipe(takeUntil(this.destroySubject$));
 
-    this.route.paramMap
-      .pipe(takeUntil(this.destroySubject$))
+    currentLang$.subscribe((lang: Lang) => {
+      // it's time to change reload content
+      if (this.blogPost) {
+        const url = "/blog/" + this.blogPost.getLink(lang.locale);
+        this.router.navigateByUrl(url);
+      }
+    });
+
+    const routeParamMap$ = this.route.paramMap
+    .pipe(takeUntil(this.destroySubject$));
+
+
+    routeParamMap$
       .subscribe(params => {
         this.postLink = params.get("postLink");
         if (this.postLink) {

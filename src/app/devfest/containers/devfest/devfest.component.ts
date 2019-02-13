@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ContentfulService } from "../../../services/contentful.service";
-import { SettingsService, Lang } from "../../../services/settings.service";
+import { SettingsService } from "../../../services/settings.service";
 import { MetatagsService } from "../../../services/metatags.service";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable, Subscription, Subject } from "rxjs";
+import { Observable, Subject, combineLatest } from "rxjs";
 import { GdgDevFest } from "../../../models/gdg-devfest.model";
 import { GdgContactInfo } from "../../../models/gdg-contact-info.model";
 import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, mergeMap } from "rxjs/operators";
+import { StateService } from "~/app/services/state.service";
 
 @Component({
   selector: "app-devfest",
@@ -25,53 +25,49 @@ export class DevFestComponent implements OnInit, OnDestroy {
   destroySubject$: Subject<void> = new Subject();
 
   constructor(
-    private contentful: ContentfulService,
+    private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
     private translate: TranslateService
   ) {}
 
   ngOnInit() {
-    this.settings
+    const currentLang$ = this.settings
       .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((lang: Lang) => {
-        // it's time to change reload content
-        this.translate
-          .get("devfestpagedesc")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((desc: string) => {
-            this.meta.updateMetaDesc(desc);
-          });
+      .pipe(takeUntil(this.destroySubject$));
 
-        this.translate
-          .get("devfestpagetitle")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((t: string) => {
-            this.meta.updateTitle(t);
-          });
-
-        this.translate
-          .get("devfestpagekeywords")
-          .pipe(takeUntil(this.destroySubject$))
-          .subscribe((k: string) => {
-            this.meta.updateMetaKeywords(k);
-          });
-
-        this.loadDevFests();
+    currentLang$
+      .pipe(
+        takeUntil(this.destroySubject$),
+        mergeMap(() => {
+          return combineLatest(
+            this.translate
+              .get("devfestpagedesc")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("devfestpagetitle")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("devfestpagekeywords")
+              .pipe(takeUntil(this.destroySubject$))
+          );
+        })
+      )
+      .subscribe((translations: Array<string>) => {
+        this.meta.updateMetaDesc(translations[0]);
+        this.meta.updateTitle(translations[1]);
+        this.meta.updateMetaKeywords(translations[2]);
       });
 
-    this.urlState$ = this.settings.getUrlState();
-    // this.contentful.logHomeContent();
     this.loadDevFests();
-    this.contactInfo$ = this.contentful.getContactInfo();
+    this.urlState$ = this.settings.getUrlState();
+    this.contactInfo$ = this.state.getContactInfo();
   }
 
   loadDevFests() {
-    this.devFests$ = this.contentful.getDevFests(1, true, true);
-    this.devFestEventItems$ = this.contentful.getGdgDevFestEventItems(100);
-    this.devFestSpeakers$ = this.contentful.getGdgDevFestSpeakers(100);
-    // this.contentful.logHomeContent();
+    this.devFests$ = this.state.getDevFests();
+    this.devFestEventItems$ = this.state.getDevFestEventItems();
+    this.devFestSpeakers$ = this.state.getDevFestSpeakers();
   }
 
   ngOnDestroy() {

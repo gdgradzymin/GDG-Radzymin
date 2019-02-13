@@ -10,13 +10,9 @@ import { MetatagsService } from "../services/metatags.service";
 import { combineLatest } from "rxjs";
 import {
   takeUntil,
-  concatMap,
-  merge,
   mergeMap,
-  switchMap,
-  concat,
-  withLatestFrom
 } from "rxjs/operators";
+import { StateService } from "../services/state.service";
 
 @Component({
   selector: "app-home",
@@ -31,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   faMeetup = faMeetup;
 
   constructor(
-    private contentful: ContentfulService,
+    private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
     private translate: TranslateService
@@ -63,14 +59,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.meta.updateMetaDesc(translations[0]);
         this.meta.updateTitle(translations[1]);
         this.meta.updateMetaKeywords(translations[2]);
-        this.loadHomeItems();
-        this.contactInfo$ = this.contentful.getContactInfo();
+        this.homeItems$ = this.state.getHomeItems();
+        this.contactInfo$ = this.state.getContactInfo();
       });
-  }
-
-  loadHomeItems() {
-    this.homeItems$ = this.contentful.getHomeContent(100, true, true);
-    // this.contentful.logHomeContent();
   }
 
   ngOnDestroy() {

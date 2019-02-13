@@ -45,6 +45,7 @@
     "contentful": "^7.0.3",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
+    "lodash": "^4.17.11",
     "marked": "^0.4.0",
     "mousetrap": "^1.6.2",
     "nativescript-angular": "~6.1.0",

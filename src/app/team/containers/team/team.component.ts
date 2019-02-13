@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ContentfulService } from "../../../services/contentful.service";
-import { Observable, Subscription, Subject, combineLatest } from "rxjs";
+import { Observable, Subject, combineLatest } from "rxjs";
 import { GdgTeamMember } from "../../../models/gdg-team-member.model";
-import { SettingsService, Lang } from "../../../services/settings.service";
+import { SettingsService } from "../../../services/settings.service";
 import {
   trigger,
   transition,
@@ -14,6 +13,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
 import { takeUntil, mergeMap } from "rxjs/operators";
+import { StateService } from "~/app/services/state.service";
 
 @Component({
   selector: "app-team",
@@ -44,46 +44,40 @@ export class TeamComponent implements OnInit, OnDestroy {
   destroySubject$: Subject<void> = new Subject();
 
   constructor(
-    private contentful: ContentfulService,
+    private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
     private translate: TranslateService
   ) {}
 
   ngOnInit() {
-
     const currentLang$ = this.settings
-    .getCurrentLang()
-    .pipe(takeUntil(this.destroySubject$));
+      .getCurrentLang()
+      .pipe(takeUntil(this.destroySubject$));
 
-  currentLang$
-    .pipe(
-      takeUntil(this.destroySubject$),
-      mergeMap(() => {
-        return combineLatest(
-          this.translate
-            .get("teampagedesc")
-            .pipe(takeUntil(this.destroySubject$)),
-          this.translate
-            .get("teampagetitle")
-            .pipe(takeUntil(this.destroySubject$)),
-          this.translate
-            .get("teampagekeywords")
-            .pipe(takeUntil(this.destroySubject$))
-        );
-      })
-    )
-    .subscribe((translations: Array<string>) => {
-      this.meta.updateMetaDesc(translations[0]);
-      this.meta.updateTitle(translations[1]);
-      this.meta.updateMetaKeywords(translations[2]);
-      this.loadTeamMembers();
-    });
-
-  }
-
-  loadTeamMembers(): void {
-    this.team$ = this.contentful.getTeamMembers(100);
+    currentLang$
+      .pipe(
+        takeUntil(this.destroySubject$),
+        mergeMap(() => {
+          return combineLatest(
+            this.translate
+              .get("teampagedesc")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("teampagetitle")
+              .pipe(takeUntil(this.destroySubject$)),
+            this.translate
+              .get("teampagekeywords")
+              .pipe(takeUntil(this.destroySubject$))
+          );
+        })
+      )
+      .subscribe((translations: Array<string>) => {
+        this.meta.updateMetaDesc(translations[0]);
+        this.meta.updateTitle(translations[1]);
+        this.meta.updateMetaKeywords(translations[2]);
+      });
+    this.team$ = this.state.getTeamMembers();
   }
 
   ngOnDestroy() {
