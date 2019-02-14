@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, of } from "rxjs";
+import { BehaviorSubject, of, forkJoin } from "rxjs";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
 import { GdgContactInfo } from "../models/gdg-contact-info.model";
 import { ContentfulService } from "./contentful.service";
@@ -12,6 +12,8 @@ import { GdgDevFest } from "../models/gdg-devfest.model";
 import { GdgDevFestEventItem } from "../models/gdg-devfest-event-item.model";
 import { GdgDevFestSpeaker } from "../models/gdg-devfest-speaker.model";
 import { GdgBlogPost } from "../models/gdg-blog-post.model";
+import { switchMap } from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
 
 export const INITIAL_STATE_CONTACT_INFO: GdgContactInfo = {
   name: "GDG Radzymin",
@@ -67,18 +69,40 @@ export class StateService {
 
   constructor(
     private contentful: ContentfulService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private route: ActivatedRoute
   ) {
-    this.settings.getCurrentLang().subscribe((lang: Lang) => {
-      this.loadContactInfo();
-      this.loadHomeItems();
-      this.loadEvents();
-      this.loadTeamMembers();
-      this.loadDevFests();
-      this.loadDevFestEventItems();
-      this.loadDevFestSpeakers();
-      this.loadBlogPosts();
-    });
+    this.settings
+      .getCurrentLang()
+      .pipe(
+        switchMap((lang: Lang) => {
+          return forkJoin(
+            forkJoin([
+              this.contentful.getContactInfo(),
+              this.contentful.getHomeContent(100, true, true),
+              this.contentful.getEvents(100, true, false, false),
+              this.contentful.getTeamMembers(100),
+              this.contentful.getDevFests(1, true, true),
+              this.contentful.getGdgDevFestEventItems(100)
+            ]),
+            forkJoin([
+              this.contentful.getGdgDevFestSpeakers(100),
+              this.contentful.getBlogPosts(100, false)
+            ])
+          );
+        })
+      )
+      .subscribe(([r1, r2]) => {
+        this.contactInfo$.next(r1[0]);
+        this.homeItems$.next(r1[1]);
+        this.events$.next(r1[2]);
+        this.filteredEvents$.next(this.events$.getValue().slice(0));
+        this.teamMembers$.next(r1[3]);
+        this.devFests$.next(r1[4]);
+        this.devFestEventItems$.next(r1[5]);
+        this.devFestSpeakers$.next(r2[0]);
+        this.blogPosts$.next(r2[1]);
+      });
   }
 
   getTeamMembers(): Observable<GdgTeamMember[]> {
@@ -169,66 +193,74 @@ export class StateService {
     this.filteredEvents$.next(filteredEvents);
   }
 
-  private loadHomeItems(): void {
-    this.contentful
-      .getHomeContent(1000, true, true)
-      .subscribe((homeContent: GdgHomeContent[]) => {
-        this.homeItems$.next(homeContent);
-      });
-  }
+  // private loadHomeItems(): void {
+  //   this.contentful
+  //     .getHomeContent(100, true, true)
+  //     .subscribe((homeContent: GdgHomeContent[]) => {
+  //       this.homeItems$.next(homeContent);
+  //       console.log("loadHomeItems ready!");
+  //     });
+  // }
 
-  private loadContactInfo(): void {
-    this.contentful.getContactInfo().subscribe((contact: GdgContactInfo) => {
-      this.contactInfo$.next(contact);
-    });
-  }
+  // private loadContactInfo(): void {
+  //   this.contentful.getContactInfo().subscribe((contact: GdgContactInfo) => {
+  //     this.contactInfo$.next(contact);
+  //     console.log("loadContactInfo ready!");
+  //   });
+  // }
 
-  private loadEvents(): void {
-    this.contentful
-      .getEvents(100, true, false, false)
-      .subscribe((events: GdgEvent[]) => {
-        this.events$.next(events);
-        this.filteredEvents$.next(events.slice(0));
-      });
-  }
+  // private loadEvents(): void {
+  //   this.contentful
+  //     .getEvents(100, true, false, false)
+  //     .subscribe((events: GdgEvent[]) => {
+  //       this.events$.next(events);
+  //       this.filteredEvents$.next(events.slice(0));
+  //       console.log("loadEvents ready!");
+  //     });
+  // }
 
-  private loadTeamMembers(): void {
-    this.contentful
-      .getTeamMembers(100)
-      .subscribe((members: GdgTeamMember[]) => {
-        this.teamMembers$.next(members);
-      });
-  }
+  // private loadTeamMembers(): void {
+  //   this.contentful
+  //     .getTeamMembers(100)
+  //     .subscribe((members: GdgTeamMember[]) => {
+  //       this.teamMembers$.next(members);
+  //       console.log("loadTeamMembers ready!");
+  //     });
+  // }
 
-  private loadDevFests(): void {
-    this.contentful
-      .getDevFests(1, true, true)
-      .subscribe((devFests: GdgDevFest[]) => {
-        this.devFests$.next(devFests);
-      });
-  }
+  // private loadDevFests(): void {
+  //   this.contentful
+  //     .getDevFests(1, true, true)
+  //     .subscribe((devFests: GdgDevFest[]) => {
+  //       this.devFests$.next(devFests);
+  //       console.log("loadDevFests ready!");
+  //     });
+  // }
 
-  private loadDevFestEventItems(): void {
-    this.contentful
-      .getGdgDevFestEventItems(100)
-      .subscribe((devFestEventItems: GdgDevFestEventItem[]) => {
-        this.devFestEventItems$.next(devFestEventItems);
-      });
-  }
+  // private loadDevFestEventItems(): void {
+  //   this.contentful
+  //     .getGdgDevFestEventItems(100)
+  //     .subscribe((devFestEventItems: GdgDevFestEventItem[]) => {
+  //       this.devFestEventItems$.next(devFestEventItems);
+  //       console.log("loadDevFestEventItems ready!");
+  //     });
+  // }
 
-  private loadDevFestSpeakers(): void {
-    this.contentful
-      .getGdgDevFestSpeakers(100)
-      .subscribe((devFestSpeakers: GdgDevFestSpeaker[]) => {
-        this.devFestSpeakers$.next(devFestSpeakers);
-      });
-  }
+  // private loadDevFestSpeakers(): void {
+  //   this.contentful
+  //     .getGdgDevFestSpeakers(100)
+  //     .subscribe((devFestSpeakers: GdgDevFestSpeaker[]) => {
+  //       this.devFestSpeakers$.next(devFestSpeakers);
+  //       console.log("loaddevfestSpeakers ready!");
+  //     });
+  // }
 
-  private loadBlogPosts(): void {
-    this.contentful
-      .getBlogPosts(100, false)
-      .subscribe((blogPosts: GdgBlogPost[]) => {
-        this.blogPosts$.next(blogPosts);
-      });
-  }
+  // private loadBlogPosts(): void {
+  //   this.contentful
+  //     .getBlogPosts(100, false)
+  //     .subscribe((blogPosts: GdgBlogPost[]) => {
+  //       this.blogPosts$.next(blogPosts);
+  //       console.log("loadBlogPosts ready!");
+  //     });
+  // }
 }

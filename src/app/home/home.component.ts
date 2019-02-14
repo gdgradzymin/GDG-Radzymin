@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { ContentfulService } from "../services/contentful.service";
 import { GdgHomeContent } from "../models/gdg-home-content.model";
 import { Observable, Subscription, Subject, forkJoin } from "rxjs";
@@ -17,7 +17,8 @@ import { StateService } from "../services/state.service";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"]
+  styleUrls: ["./home.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit, OnDestroy {
   homeItems$: Observable<GdgHomeContent[]>;

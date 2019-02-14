@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { Observable, Subject, combineLatest } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
@@ -19,6 +19,7 @@ import { StateService } from "~/app/services/state.service";
   selector: "app-blog",
   templateUrl: "./blog.component.html",
   styleUrls: ["./blog.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("listAnimation", [
       transition("* => *", [

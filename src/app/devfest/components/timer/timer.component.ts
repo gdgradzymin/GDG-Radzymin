@@ -4,14 +4,16 @@ import {
   OnInit,
   Input,
   OnDestroy,
-  Output
+  Output,
+  ChangeDetectionStrategy
 } from "@angular/core";
 import { timer, Subscription } from "rxjs";
 
 @Component({
   selector: "app-timer",
   templateUrl: "./timer.component.html",
-  styleUrls: ["./timer.component.scss"]
+  styleUrls: ["./timer.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimerComponent implements OnInit, OnDestroy {
   @Input()

@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
+import { ActivatedRoute, Router, ParamMap } from "@angular/router";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { ContentfulService } from "../../../services/contentful.service";
-import { Subscription, Observable, Subject, combineLatest } from "rxjs";
+import { Subscription, Observable, Subject } from "rxjs";
 import { SettingsService, Lang } from "../../../services/settings.service";
 import { GdgBlogPostLink } from "../../../models/gdg-blog-post-link.model";
 import { MetatagsService } from "../../../services/metatags.service";
@@ -14,12 +14,13 @@ import {
   Description,
   DescriptionStrategy
 } from "angular-modal-gallery";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-blog-post",
   templateUrl: "./blog-post.component.html",
-  styleUrls: ["./blog-post.component.scss"]
+  styleUrls: ["./blog-post.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlogPostComponent implements OnInit, OnDestroy {
   postLink: string;
@@ -75,23 +76,24 @@ export class BlogPostComponent implements OnInit, OnDestroy {
       }
     });
 
-    const routeParamMap$ = this.route.paramMap
-    .pipe(takeUntil(this.destroySubject$));
-
+    const routeParamMap$ = this.route.paramMap.pipe(
+      takeUntil(this.destroySubject$)
+    );
 
     routeParamMap$
-      .subscribe(params => {
-        this.postLink = params.get("postLink");
-        if (this.postLink) {
-          this.contentful
-            .getBlogPostLink(this.postLink.toLowerCase())
-            .pipe(takeUntil(this.destroySubject$))
-            .subscribe((link: GdgBlogPostLink) => {
-              this.loadBlogPost(link.blogPostId, link.locale);
-              this.settings.setCurrentLangByLocale(link.locale);
-            });
-        }
+      .pipe(
+        switchMap((params: ParamMap) => {
+          this.postLink = params.get("postLink");
+          return this.contentful.getBlogPostLink(this.postLink.toLowerCase());
+        }),
+        takeUntil(this.destroySubject$)
+      )
+      .subscribe((link: GdgBlogPostLink) => {
+        this.loadBlogPost(link.blogPostId, link.locale);
+        this.settings.setCurrentLangByLocale(link.locale);
       });
+
+
   }
 
   private getImagesArray(): Array<Image> {

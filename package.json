@@ -15,7 +15,8 @@
     "lint": "ng lint",
     "e2e": "cypress open",
     "android": "tns run android --bundle",
-    "ios": "tns run ios --bundle"
+    "ios": "tns run ios --bundle",
+    "compodoc": "npx compodoc -p src/tsconfig.app.json"
   },
   "private": true,
   "dependencies": {

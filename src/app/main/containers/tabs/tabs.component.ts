@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from "@angular/core";
 import { Subscription } from "rxjs";
 import {
   trigger,
@@ -14,6 +14,7 @@ import { Router, NavigationEnd } from "@angular/router";
   selector: "app-tabs",
   templateUrl: "./tabs.component.html",
   styleUrls: ["./tabs.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("tabsState", [
       state(

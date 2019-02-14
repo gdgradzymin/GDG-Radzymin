@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ChangeDetectionStrategy } from "@angular/core";
 import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 import { faClock, faComments } from "@fortawesome/fontawesome-free-regular";
 import {
@@ -31,7 +31,8 @@ export enum EventItemIconWeb {
 @Component({
   selector: "app-devfest-schedule-item",
   templateUrl: "./devfest-schedule-item.component.html",
-  styleUrls: ["./devfest-schedule-item.component.scss"]
+  styleUrls: ["./devfest-schedule-item.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DevfestScheduleItemComponent implements OnInit {
   @Input()

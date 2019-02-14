@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { Observable, Subject, combineLatest } from "rxjs";
 import { GdgTeamMember } from "../../../models/gdg-team-member.model";
 import { SettingsService } from "../../../services/settings.service";
@@ -19,6 +19,7 @@ import { StateService } from "~/app/services/state.service";
   selector: "app-team",
   templateUrl: "./team.component.html",
   styleUrls: ["./team.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("listAnimation", [
       transition("* => *", [

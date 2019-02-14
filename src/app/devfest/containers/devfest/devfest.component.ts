@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
 import { SettingsService } from "../../../services/settings.service";
 import { MetatagsService } from "../../../services/metatags.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -13,7 +13,8 @@ import { StateService } from "~/app/services/state.service";
 @Component({
   selector: "app-devfest",
   templateUrl: "./devfest.component.html",
-  styleUrls: ["./devfest.component.scss"]
+  styleUrls: ["./devfest.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DevFestComponent implements OnInit, OnDestroy {
   devFests$: Observable<GdgDevFest[]>;

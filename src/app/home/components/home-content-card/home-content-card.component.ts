@@ -1,10 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { GdgHomeContent } from '../../../models/gdg-home-content.model';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy
+} from "@angular/core";
+import { GdgHomeContent } from "../../../models/gdg-home-content.model";
 
 @Component({
-  selector: 'app-home-content-card',
-  templateUrl: './home-content-card.component.html',
-  styleUrls: ['./home-content-card.component.scss']
+  selector: "app-home-content-card",
+  templateUrl: "./home-content-card.component.html",
+  styleUrls: ["./home-content-card.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeContentCardComponent implements OnInit {
   @Input()
@@ -20,17 +26,17 @@ export class HomeContentCardComponent implements OnInit {
     const r = i % 5;
     switch (r) {
       case 1:
-        return { 'content-white': true };
+        return { "content-white": true };
       case 2:
-        return { 'content-green': true };
+        return { "content-green": true };
       case 3:
-        return { 'content-red': true };
+        return { "content-red": true };
       case 4:
-        return { 'content-yellow': true };
+        return { "content-yellow": true };
       case 0:
-        return { 'content-blue': true };
+        return { "content-blue": true };
       default:
-        return { 'content-white': true };
+        return { "content-white": true };
     }
   }
 
