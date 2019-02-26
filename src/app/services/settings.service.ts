@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, combineLatest, pipe, of } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
+import { switchMap, mergeMap } from "rxjs/operators";
 
 export enum Locales {
   PL = "pl",
@@ -15,6 +17,12 @@ export interface Lang {
 export interface LangMap {
   langNavigatorCode: string;
   locale: Locales;
+}
+
+export interface Metatags {
+  desc: string;
+  title: string;
+  keywords: string;
 }
 
 @Injectable({
@@ -69,7 +77,7 @@ export class SettingsService {
 
   private readonly defaultLocale = Locales.EN;
 
-  constructor() {}
+  constructor(private translate: TranslateService) {}
 
   getLocale(): string {
     return this.lang$.value.locale;
@@ -230,5 +238,23 @@ export class SettingsService {
     this.navTabsVisible$.next(true);
     this.goBackTo$.next("home");
     this.menuBtnVisible$.next(true);
+  }
+
+  getMetatags(path: string): Observable<Metatags> {
+    const combined = combineLatest(
+      this.translate.get(path.toLowerCase() + "pagedesc"),
+      this.translate.get(path.toLowerCase() + "pagetitle"),
+      this.translate.get(path.toLowerCase() + "pagekeywords")
+    );
+
+    return combined.pipe(
+      switchMap((translations: string[]) => {
+        return of({
+          desc: translations[0],
+          title: translations[1],
+          keywords: translations[2]
+        } as Metatags);
+      })
+    );
   }
 }

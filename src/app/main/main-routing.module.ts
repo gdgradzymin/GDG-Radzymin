@@ -6,35 +6,36 @@ import { HomeComponent } from "../home/home.component";
 import { BlogComponent } from "../blog/containers/blog/blog.component";
 import { BlogPostComponent } from "../blog/containers/blog-post/blog-post.component";
 import { DevFestComponent } from "../devfest/containers/devfest/devfest.component";
+import { MetatagsResolver } from "../services/metatags-reslover.service";
 
 const routes: Routes = [
   {
     path: "",
-    component: HomeComponent
+    component: HomeComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "home",
-    component: HomeComponent
+    component: HomeComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "events",
-    component: EventsComponent
+    component: EventsComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "team",
-    component: TeamComponent
+    component: TeamComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "blog",
-    component: BlogComponent
+    component: BlogComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "blog/:postLink",
-    component: BlogPostComponent
+    component: BlogPostComponent, resolve: {metatags: MetatagsResolver}
   },
   {
     path: "devfest",
-    component: DevFestComponent
+    component: DevFestComponent, resolve: {metatags: MetatagsResolver}
   },
   { path: "**", redirectTo: "/" }
 ];

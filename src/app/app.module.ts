@@ -35,6 +35,7 @@ import "mousetrap";
 import { ModalGalleryModule } from "angular-modal-gallery";
 import { DevFestModule } from "./devfest/devfest.module";
 import { StateService } from "./services/state.service";
+import { MetatagsResolver } from "./services/metatags-reslover.service";
 
 registerLocaleData(localePl);
 
@@ -105,7 +106,8 @@ export function createTranslateLoader(http: HttpClient) {
       useClass: MyHammerConfig
     },
     MetatagsService,
-    StateService
+    StateService,
+    MetatagsResolver
   ],
   bootstrap: [AppComponent]
 })
