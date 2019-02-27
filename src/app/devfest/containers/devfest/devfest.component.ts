@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
-import { SettingsService } from "../../../services/settings.service";
+import { SettingsService, Metatags } from "../../../services/settings.service";
 import { MetatagsService } from "../../../services/metatags.service";
-import { TranslateService } from "@ngx-translate/core";
-import { Observable, Subject, combineLatest } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { GdgDevFest } from "../../../models/gdg-devfest.model";
 import { GdgContactInfo } from "../../../models/gdg-contact-info.model";
 import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
-import { takeUntil, mergeMap } from "rxjs/operators";
+import { takeUntil, switchMap } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-devfest",
@@ -29,35 +29,32 @@ export class DevFestComponent implements OnInit, OnDestroy {
     private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
-    private translate: TranslateService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.data
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((metatags: Metatags) => {
+      this.meta.updateMetaDesc(metatags.desc);
+      this.meta.updateTitle(metatags.title);
+      this.meta.updateMetaKeywords(metatags.keywords);
+    });
+
     const currentLang$ = this.settings
-      .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$));
+      .getCurrentLang();
 
     currentLang$
       .pipe(
         takeUntil(this.destroySubject$),
-        mergeMap(() => {
-          return combineLatest(
-            this.translate
-              .get("devfestpagedesc")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("devfestpagetitle")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("devfestpagekeywords")
-              .pipe(takeUntil(this.destroySubject$))
-          );
+        switchMap(() => {
+          return this.settings.getMetatags("devfest");
         })
       )
-      .subscribe((translations: Array<string>) => {
-        this.meta.updateMetaDesc(translations[0]);
-        this.meta.updateTitle(translations[1]);
-        this.meta.updateMetaKeywords(translations[2]);
+      .subscribe((metatags: Metatags) => {
+        this.meta.updateMetaDesc(metatags.desc);
+        this.meta.updateTitle(metatags.title);
+        this.meta.updateMetaKeywords(metatags.keywords);
       });
 
     this.loadDevFests();

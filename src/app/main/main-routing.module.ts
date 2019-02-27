@@ -7,6 +7,7 @@ import { BlogComponent } from "../blog/containers/blog/blog.component";
 import { BlogPostComponent } from "../blog/containers/blog-post/blog-post.component";
 import { DevFestComponent } from "../devfest/containers/devfest/devfest.component";
 import { MetatagsResolver } from "../services/metatags-reslover.service";
+import { BlogPostResolver } from "../services/blog-post-resolver.service";
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: "blog/:postLink",
-    component: BlogPostComponent, resolve: {metatags: MetatagsResolver}
+    component: BlogPostComponent, resolve: {blogPost: BlogPostResolver}
   },
   {
     path: "devfest",

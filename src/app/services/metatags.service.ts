@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Injectable } from "@angular/core";
+import { Meta, Title } from "@angular/platform-browser";
 
 export enum MetaTags {
-  DESCRIPTION = 'description',
-  KEYWORDS = 'keywords'
+  DESCRIPTION = "description",
+  KEYWORDS = "keywords"
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class MetatagsService {
   constructor(private meta: Meta, private title: Title) {}

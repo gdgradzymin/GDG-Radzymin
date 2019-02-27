@@ -1,7 +1,16 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from "@angular/core";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
-import { Observable, Subject, combineLatest } from "rxjs";
-import { SettingsService, Lang } from "../../../services/settings.service";
+import { Observable, Subject } from "rxjs";
+import {
+  SettingsService,
+  Lang,
+  Metatags
+} from "../../../services/settings.service";
 import {
   trigger,
   transition,
@@ -12,8 +21,9 @@ import {
 } from "@angular/animations";
 import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil, mergeMap } from "rxjs/operators";
+import { takeUntil, switchMap } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-blog",
@@ -44,10 +54,18 @@ export class BlogComponent implements OnInit, OnDestroy {
     private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
-    private translate: TranslateService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.data
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((metatags: Metatags) => {
+        this.meta.updateMetaDesc(metatags.desc);
+        this.meta.updateTitle(metatags.title);
+        this.meta.updateMetaKeywords(metatags.keywords);
+      });
+
     const currentLang$ = this.settings
       .getCurrentLang()
       .pipe(takeUntil(this.destroySubject$));
@@ -55,25 +73,15 @@ export class BlogComponent implements OnInit, OnDestroy {
     currentLang$
       .pipe(
         takeUntil(this.destroySubject$),
-        mergeMap(lang => {
+        switchMap((lang: Lang) => {
           this.lang = lang;
-          return combineLatest(
-            this.translate
-              .get("blogpagedesc")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("blogpagetitle")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("blogpagekeywords")
-              .pipe(takeUntil(this.destroySubject$))
-          );
+          return this.settings.getMetatags("blog");
         })
       )
-      .subscribe((translations: Array<string>) => {
-        this.meta.updateMetaDesc(translations[0]);
-        this.meta.updateTitle(translations[1]);
-        this.meta.updateMetaKeywords(translations[2]);
+      .subscribe((metatags: Metatags) => {
+        this.meta.updateMetaDesc(metatags.desc);
+        this.meta.updateTitle(metatags.title);
+        this.meta.updateMetaKeywords(metatags.keywords);
       });
     this.blogPosts$ = this.state.getBlogPosts();
   }

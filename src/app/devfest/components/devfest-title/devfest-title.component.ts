@@ -13,5 +13,7 @@ export class DevfestTitleComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 }

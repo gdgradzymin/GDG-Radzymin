@@ -24,5 +24,13 @@ export class BlogCardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("Locale: " + this.locale);
+    console.log("Blog post: ");
+    console.dir(this.blogPost);
+  }
+
+  czytaj() {
+    console.log("czytaj!");
+  }
 }

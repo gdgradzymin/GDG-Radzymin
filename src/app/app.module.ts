@@ -36,6 +36,7 @@ import { ModalGalleryModule } from "angular-modal-gallery";
 import { DevFestModule } from "./devfest/devfest.module";
 import { StateService } from "./services/state.service";
 import { MetatagsResolver } from "./services/metatags-reslover.service";
+import { BlogPostResolver } from "./services/blog-post-resolver.service";
 
 registerLocaleData(localePl);
 
@@ -107,7 +108,8 @@ export function createTranslateLoader(http: HttpClient) {
     },
     MetatagsService,
     StateService,
-    MetatagsResolver
+    MetatagsResolver,
+    BlogPostResolver
   ],
   bootstrap: [AppComponent]
 })

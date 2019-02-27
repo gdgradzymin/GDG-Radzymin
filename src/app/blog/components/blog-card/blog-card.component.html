@@ -20,7 +20,7 @@
       </p>
     </mat-card-content>
     <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
-      <a mat-button mat-stroked-button color="primary" class="read-button"
+      <a mat-button mat-stroked-button color="primary" class="read-button" (click)="czytaj()"
       [routerLink]="[ '/blog/'+blogPost.getLink(locale) ]">{{'read' | translate}}</a>
     </mat-card-actions>
   </mat-card>

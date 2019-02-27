@@ -1,7 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
-import { Observable, Subject, combineLatest } from "rxjs";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from "@angular/core";
+import { Observable, Subject } from "rxjs";
 import { GdgTeamMember } from "../../../models/gdg-team-member.model";
-import { SettingsService } from "../../../services/settings.service";
+import { SettingsService, Metatags } from "../../../services/settings.service";
 import {
   trigger,
   transition,
@@ -10,10 +15,10 @@ import {
   stagger,
   animate
 } from "@angular/animations";
-import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil, mergeMap } from "rxjs/operators";
+import { takeUntil, switchMap } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-team",
@@ -48,35 +53,32 @@ export class TeamComponent implements OnInit, OnDestroy {
     private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
-    private translate: TranslateService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.data
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((metatags: Metatags) => {
+        this.meta.updateMetaDesc(metatags.desc);
+        this.meta.updateTitle(metatags.title);
+        this.meta.updateMetaKeywords(metatags.keywords);
+      });
+
     const currentLang$ = this.settings
-      .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$));
+      .getCurrentLang();
 
     currentLang$
       .pipe(
         takeUntil(this.destroySubject$),
-        mergeMap(() => {
-          return combineLatest(
-            this.translate
-              .get("teampagedesc")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("teampagetitle")
-              .pipe(takeUntil(this.destroySubject$)),
-            this.translate
-              .get("teampagekeywords")
-              .pipe(takeUntil(this.destroySubject$))
-          );
+        switchMap(() => {
+          return this.settings.getMetatags("team");
         })
       )
-      .subscribe((translations: Array<string>) => {
-        this.meta.updateMetaDesc(translations[0]);
-        this.meta.updateTitle(translations[1]);
-        this.meta.updateMetaKeywords(translations[2]);
+      .subscribe((metatags: Metatags) => {
+        this.meta.updateMetaDesc(metatags.desc);
+        this.meta.updateTitle(metatags.title);
+        this.meta.updateMetaKeywords(metatags.keywords);
       });
     this.team$ = this.state.getTeamMembers();
   }

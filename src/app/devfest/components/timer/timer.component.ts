@@ -5,9 +5,11 @@ import {
   Input,
   OnDestroy,
   Output,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from "@angular/core";
-import { timer, Subscription } from "rxjs";
+import { timer, Subscription, Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-timer",
@@ -27,16 +29,22 @@ export class TimerComponent implements OnInit, OnDestroy {
   @Output()
   zeroTrigger = new EventEmitter(false);
 
-  private timerSubscription: Subscription;
+  destroySubject$: Subject<void> = new Subject();
+
+
 
   // https://github.com/markpenaranda/ngx-countdown-timer/blob/master/src/countdown-timer.component.ts
 
-  constructor() {}
+  constructor(private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.timerSubscription = timer(1000, 1000).subscribe((t: any) => {
+    timer(1000, 1000).pipe(
+      takeUntil(this.destroySubject$)
+    )
+    .subscribe((t: any) => {
       this.milisecLeft = this.getTimeDiff(this.eventDate);
       this.calculateDiff(this.milisecLeft);
+      this.ref.markForCheck();
     });
   }
 
@@ -68,8 +76,6 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
+    this.destroySubject$.next();
   }
 }

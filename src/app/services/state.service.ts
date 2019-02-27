@@ -70,7 +70,6 @@ export class StateService {
   constructor(
     private contentful: ContentfulService,
     private settings: SettingsService,
-    private route: ActivatedRoute
   ) {
     this.settings
       .getCurrentLang()

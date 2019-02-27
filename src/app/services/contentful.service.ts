@@ -965,59 +965,11 @@ export class ContentfulService {
           }
         })
       );
-
-    // const promise: Promise<
-    //   EntryCollection<GdgBlogPost>
-    // > = this.clinet.getEntries(query);
-
-    // return from(promise).pipe(
-    //   map((entries: EntryCollection<any>) => {
-    //     if (entries && entries.items && entries.items[0]) {
-    //       // console.log('getBlogPost.entry: ', entries.items[0]);
-    //       return new GdgBlogPost(
-    //         entries.items[0].sys.id,
-    //         entries.items[0].fields.title,
-    //         entries.items[0].fields.postDate,
-    //         entries.items[0].fields.postPhoto.fields.file.url,
-    //         entries.items[0].fields.postPhotoSmall.fields.file.url,
-    //         entries.items[0].fields.content,
-    //         entries.items[0].fields.contentShort,
-    //         new GdgTeamMember(
-    //           entries.items[0].fields.author.fields.name,
-    //           entries.items[0].fields.author.fields.tags,
-    //           entries.items[0].fields.author.fields.profilePhoto
-    //             ? entries.items[0].fields.author.fields.profilePhoto.fields.file
-    //                 .url
-    //             : undefined,
-    //           entries.items[0].fields.author.fields.linkedinUrl,
-    //           entries.items[0].fields.author.fields.twitterUrl,
-    //           entries.items[0].fields.author.fields.githubUrl
-    //         ),
-    //         entries.items[0].fields.keywords,
-    //         entries.items[0].fields.links
-    //           ? entries.items[0].fields.links
-    //           : undefined,
-    //         entries.items[0].fields.photos
-    //           ? entries.items[0].fields.photos
-    //           : undefined
-    //       );
-    //     }
-    //   })
-    // );
   }
 
-  // getBlogPostFull(id: string): Observable<any> {
-  //   const promise: Promise<Entry<GdgBlogPost>> = this.clinet.getEntry(id, {
-  //     content_type: GdgContentTypes.BLOG_POST,
-  //     locale: this.settings.getLocale(),
-  //     include: 1
-  //   });
-  //   return from(promise).pipe(
-  //     map((item: Entry<GdgBlogPost>) => {
-  //       return item;
-  //     })
-  //   );
-  // }
+ 
+
+
 
   getContactInfo(): Observable<GdgContactInfo> {
     const query = {
@@ -1065,57 +1017,7 @@ export class ContentfulService {
           }
         })
       );
-
-    // const promise: Promise<
-    //   EntryCollection<GdgContactInfo[]>
-    // > = this.clinet.getEntries(query);
-    // return from(promise).pipe(
-    //   map((entries: EntryCollection<any>) => {
-    //     if (entries && entries.items && entries.items[0]) {
-    //       return new GdgContactInfo(
-    //         entries.items[0].fields.name,
-    //         entries.items[0].fields.email,
-    //         entries.items[0].fields.active,
-    //         entries.items[0].fields.phone,
-    //         entries.items[0].fields.siteUrl,
-    //         entries.items[0].fields.meetupUrl
-    //           ? entries.items[0].fields.meetupUrl
-    //           : undefined,
-    //         entries.items[0].fields.facebookUrl
-    //           ? entries.items[0].fields.facebookUrl
-    //           : undefined,
-    //         entries.items[0].fields.twitterUrl
-    //           ? entries.items[0].fields.twitterUrl
-    //           : undefined,
-    //         entries.items[0].fields.youtubeUrl
-    //           ? entries.items[0].fields.youtubeUrl
-    //           : undefined,
-    //         entries.items[0].fields.githubUrl
-    //           ? entries.items[0].fields.githubUrl
-    //           : undefined
-    //       );
-    //     } else {
-    //       return null;
-    //     }
-    //   })
-    // );
   }
-
-  // getEventsFull(howMany: number): Observable<GdgEvent[]> {
-  //   const promise: Promise<
-  //     EntryCollection<GdgEvent[]>
-  //   > = this.clinet.getEntries({
-  //     content_type: GdgContentTypes.EVENT,
-  //     locale: this.settings.getLocale(),
-  //     order: '-sys.createdAt',
-  //     limit: howMany
-  //   });
-  //   return from(promise).pipe(
-  //     map((entries: EntryCollection<GdgEvent>) => {
-  //       return entries.items;
-  //     })
-  //   );
-  // }
 
   getTeamMembers(howMany: number): Observable<GdgTeamMember[]> {
     const query = {
