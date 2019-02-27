@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from "@angular/core";
 import { ActivatedRoute, Router, ParamMap } from "@angular/router";
 import { GdgBlogPost } from "../../../models/gdg-blog-post.model";
 import { ContentfulService } from "../../../services/contentful.service";
@@ -64,6 +69,15 @@ export class BlogPostComponent implements OnInit, OnDestroy {
     this.settings.setGoBackTo("blog");
     this.settings.setMenuBtnVisible(false);
 
+    this.route.data
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((blogPost: GdgBlogPost) => {
+        console.log("blogPost z route.data");
+        console.dir(blogPost);
+        this.blogPost = blogPost;
+        this.postLink = blogPost.getLink(this.blogPost.);
+      });
+
     const currentLang$ = this.settings
       .getCurrentLang()
       .pipe(takeUntil(this.destroySubject$));
@@ -92,8 +106,6 @@ export class BlogPostComponent implements OnInit, OnDestroy {
         this.loadBlogPost(link.blogPostId, link.locale);
         this.settings.setCurrentLangByLocale(link.locale);
       });
-
-
   }
 
   private getImagesArray(): Array<Image> {

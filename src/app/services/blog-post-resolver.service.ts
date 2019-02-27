@@ -4,31 +4,36 @@ import { Observable, of } from "rxjs";
 import { GdgBlogPost } from "../models/gdg-blog-post.model";
 import { ContentfulService } from "./contentful.service";
 import { GdgBlogPostLink } from "../models/gdg-blog-post-link.model";
-import { concatAll } from "rxjs/operators";
+import { switchMap, mergeMap } from "rxjs/operators";
+
+export interface BlogPostData {
+  blogPostLink$: Observable<GdgBlogPostLink>;
+  blogPost$: Observable<GdgBlogPost>;
+}
 
 @Injectable()
-export class BlogPostResolver implements Resolve<GdgBlogPost> {
+export class BlogPostResolver implements Resolve<BlogPostData> {
   constructor(private contentful: ContentfulService) {}
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<GdgBlogPost> | Promise<GdgBlogPost> | GdgBlogPost {
-      // TODO rxjs operator
+  ): Observable<BlogPostData> | Promise<BlogPostData> | BlogPostData {
+    // TODO rxjs operator
     console.log("Route URL: " + route.url);
-    const blogPostLink$ = this.contentful.getBlogPostLink(route.url[1].toString());
+    const blogPostLink$ = this.contentful.getBlogPostLink(
+      route.url[1].toString()
+    );
 
-    this.contentful
-      .getBlogPostLink(route.url[1].toString())
-      .subscribe((value: GdgBlogPostLink) => {
-        console.log("blog post link: ");
-        console.dir(value);
-        this.contentful.getBlogPost(value.blogPostId, value.locale).subscribe((blogPost: GdgBlogPost) => {
-            console.log("blog post:");
-            console.dir(blogPost);
+    return blogPostLink$.pipe(
+      mergeMap((blogPostLink: GdgBlogPostLink) => {
+        return of({
+          blogPost$: this.contentful.getBlogPost(
+            blogPostLink.blogPostId,
+            blogPostLink.locale
+          ),
+          blogPostLink$: blogPostLink$
         });
-      });
-    return of(
-      new GdgBlogPost("test", "test", "0", "", "", "", null, null, null)
+      })
     );
   }
 }
