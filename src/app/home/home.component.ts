@@ -10,7 +10,7 @@ import { SettingsService, Metatags } from "../services/settings.service";
 import { GdgContactInfo } from "../models/gdg-contact-info.model";
 import { faMeetup } from "@fortawesome/fontawesome-free-brands";
 import { MetatagsService } from "../services/metatags.service";
-import { takeUntil, switchMap } from "rxjs/operators";
+import { takeUntil, switchMap, skip } from "rxjs/operators";
 import { StateService } from "../services/state.service";
 import { ActivatedRoute } from "@angular/router";
 
@@ -43,12 +43,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.meta.updateMetaKeywords(metatags.keywords);
       });
 
-    const currentLang$ = this.settings
-      .getCurrentLang();
-
-    currentLang$
+    this.settings
+      .getCurrentLang()
       .pipe(
         takeUntil(this.destroySubject$),
+        skip(1),
         switchMap(() => {
           return this.settings.getMetatags("home");
         })
@@ -57,9 +56,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.meta.updateMetaDesc(metatags.desc);
         this.meta.updateTitle(metatags.title);
         this.meta.updateMetaKeywords(metatags.keywords);
-        this.homeItems$ = this.state.getHomeItems();
-        this.contactInfo$ = this.state.getContactInfo();
       });
+
+      this.homeItems$ = this.state.getHomeItems();
+      this.contactInfo$ = this.state.getContactInfo();
   }
 
   ngOnDestroy() {

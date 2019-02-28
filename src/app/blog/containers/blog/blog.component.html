@@ -10,7 +10,7 @@
   <div *ngIf="blogPosts$ | async as blogPosts; else loading" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="30px"
     fxLayout.gt-md="row wrap" fxLayoutAlign.gt-md="space-around center" fxLayoutGap.gt-md="30px"
     [@listAnimation]="blogPosts.length">
-    <app-blog-card [blogPost]="blog" [locale]="lang?.locale" *ngFor="let blog of blogPosts"></app-blog-card>
+    <app-blog-card [blogPost]="blog" [locale]="locale" *ngFor="let blog of blogPosts"></app-blog-card>
   </div>
 
   <ng-template #loading>

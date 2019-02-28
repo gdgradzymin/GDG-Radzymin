@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { GdgEvent } from "../../../models/gdg-event.model";
 import { SettingsService, Metatags } from "../../../services/settings.service";
@@ -11,7 +16,7 @@ import {
   query
 } from "@angular/animations";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil, switchMap } from "rxjs/operators";
+import { takeUntil, switchMap, skip } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
 import { ActivatedRoute } from "@angular/router";
 
@@ -53,7 +58,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     private state: StateService,
     private settings: SettingsService,
     private meta: MetatagsService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -65,13 +70,11 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.meta.updateMetaKeywords(metatags.keywords);
       });
 
-    const currentLang$ = this.settings
+    this.settings
       .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$));
-
-    currentLang$
       .pipe(
         takeUntil(this.destroySubject$),
+        skip(1),
         switchMap(() => {
           return this.settings.getMetatags("events");
         })
@@ -80,35 +83,30 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.meta.updateMetaDesc(metatags.desc);
         this.meta.updateTitle(metatags.title);
         this.meta.updateMetaKeywords(metatags.keywords);
-
       });
 
-      this.events$ = this.state.getFilteredEvents();
+    this.events$ = this.state.getFilteredEvents();
 
-      this.state.getEventsFilterGdgRadzyminOnly().pipe(
-        takeUntil(this.destroySubject$)
-      ).subscribe(
-        (gdgRadzyminOnly: boolean) => {
-          this.gdgRadzyminOnly = gdgRadzyminOnly;
-        }
-      );
+    this.state
+      .getEventsFilterGdgRadzyminOnly()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((gdgRadzyminOnly: boolean) => {
+        this.gdgRadzyminOnly = gdgRadzyminOnly;
+      });
 
-      this.state.getEventsFilterShowPastEvents().pipe(
-        takeUntil(this.destroySubject$)
-      ).subscribe(
-        (showPastEvents: boolean) => {
-          this.showPastEvents = showPastEvents;
-        }
-      );
+    this.state
+      .getEventsFilterShowPastEvents()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((showPastEvents: boolean) => {
+        this.showPastEvents = showPastEvents;
+      });
 
-      this.state.getEventsFilterSortAsc().pipe(
-        takeUntil(this.destroySubject$)
-      ).subscribe(
-        (sortAsc: boolean) => {
-          this.sortAsc = sortAsc;
-        }
-      );
-
+    this.state
+      .getEventsFilterSortAsc()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((sortAsc: boolean) => {
+        this.sortAsc = sortAsc;
+      });
   }
 
   changeFilter1(gdgRadzyminOnly: boolean): void {

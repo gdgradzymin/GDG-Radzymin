@@ -13,7 +13,6 @@ export class MetatagsResolver implements Resolve<Metatags> {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<Metatags> | Promise<Metatags> | Metatags {
-    console.log("Route URL: " + route.url.toString());
     return this.settings.getMetatags(route.url.toString());
   }
 }

@@ -6,7 +6,7 @@ import { GdgDevFest } from "../../../models/gdg-devfest.model";
 import { GdgContactInfo } from "../../../models/gdg-contact-info.model";
 import { GdgDevFestEventItem } from "../../../models/gdg-devfest-event-item.model";
 import { GdgDevFestSpeaker } from "../../../models/gdg-devfest-speaker.model";
-import { takeUntil, switchMap } from "rxjs/operators";
+import { takeUntil, switchMap, skip } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
 import { ActivatedRoute } from "@angular/router";
 
@@ -41,12 +41,11 @@ export class DevFestComponent implements OnInit, OnDestroy {
       this.meta.updateMetaKeywords(metatags.keywords);
     });
 
-    const currentLang$ = this.settings
-      .getCurrentLang();
-
-    currentLang$
+    this.settings
+      .getCurrentLang()
       .pipe(
         takeUntil(this.destroySubject$),
+        skip(1),
         switchMap(() => {
           return this.settings.getMetatags("devfest");
         })

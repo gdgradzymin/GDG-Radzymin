@@ -65,10 +65,8 @@ export class TeamComponent implements OnInit, OnDestroy {
         this.meta.updateMetaKeywords(metatags.keywords);
       });
 
-    const currentLang$ = this.settings
-      .getCurrentLang();
-
-    currentLang$
+    this.settings
+      .getCurrentLang()
       .pipe(
         takeUntil(this.destroySubject$),
         switchMap(() => {

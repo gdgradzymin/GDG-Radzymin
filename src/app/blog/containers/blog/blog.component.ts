@@ -19,9 +19,8 @@ import {
   stagger,
   animate
 } from "@angular/animations";
-import { TranslateService } from "@ngx-translate/core";
 import { MetatagsService } from "../../../services/metatags.service";
-import { takeUntil, switchMap } from "rxjs/operators";
+import { takeUntil, switchMap, skip } from "rxjs/operators";
 import { StateService } from "~/app/services/state.service";
 import { ActivatedRoute } from "@angular/router";
 
@@ -48,7 +47,7 @@ import { ActivatedRoute } from "@angular/router";
 export class BlogComponent implements OnInit, OnDestroy {
   blogPosts$: Observable<GdgBlogPost[]>;
   destroySubject$: Subject<void> = new Subject();
-  lang: Lang;
+  locale: string;
 
   constructor(
     private state: StateService,
@@ -66,15 +65,20 @@ export class BlogComponent implements OnInit, OnDestroy {
         this.meta.updateMetaKeywords(metatags.keywords);
       });
 
-    const currentLang$ = this.settings
-      .getCurrentLang()
-      .pipe(takeUntil(this.destroySubject$));
+      this.settings.getCurrentLang()
+      .pipe(
+        takeUntil(this.destroySubject$)
+      ).subscribe((lang: Lang)=>{
+        this.locale = lang.locale;
+      });
 
-    currentLang$
+
+      this.settings
+      .getCurrentLang()
       .pipe(
         takeUntil(this.destroySubject$),
+        skip(1),
         switchMap((lang: Lang) => {
-          this.lang = lang;
           return this.settings.getMetatags("blog");
         })
       )

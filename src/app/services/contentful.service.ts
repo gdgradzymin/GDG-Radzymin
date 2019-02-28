@@ -967,10 +967,6 @@ export class ContentfulService {
       );
   }
 
- 
-
-
-
   getContactInfo(): Observable<GdgContactInfo> {
     const query = {
       content_type: GdgContentTypes.CONTACT_INFO,
