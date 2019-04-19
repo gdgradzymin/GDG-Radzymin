@@ -1,0 +1,59 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// **Be sure that you only ever include this mixin once!**
+@include mat-core();
+// Define the default theme (same as the example above).
+$primary-color-dark : #1976D2;
+$primary-color : #2196F3;
+$primary-color-light : #BBDEFB;
+$primary-color-text : #FFFFFF;
+$accent-color : #ffc20a;
+$primary-text-color : #3C4043;
+$secondary-text-color: #5F6368;
+$divider-color : #80868B;
+$background-dark: #3C4043;
+$gdg-red: #EA4335;
+$gdg-blue: #4285F4;
+$gdg-green: #34A853;
+$gdg-yellow: #FBBC04;
+$gdg-grey-light: #F2F5F5;
+$gdg-grey-very-light: #F1F3F4;
+
+$gdg-app-primary: mat-palette($mat-blue);
+$gdg-app-accent: mat-palette($mat-amber);
+$gdg-app-warn: mat-palette($mat-red);
+$gdg-app-theme: mat-light-theme($gdg-app-primary, $gdg-app-accent, $gdg-app-warn);
+$foreground: map-get($gdg-app-theme, foreground);
+$background: map-get($gdg-app-theme, background);
+// @include angular-material-theme($gdg-app-theme);
+mat-ink-bar.mat-ink-bar {
+    background-color: $primary-color-text !important;
+}
+
+.mat-tab-link {
+  color: $primary-color-text;
+}
+
+.mat-tab-label {
+  color: $primary-color-text;
+}
+
+.mat-tab-label-active {
+    background-color: mat-color($gdg-app-primary, 400) !important;
+    opacity: 1 !important;
+    color: $primary-color-text;
+}
+
+.mat-tab-link:not(.mat-tab-label-active):focus {
+    background: none !important;
+    color: $primary-color-text;
+}
+
+.mat-tab-nav-bar {
+  border-bottom: none;
+}
+
+
+

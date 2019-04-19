@@ -1,0 +1,139 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+
+.blog-post {
+  padding: 20px 10px;
+
+}
+
+:host ::ng-deep .image {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+:host ::ng-deep .plain-container {
+  display: block;
+}
+
+
+.blog-post-header-photo {
+  width: 100%;
+  height: auto;
+  max-width: 800px;
+  margin-bottom: 10px;
+}
+
+.my-spinner {
+  margin-top: 150px;
+  margin-bottom: 20px;
+}
+
+.blog-post-title {
+  color: $primary-color-dark;
+}
+
+.blog-post-content {
+  text-align: justify;
+  align-content: center;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.blog-post-photos {
+  text-align: center;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.blog-post-author {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+
+
+@media only screen and (max-width: 599px) {
+  .blog-post {
+    padding-top: 70px;
+  }
+
+  .blog-post-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 699px) {
+  .blog-post {
+    padding-top: 90px;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+  .blog-post-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+  }
+
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1279px) {
+  .blog-post {
+    padding-top: 100px;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .blog-post-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+  }
+
+
+}
+
+@media only screen and (min-width: 1279px) {
+  .blog-post {
+    padding-top: 110px;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .blog-post-header-photo {
+    max-width: 1000px;
+  }
+
+  .blog-post-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+  }
+
+
+}
+
+:host ::ng-deep a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $primary-color;
+}
+
+:host ::ng-deep .content-white a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $primary-color;
+}
+
+

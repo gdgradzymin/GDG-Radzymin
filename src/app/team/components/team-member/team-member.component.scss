@@ -1,0 +1,86 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+.my-chip {
+    padding: 2px 6px;
+    border-radius: 15px;
+    background-color: mat-color($gdg-app-primary);
+    color: mat-color($gdg-app-primary, '700-contrast');
+    font-size: 0.8em;
+}
+
+.my-chip-core-team {
+    background-color: mat-color($mat-teal, 300);
+    color: $primary-color-text;
+}
+
+.my-chip-firebase {
+    background-color: mat-color($mat-amber, 400);
+    color: $primary-color-text;
+}
+
+.my-chip-web {
+    background-color: mat-color($mat-blue, 500);
+    color: $primary-color-text;
+}
+
+.my-chip-mobile {
+    background-color: mat-color($mat-light-green, 500);
+}
+
+.my-chip-design {
+    background-color: mat-color($mat-blue-grey, 800);
+    color: $primary-color-text;
+}
+
+.mat-card {
+    padding: 0;
+}
+
+.mat-card-header {
+    background-color: $gdg-yellow;
+    color: $primary-color-text;
+    padding: 10px 5px;
+}
+
+.mat-card-header-yellow {
+    background-color: $gdg-yellow;
+    color: $primary-color-text;
+}
+
+.mat-card-header-green {
+    background-color: $gdg-green;
+    color: $primary-color-text;
+}
+
+.mat-card-header-blue {
+    background-color: $gdg-blue;
+    color: $primary-color-text;
+}
+
+.mat-card-header-red {
+    background-color: $gdg-red;
+    color: $primary-color-text;
+}
+
+.card-profile-photo {
+    padding-top: 15px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mat-card-content {
+    padding: 10px 10px;
+    color: $primary-color-text;
+    margin-bottom: 0px;
+}
+
+.mat-card-content>* {
+    margin-top: 3px;
+}
+
+.card-footer {
+    background-color: mat-color($mat-grey, 100);
+    color: $secondary-text-color;
+    padding: 10px 5px;
+}

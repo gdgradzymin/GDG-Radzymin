@@ -1,0 +1,75 @@
+<div class="event-card" [class.event-card-past]="event.isPastEvent()" [class.event-card-gdg-radzymin]="event.isOrganizerGdgRadzymin && !event.isPastEvent()"
+  fxLayout="row" fxLayoutAlign="start stretch">
+  <div class="event-when" fxFlex="20" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="15px">
+
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" fxLayoutAlign.lt-md="space-evenly center">
+
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="end center">
+        <fa-icon [icon]="faCalendarAlt" style="font-size: 1.4em"></fa-icon>
+      </div>
+
+
+      <div style="text-align: center;" fxFlex="70" fxLayout="column" fxLayoutAlign="space-between center">
+        <div class="event-when-day-name">
+          {{event.eventDate | date:'EEEE'}}
+        </div>
+
+        <div class="event-when-day" [class.event-when-day-past]="event.isPastEvent()">
+          {{event.eventDate | date:'d'}}
+        </div>
+        <div class="event-when-month-name">
+          {{event.eventDate | date:'LLL'}}
+        </div>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start center" fxLayoutGap.lt-md="8px">
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="end center">
+        <fa-icon [icon]="faClock" style="font-size: 1.4em;"></fa-icon>
+      </div>
+      <div style="text-align: center;" fxFlex="70" fxLayout="column" fxLayoutAlign="space-between center">
+        <div [class.event-when-time]="event.eventDate">
+          {{event.eventDate | date:'HH:mm'}}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="event-what" fxFlex fxLayout="row" fxLayoutAlign="start stretch">
+    <div class="event-what-content" fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="event-what-content-header" fxFlex="20">
+        {{event.title}}
+      </div>
+      <div class="event-what-content-main" fxFlex >
+            {{event.shortDescription}}
+      </div>
+      <mat-divider fxShow fxHide.lt-md style="margin-top: 5px;margin-bottom: 10px;"></mat-divider>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" fxFlex="20" >
+
+        <mat-icon mat-list-icon class="icon-place" [class.icon-place-past]="event.isPastEvent()" *ngIf="event.eventAddress">place</mat-icon>
+        <span mat-line style="font-size: 0.8em;" *ngIf="event.eventAddress">{{event.eventAddress}}</span>
+
+      </div>
+      <mat-divider fxHide fxShow.lt-md style="margin-top: 10px;margin-bottom: 10px;"></mat-divider>
+
+      <div class="event-what-content-footer" fxFlex="10" fxFlex.xs="20" fxFlex.sm="15" fxLayout.lt-md="column" fxLayout="row" fxLayoutAlign.lt-md="space-evenly start" fxLayoutGap.lt-md="5px" fxShow.lt-md fxHide>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" >
+          <fa-icon style="font-size: 1.4em;" [icon]="faMeetup" class="meetup-icon" [class.meetup-icon-past]="event.isPastEvent()" *ngIf="event.meetupLink"></fa-icon>
+          <a href="{{event.meetupLink}}" target="_blank" mat-button style="font-size: 0.8em;" *ngIf="event.meetupLink">{{'gotomeetuppage' | translate}}</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="event-what" fxFlex="15" fxLayout="column" fxLayoutAlign="center center" fxHide.lt-md >
+    <a mat-icon-button href="{{event.meetupLink}}" target="_blank" >
+      <fa-icon [icon]="faMeetup" class="meetup-icon"  [class.meetup-icon-past]="event.isPastEvent()"></fa-icon>
+    </a>
+
+  </div>
+
+
+
+</div>

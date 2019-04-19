@@ -1,0 +1,30 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="start center"
+  fxLayout.gt-xs="row"
+  fxLayoutAlign.gt-xs="start start"
+  fxLayoutGap="10px"
+  fxLayoutGap.gt-xs="15px"
+  class="speaker-item"
+>
+  <img
+    src="https://{{speaker.photo?.imgUrl}}"
+    class="speaker-photo"
+    fxFlex.gt-xs="25"
+  />
+
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxLayoutAlign.gt-xs="space-around stretch"
+    fxLayoutGap="10px"
+    fxLayoutGap.gt-xs="15px"
+  >
+    <div class="speaker-name">{{ speaker.name }}</div>
+    <div class="speaker-role">{{ speaker.role }}</div>
+    <div
+      [innerHTML]="speaker.description | mdToHtml"
+      class="speaker-description"
+    ></div>
+  </div>
+</div>

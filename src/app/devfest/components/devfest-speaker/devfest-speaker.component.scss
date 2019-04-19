@@ -1,0 +1,47 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+:host {
+    font-size: 0.9em;
+}
+
+.speaker-item {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.speaker-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 100%;
+}
+
+.speaker-name {
+    color: $primary-text-color;
+    font-weight: normal;
+    font-size: 1.6em;
+}
+
+.speaker-role {
+    color: $gdg-blue;
+    text-align: left;
+}
+
+.speaker-description {
+    font-size: 0.9em;
+    text-align: justify;
+}
+
+@media only screen and (max-width: 599px) {
+    .speaker-photo {
+        width: 40%;
+    }
+
+    .speaker-name {
+        margin-top: 10px;
+    }
+
+    .speaker-role {
+        text-align: center;
+    }
+}

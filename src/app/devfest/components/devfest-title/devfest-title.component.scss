@@ -1,0 +1,99 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+.devfest-header {
+  font-size: 2.8em;
+  text-align: right;
+}
+
+.title-container {
+  width: 100%;
+  height: 400px;
+  background-color: $gdg-grey-light;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.devfest-header-logo {
+  background-image: url("../../../../assets/gfx/devfest_title_img.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: cover;
+  height: 100%;
+  width: 425px;
+}
+
+.devfest-header-date {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: $gdg-blue;
+}
+
+.devfest-header-date-icon {
+  font-size: 1.8em;
+  color: $gdg-blue;
+}
+
+.devfest-header-place {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: $gdg-green;
+  text-align: right;
+}
+
+.devfest-header-place-icon {
+  font-size: 1.8em;
+  color: $gdg-green;
+}
+
+
+.register-btn {
+  background-color: $gdg-red !important;
+  font-size: 1.1em;
+}
+
+:host ::ng-deep a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $gdg-green;
+  text-decoration: none;
+}
+
+.logo-img{
+  height: 40%;
+  width: auto;
+}
+
+
+
+@media only screen and (max-width: 599px) {
+
+  .title-container {
+    width: 100%;
+    height: 800px;
+    background-color: F1F3F4;
+  }
+
+  
+  .devfest-header-logo {
+    height: 100%;
+    width: 100%;
+  }
+
+  .logo-img{
+    height: auto;
+    width: 70%;
+  }
+  
+  }
+  
+  @media only screen and (min-width: 600px) and (max-width: 1279px) {
+    .devfest-header-logo {
+      height: 100%;
+      background-size: 90%;
+    }
+    
+  }

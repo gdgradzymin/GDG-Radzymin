@@ -1,0 +1,8 @@
+<div [@tabsState]="tabsState" class="my-nav-tab">
+  <nav mat-tab-nav-bar style="max-width: 600px !important">
+    <a mat-tab-link [id]="'tab-link-'+i" *ngFor="let routeLink of routeLinks; let i = index;" [routerLink]="routeLink.link" [active]="activeLinkIdx === i"
+      (click)="onClick(i)" style="max-width: 50px !important;">
+      {{routeLink.label | translate}}
+    </a>
+  </nav>
+</div>

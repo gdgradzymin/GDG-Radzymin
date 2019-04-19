@@ -1,0 +1,102 @@
+@import "~@angular/material/theming";
+@import "src/themes/my-theme.scss";
+
+:host {
+    width: 100%;
+
+}
+
+.main {
+    background-color: #fff;
+    padding: 50px 100px;
+    
+}
+
+.title {
+    text-align: left;
+    width: 100%;
+    font-size: 2.0em;
+    font-weight: 500;
+    color: $secondary-text-color;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    letter-spacing: .02em;
+}
+
+.content {
+    text-align: left;
+    width: 100%;
+    font-size: 1.0em;
+    font-weight: normal;
+}
+
+.image {
+    width: 70%;
+    height: auto;
+    border-radius: 50%;
+}
+
+
+:host ::ng-deep a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $gdg-blue;
+}
+
+:host ::ng-deep .content-white a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: $gdg-blue;
+}
+
+:host ::ng-deep li {
+    padding-bottom: 3px;
+}
+
+:host ::ng-deep p {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 599px) {
+    .main {
+      padding: 50px 10px;
+    }
+
+    .title {
+        text-align: center;
+    }
+  
+    .content {
+      text-align: left;
+      font-size: 0.9em;
+      width: 100%;
+    }
+  
+    .image {
+      width: 70%;
+      height: auto;
+    }
+  }
+  
+  @media only screen and (min-width: 600px) and (max-width: 1279px) {
+    .main {
+      padding: 50px 10px;
+    }
+  
+    .content {
+      font-size: 0.9em;
+      width: 100%;
+    }
+
+    .image {
+        width: 90%;
+        height: auto;
+      }
+  }

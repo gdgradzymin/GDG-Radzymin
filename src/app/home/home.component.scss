@@ -1,0 +1,20 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+.meetup-link {
+    font-size: 0.6em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+@media only screen and (max-width: 599px) {
+    .meetup-link {
+        font-size: 0.6em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+.my-spinner {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}

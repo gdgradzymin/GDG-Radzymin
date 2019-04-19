@@ -1,0 +1,155 @@
+@import '~@angular/material/theming';
+@import 'src/themes/my-theme.scss';
+.mat-card {
+    padding: 0;
+}
+
+.mat-card-header {
+    background-color: mat-color($gdg-app-primary);
+    color: $primary-color-text;
+    padding: 10px 5px;
+}
+
+.mat-card-header-gdg-radzymin {
+    background-color: mat-color($gdg-app-primary);
+    color: $primary-color-text;
+}
+
+.mat-card-header-other {
+    background-color: $gdg-yellow;
+    color: $primary-color-text;
+}
+
+.mat-card-header-past {
+    background-color: $secondary-text-color;
+    color: $primary-color-text;
+}
+
+mat-card-content {
+    padding: 15px 15px;
+    margin-bottom: 0px;
+}
+
+.icon-calendar {
+    color: $gdg-red;
+}
+
+.icon-place {
+    color: $gdg-blue;
+}
+
+.icon-place-past {
+    color: $secondary-text-color;
+}
+
+.event-card {
+    font-size: 1.0em;
+    width: 700px;
+    border-radius: 5px;
+    background-color: mat-get($foreground);
+    border-left-color: $gdg-red;
+    border-left-style: solid;
+    border-left-width: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
+.event-card-past {
+    border-left-color: mat-color($mat-blue-grey, 300);
+}
+
+.event-when {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+@media only screen and (max-width: 959px) {
+    .event-card {
+        font-size: 0.9em;
+        width: 300px;
+        border-radius: 5px;
+        background-color: mat-get($foreground);
+        border-top-color: $gdg-red;
+        border-top-style: solid;
+        border-top-width: 10px;
+        border-left: none;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    }
+    .event-card-gdg-radzymin {
+        border-top-color: $gdg-yellow;
+        border-left: none;
+    }
+    .event-card-past {
+        border-top-color: mat-color($mat-blue-grey, 300);
+        border-left: none;
+    }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 959px) {
+    .event-card {
+        font-size: 1.0em;
+        width: 450px;
+    }
+}
+
+.event-card-gdg-radzymin {
+    border-left-color: $gdg-yellow;
+}
+
+.event-when-day-name {
+    font-size: 0.75em;
+}
+
+.event-when-day {
+    font-size: 1.8em;
+    color: $gdg-red;
+}
+
+.event-when-day-past {
+    color: $secondary-text-color;
+}
+
+.event-when-month-name {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.event-when-time {
+    color: $primary-color-text;
+    font-size: 0.8em;
+    background-color: mat-color($mat-blue-grey, 800);
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.event-what {
+    padding: 10px 0px;
+}
+
+.event-what-content {
+    border-left-color: mat-color($mat-blue-grey, 400);
+    border-left-style: dotted;
+    border-left-width: 1px;
+    padding-left: 20px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.event-what-content-header {
+    font-size: 1.2em;
+}
+
+.event-what-content-main {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 0.8em;
+}
+
+.meetup-icon {
+    font-size: 2.8em;
+    color: mat-color($mat-pink, 'A400');
+}
+
+.meetup-icon-past {
+    color: $secondary-text-color;
+}
