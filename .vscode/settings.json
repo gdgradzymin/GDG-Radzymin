@@ -1,5 +1,0 @@
-{
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "javascript.preferences.quoteStyle": "double",
-    "typescript.preferences.quoteStyle": "double"
-}
