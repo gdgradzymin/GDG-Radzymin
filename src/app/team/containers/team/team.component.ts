@@ -18,7 +18,7 @@ import {
 import { MetatagsService } from "../../../services/metatags.service";
 import { takeUntil, switchMap } from "rxjs/operators";
 import { StateService } from "../../../services/state.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Data } from "@angular/router";
 
 @Component({
   selector: "app-team",
@@ -59,10 +59,10 @@ export class TeamComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data
       .pipe(takeUntil(this.destroySubject$))
-      .subscribe((metatags: Metatags) => {
-        this.meta.updateMetaDesc(metatags.desc);
-        this.meta.updateTitle(metatags.title);
-        this.meta.updateMetaKeywords(metatags.keywords);
+      .subscribe((data: Data) => {
+        this.meta.updateMetaDesc(data.metatags.desc);
+        this.meta.updateTitle(data.metatags.title);
+        this.meta.updateMetaKeywords(data.metatags.keywords);
       });
 
     this.settings
