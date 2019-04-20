@@ -142,5 +142,8 @@
       }
     }
   },
-  "defaultProject": "gdg-radzymin"
+  "defaultProject": "gdg-radzymin",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
