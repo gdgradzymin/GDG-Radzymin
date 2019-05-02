@@ -6,7 +6,7 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "description": "GDG Radzymin web site",
+  "description": "GDG Radzymin website",
   "lang": "en-US",
   "orientation": "any",
   "icons": [
