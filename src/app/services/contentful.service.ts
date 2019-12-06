@@ -629,7 +629,7 @@ export class ContentfulService {
             }
 
             let speakerPhoto = null;
-            if (speaker) {
+            if (speaker && speaker.speakerPhoto) {
               speakerPhoto = this.getAssetById(
                 assets,
                 speaker.fields.photo.sys.id
@@ -646,8 +646,8 @@ export class ContentfulService {
               item.fields.endDate,
               speaker
                 ? new GdgDevFestSpeaker(
-                    speaker.fields.name,
-                    speaker.fields.role,
+                    speaker.fields ? speaker.fields.name : undefined,
+                    speaker.fields ? speaker.fields.role : undefined,
                     speakerPhoto ? speakerPhoto.fields.file.url : undefined,
                     speakerPhoto ? speakerPhoto.fields.title : undefined,
                     speakerPhoto ? speakerPhoto.fields.description : undefined,
