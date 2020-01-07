@@ -15,7 +15,7 @@ import { SettingsService, Lang } from "./services/settings.service";
 import { GdgContactInfo } from "./models/gdg-contact-info.model";
 import { ContentfulService } from "./services/contentful.service";
 import { Meta } from "@angular/platform-browser";
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: "app-root",

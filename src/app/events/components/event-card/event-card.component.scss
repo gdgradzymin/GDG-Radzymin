@@ -46,7 +46,7 @@ mat-card-content {
     font-size: 1.0em;
     width: 700px;
     border-radius: 5px;
-    background-color: mat-get($foreground);
+    background-color: $primary-color-text;
     border-left-color: $gdg-red;
     border-left-style: solid;
     border-left-width: 6px;
@@ -67,7 +67,7 @@ mat-card-content {
         font-size: 0.9em;
         width: 300px;
         border-radius: 5px;
-        background-color: mat-get($foreground);
+        background-color: $primary-color-text;
         border-top-color: $gdg-red;
         border-top-style: solid;
         border-top-width: 10px;
